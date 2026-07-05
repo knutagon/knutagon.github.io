@@ -6,34 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-
-/* ============================================
-   MOBILE FIRST OVERRIDES
-   ============================================ */
-@media (max-width: 860px) {
-  #desktopNav {
-    display: none;
-  }
-  .pub-hamburger {
-    display: block;
-  }
-}
-
-/* ============================================
-   COLOR VARIABLES
-   ============================================ */
 :root {
   --bg: #34D597;
   --border: #0d1b4c;
   --border-light: #ddd;
-
   --logo: #121112;
   --text: #1a1a2e;
   --accent: #7012a6;
-
   --cta-bg: #6b0dbd;
   --cta-text: #ffffff;
-
   --toggle-bg: #ffffff;
   --toggle-icon: #1a5cff;
 }
@@ -42,23 +23,17 @@ html[data-theme="dark"] {
   --bg: #0d1128;
   --border: #1a5cff;
   --border-light: #333a5c;
-
   --logo: #34D597;
   --text: #eaeaf5;
   --accent: #34D597;
-
   --cta-bg: #34D597;
   --cta-text: #1a1a1a;
-
   --toggle-bg: #0d1128;
   --toggle-icon: #34D597;
 }
 
 body { margin: 0; }
 
-/* ============================================
-   HEADER
-   ============================================ */
 header {
   width: 100%;
   background: var(--bg);
@@ -91,9 +66,7 @@ header.scrolled {
   white-space: nowrap;
 }
 
-/* ============================================
-   DESKTOP NAV
-   ============================================ */
+/* Desktop nav */
 nav {
   display: flex;
   gap: 28px;
@@ -114,9 +87,7 @@ nav a:hover {
   color: var(--accent);
 }
 
-/* ============================================
-   DESKTOP DROPDOWN
-   ============================================ */
+/* Dropdown */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -164,9 +135,7 @@ nav a:hover {
   display: block;
 }
 
-/* ============================================
-   MOBILE HAMBURGER
-   ============================================ */
+/* Hamburger button */
 .pub-hamburger {
   display: none;
   background: none;
@@ -177,9 +146,7 @@ nav a:hover {
   cursor: pointer;
 }
 
-/* ============================================
-   MOBILE MENU
-   ============================================ */
+/* Mobile menu */
 .pub-mobile-menu {
   display: none;
   flex-direction: column;
@@ -199,9 +166,7 @@ nav a:hover {
   color: var(--accent);
 }
 
-/* ============================================
-   ACTIONS
-   ============================================ */
+/* Actions */
 .actions {
   display: flex;
   align-items: center;
@@ -238,6 +203,12 @@ nav a:hover {
   border-color: var(--accent);
 }
 
+/* Mobile layout */
+@media (max-width: 1024px) {
+  #desktopNav { display: none; }
+  .pub-hamburger { display: block; }
+}
+
 </style>
 </head>
 
@@ -246,13 +217,10 @@ nav a:hover {
 <header id="header">
   <div class="inner">
 
-    <!-- Logo -->
     <a href="/" class="logo">Home</a>
 
-    <!-- Hamburger (mobile only) -->
     <button class="pub-hamburger" id="pubHamburger" aria-label="Open menu">☰</button>
 
-    <!-- Desktop Navigation -->
     <nav id="desktopNav">
       <a href="/">Home</a>
       <a href="/about/">About</a>
@@ -272,7 +240,6 @@ nav a:hover {
       </div>
     </nav>
 
-    <!-- Mobile Publications Menu -->
     <div class="pub-mobile-menu" id="pubMobileMenu">
       <a href="/">Home</a>
       <a href="/about/">About</a>
@@ -286,7 +253,6 @@ nav a:hover {
       <a href="/pub/souldragon/">Soul Dragon™</a>
     </div>
 
-    <!-- Actions -->
     <div class="actions">
       <a href="/subscribe/" class="cta">Free Newsletter</a>
 
@@ -314,8 +280,6 @@ nav a:hover {
 </main>
 
 <script>
-
-/* Scroll shadow */
 var header = document.getElementById('header');
 function onScroll() {
   if (window.scrollY > 8) header.classList.add('scrolled');
@@ -326,44 +290,4 @@ onScroll();
 
 /* Theme toggle */
 var root = document.documentElement;
-var toggle = document.getElementById('themeToggle');
-var sun = document.getElementById('iconSun');
-var moon = document.getElementById('iconMoon');
-
-var saved = localStorage.getItem('theme');
-
-if (saved === 'dark') {
-  root.setAttribute('data-theme', 'dark');
-  sun.style.display = 'none';
-  moon.style.display = 'block';
-}
-
-toggle.addEventListener('click', function() {
-  var isDark = root.getAttribute('data-theme') === 'dark';
-
-  if (isDark) {
-    root.removeAttribute('data-theme');
-    localStorage.setItem('theme', 'light');
-    sun.style.display = 'block';
-    moon.style.display = 'none';
-  } else {
-    root.setAttribute('data-theme', 'dark');
-    localStorage.setItem('theme', 'dark');
-    sun.style.display = 'none';
-    moon.style.display = 'block';
-  }
-});
-
-/* Mobile Publications menu toggle */
-var pubHamburger = document.getElementById('pubHamburger');
-var pubMobileMenu = document.getElementById('pubMobileMenu');
-
-pubHamburger.addEventListener('click', function() {
-  var isOpen = pubMobileMenu.style.display === 'flex';
-  pubMobileMenu.style.display = isOpen ? 'none' : 'flex';
-});
-
-</script>
-
-</body>
-</html>
+var toggle = document.getElementBy
