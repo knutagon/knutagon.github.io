@@ -13,8 +13,11 @@
   --logo: #121112;
   --text: #1a1a2e;
   --accent: #7012a6;
+
   --cta-bg: #6b0dbd;
-  --cta-text: #ffffff;
+  --cta-text-light: #ffffff; /* CTA text color (light mode) */
+  --cta-text-dark: #ffffff;  /* CTA text color (dark mode) */
+
   --toggle-bg: #ffffff;
   --toggle-icon: #1a5cff;
 }
@@ -23,11 +26,14 @@ html[data-theme="dark"] {
   --bg: #0d1128;
   --border: #1a5cff;
   --border-light: #333a5c;
+
   --logo: #34D597;
   --text: #eaeaf5;
   --accent: #34D597;
+
   --cta-bg: #34D597;
-  --cta-text: #1a1a1a;
+  --cta-text-dark: #1a1a1a; /* CTA text color in dark mode */
+
   --toggle-bg: #0d1128;
   --toggle-icon: #34D597;
 }
@@ -224,13 +230,19 @@ nav a:hover {
 .mobile-cta {
   margin-top: auto;
   background: var(--cta-bg);
-  color: var(--cta-text);
+  color: var(--cta-text-light);
   text-decoration: none;
   font-weight: 700;
   font-size: 16px;
-  padding: 12px 20px;
+  padding: 14px 20px;
   border-radius: 8px;
   text-align: center;
+  position: relative;
+  bottom: 20px;
+}
+
+html[data-theme="dark"] .mobile-cta {
+  color: var(--cta-text-dark);
 }
 
 /* Actions */
