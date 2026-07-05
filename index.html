@@ -7,211 +7,185 @@
 
 <style>
 
+/* ============================================
+   MOBILE FIRST OVERRIDES
+   ============================================ */
 @media (max-width: 860px) {
-  nav {
+  #desktopNav {
     display: none;
   }
-  .hamburger {
+  .pub-hamburger {
     display: block;
   }
 }
 
+/* ============================================
+   COLOR VARIABLES
+   ============================================ */
+:root {
+  --bg: #34D597;
+  --border: #0d1b4c;
+  --border-light: #ddd;
 
-  :root {
-    --bg: #34D597;
-    --border: #0d1b4c;
-    --border-light: #ddd;
+  --logo: #121112;
+  --text: #1a1a2e;
+  --accent: #7012a6;
 
-    --logo: #121112;
-    --text: #1a1a2e;
-    --accent: #7012a6;
+  --cta-bg: #6b0dbd;
+  --cta-text: #ffffff;
 
-    --cta-bg: #6b0dbd;
-    --cta-text: #ffffff;
+  --toggle-bg: #ffffff;
+  --toggle-icon: #1a5cff;
+}
 
-    --toggle-bg: #ffffff;
-    --toggle-icon: #1a5cff;
-  }
+html[data-theme="dark"] {
+  --bg: #0d1128;
+  --border: #1a5cff;
+  --border-light: #333a5c;
 
-  html[data-theme="dark"] {
-    --bg: #0d1128;
-    --border: #1a5cff;
-    --border-light: #333a5c;
+  --logo: #34D597;
+  --text: #eaeaf5;
+  --accent: #34D597;
 
-    --logo: #34D597;
-    --text: #eaeaf5;
-    --accent: #34D597;
+  --cta-bg: #34D597;
+  --cta-text: #1a1a1a;
 
-    --cta-bg: #34D597;
-    --cta-text: #1a1a1a;
+  --toggle-bg: #0d1128;
+  --toggle-icon: #34D597;
+}
 
-    --toggle-bg: #0d1128;
-    --toggle-icon: #34D597;
-  }
+body { margin: 0; }
 
-  body { margin: 0; }
+/* ============================================
+   HEADER
+   ============================================ */
+header {
+  width: 100%;
+  background: var(--bg);
+  border-bottom: 3px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: box-shadow 0.2s ease;
+}
 
-  header {
-    width: 100%;
-    background: var(--bg);
-    border-bottom: 3px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    transition: box-shadow 0.2s ease;
-  }
+header.scrolled {
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
 
-  header.scrolled {
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-  }
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
 
-  .inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-  }
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--logo);
+  text-decoration: none;
+  white-space: nowrap;
+}
 
-  .logo {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--logo);
-    text-decoration: none;
-    white-space: nowrap;
-  }
+/* ============================================
+   DESKTOP NAV
+   ============================================ */
+nav {
+  display: flex;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-  nav {
-    display: flex;
-    gap: 28px;
-    flex: 1;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+}
 
-  nav a {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 15px;
-    white-space: nowrap;
-  }
+nav a:hover {
+  color: var(--accent);
+}
 
-  nav a:hover {
-    color: var(--accent);
-  }
+/* ============================================
+   DESKTOP DROPDOWN
+   ============================================ */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
 
-  /* Dropdown */
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
+.dropbtn {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
 
-  .dropbtn {
-    background: none;
-    border: none;
-    color: var(--text);
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
+.dropbtn:hover {
+  color: var(--accent);
+}
 
-  .dropbtn:hover {
-    color: var(--accent);
-  }
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  min-width: 180px;
+  padding: 10px 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  z-index: 2000;
+}
 
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background: var(--bg);
-    border: 2px solid var(--border);
-    border-radius: 6px;
-    min-width: 180px;
-    padding: 10px 0;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    z-index: 2000;
-  }
+.dropdown-content a {
+  display: block;
+  padding: 10px 16px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
 
-  .dropdown-content a {
-    display: block;
-    padding: 10px 16px;
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 600;
-  }
+.dropdown-content a:hover {
+  color: var(--accent);
+}
 
-  .dropdown-content a:hover {
-    color: var(--accent);
-  }
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-
-  .actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .cta {
-    background: var(--cta-bg);
-    color: var(--cta-text);
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 10px 20px;
-    border-radius: 8px;
-    white-space: nowrap;
-  }
-
-  .cta:hover { opacity: 0.9; }
-
-  .toggle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid var(--border-light);
-    background: var(--toggle-bg);
-    color: var(--toggle-icon);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
-  .toggle:hover {
-    border-color: var(--accent);
-  }
-
-  @media (max-width: 860px) {
-    .inner { flex-wrap: wrap; }
-    nav { order: 3; width: 100%; justify-content: flex-start; gap: 18px; }
-  }
-
-/* Hamburger button (mobile only) */
+/* ============================================
+   MOBILE HAMBURGER
+   ============================================ */
 .pub-hamburger {
   display: none;
   background: none;
   border: none;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--text);
   cursor: pointer;
 }
 
-/* Mobile menu container */
+/* ============================================
+   MOBILE MENU
+   ============================================ */
 .pub-mobile-menu {
   display: none;
   flex-direction: column;
   background: var(--bg);
-  border: 2px solid var(--border);
-  border-radius: 6px;
+  border-top: 2px solid var(--border);
   padding: 10px 0;
-  margin-top: 10px;
 }
 
 .pub-mobile-menu a {
@@ -225,16 +199,43 @@
   color: var(--accent);
 }
 
-/* Show hamburger on mobile */
-@media (max-width: 860px) {
-  .pub-hamburger {
-    display: block;
-  }
+/* ============================================
+   ACTIONS
+   ============================================ */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
-  /* Hide desktop dropdown on mobile */
-  .dropdown {
-    display: none;
-  }
+.cta {
+  background: var(--cta-bg);
+  color: var(--cta-text);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.cta:hover { opacity: 0.9; }
+
+.toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: var(--toggle-bg);
+  color: var(--toggle-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  border-color: var(--accent);
 }
 
 </style>
@@ -245,9 +246,14 @@
 <header id="header">
   <div class="inner">
 
+    <!-- Logo -->
     <a href="/" class="logo">Home</a>
 
-    <nav>
+    <!-- Hamburger (mobile only) -->
+    <button class="pub-hamburger" id="pubHamburger" aria-label="Open menu">☰</button>
+
+    <!-- Desktop Navigation -->
+    <nav id="desktopNav">
       <a href="/">Home</a>
       <a href="/about/">About</a>
       <a href="/articles/">Articles</a>
@@ -262,25 +268,29 @@
           <a href="/pub/culture/">Culture</a>
           <a href="/pub/systems/">Systems</a>
           <a href="/pub/souldragon/">Soul Dragon™</a>
-<div class="pub-mobile-menu" id="pubMobileMenu">
-  <a href="/pub/tech/">Tech</a>
-  <a href="/pub/philosophy/">Philosophy</a>
-  <a href="/pub/culture/">Culture</a>
-  <a href="/pub/systems/">Systems</a>
-  <a href="/pub/souldragon/">Soul Dragon™</a>
-</div>
-<button class="pub-hamburger" id="pubHamburger" aria-label="Open publications menu">
-  ☰
-</button>
         </div>
       </div>
     </nav>
 
+    <!-- Mobile Publications Menu -->
+    <div class="pub-mobile-menu" id="pubMobileMenu">
+      <a href="/">Home</a>
+      <a href="/about/">About</a>
+      <a href="/articles/">Articles</a>
+      <a href="/podcast/">Podcast</a>
+      <a href="/press/">Press</a>
+      <a href="/pub/tech/">Tech</a>
+      <a href="/pub/philosophy/">Philosophy</a>
+      <a href="/pub/culture/">Culture</a>
+      <a href="/pub/systems/">Systems</a>
+      <a href="/pub/souldragon/">Soul Dragon™</a>
+    </div>
+
+    <!-- Actions -->
     <div class="actions">
       <a href="/subscribe/" class="cta">Free Newsletter</a>
 
       <button class="toggle" id="themeToggle" aria-label="Toggle dark mode">
-
         <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="5"/>
@@ -292,7 +302,6 @@
              fill="none" stroke="currentColor" stroke-width="2" style="display:none">
           <path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/>
         </svg>
-
       </button>
     </div>
 
@@ -306,44 +315,44 @@
 
 <script>
 
-  /* Scroll shadow */
-  var header = document.getElementById('header');
-  function onScroll() {
-    if (window.scrollY > 8) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+/* Scroll shadow */
+var header = document.getElementById('header');
+function onScroll() {
+  if (window.scrollY > 8) header.classList.add('scrolled');
+  else header.classList.remove('scrolled');
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
 
-  /* Theme toggle */
-  var root = document.documentElement;
-  var toggle = document.getElementById('themeToggle');
-  var sun = document.getElementById('iconSun');
-  var moon = document.getElementById('iconMoon');
+/* Theme toggle */
+var root = document.documentElement;
+var toggle = document.getElementById('themeToggle');
+var sun = document.getElementById('iconSun');
+var moon = document.getElementById('iconMoon');
 
-  var saved = localStorage.getItem('theme');
+var saved = localStorage.getItem('theme');
 
-  if (saved === 'dark') {
+if (saved === 'dark') {
+  root.setAttribute('data-theme', 'dark');
+  sun.style.display = 'none';
+  moon.style.display = 'block';
+}
+
+toggle.addEventListener('click', function() {
+  var isDark = root.getAttribute('data-theme') === 'dark';
+
+  if (isDark) {
+    root.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+    sun.style.display = 'block';
+    moon.style.display = 'none';
+  } else {
     root.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
     sun.style.display = 'none';
     moon.style.display = 'block';
   }
-
-  toggle.addEventListener('click', function() {
-    var isDark = root.getAttribute('data-theme') === 'dark';
-
-    if (isDark) {
-      root.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'light');
-      sun.style.display = 'block';
-      moon.style.display = 'none';
-    } else {
-      root.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
-      sun.style.display = 'none';
-      moon.style.display = 'block';
-    }
-  });
+});
 
 /* Mobile Publications menu toggle */
 var pubHamburger = document.getElementById('pubHamburger');
