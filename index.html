@@ -207,8 +207,8 @@ nav a:hover {
 @media (max-width: 1024px) {
   #desktopNav { display: none; }
   .pub-hamburger { display: block; }
+  .actions { gap: 10px; }
 }
-
 </style>
 </head>
 
@@ -218,8 +218,6 @@ nav a:hover {
   <div class="inner">
 
     <a href="/" class="logo">Home</a>
-
-    <button class="pub-hamburger" id="pubHamburger" aria-label="Open menu">☰</button>
 
     <nav id="desktopNav">
       <a href="/">Home</a>
@@ -240,19 +238,6 @@ nav a:hover {
       </div>
     </nav>
 
-    <div class="pub-mobile-menu" id="pubMobileMenu">
-      <a href="/">Home</a>
-      <a href="/about/">About</a>
-      <a href="/articles/">Articles</a>
-      <a href="/podcast/">Podcast</a>
-      <a href="/press/">Press</a>
-      <a href="/pub/tech/">Tech</a>
-      <a href="/pub/philosophy/">Philosophy</a>
-      <a href="/pub/culture/">Culture</a>
-      <a href="/pub/systems/">Systems</a>
-      <a href="/pub/souldragon/">Soul Dragon™</a>
-    </div>
-
     <div class="actions">
       <a href="/subscribe/" class="cta">Free Newsletter</a>
 
@@ -269,8 +254,23 @@ nav a:hover {
           <path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/>
         </svg>
       </button>
+
+      <button class="pub-hamburger" id="pubHamburger" aria-label="Open menu">☰</button>
     </div>
 
+  </div>
+
+  <div class="pub-mobile-menu" id="pubMobileMenu">
+    <a href="/">Home</a>
+    <a href="/about/">About</a>
+    <a href="/articles/">Articles</a>
+    <a href="/podcast/">Podcast</a>
+    <a href="/press/">Press</a>
+    <a href="/pub/tech/">Tech</a>
+    <a href="/pub/philosophy/">Philosophy</a>
+    <a href="/pub/culture/">Culture</a>
+    <a href="/pub/systems/">Systems</a>
+    <a href="/pub/souldragon/">Soul Dragon™</a>
   </div>
 </header>
 
@@ -280,6 +280,7 @@ nav a:hover {
 </main>
 
 <script>
+/* Scroll shadow */
 var header = document.getElementById('header');
 function onScroll() {
   if (window.scrollY > 8) header.classList.add('scrolled');
@@ -290,4 +291,41 @@ onScroll();
 
 /* Theme toggle */
 var root = document.documentElement;
-var toggle = document.getElementBy
+var toggle = document.getElementById('themeToggle');
+var sun = document.getElementById('iconSun');
+var moon = document.getElementById('iconMoon');
+var saved = localStorage.getItem('theme');
+
+if (saved === 'dark') {
+  root.setAttribute('data-theme', 'dark');
+  sun.style.display = 'none';
+  moon.style.display = 'block';
+}
+
+toggle.addEventListener('click', function() {
+  var isDark = root.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    root.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+    sun.style.display = 'block';
+    moon.style.display = 'none';
+  } else {
+    root.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+    sun.style.display = 'none';
+    moon.style.display = 'block';
+  }
+});
+
+/* Mobile menu toggle */
+var pubHamburger = document.getElementById('pubHamburger');
+var pubMobileMenu = document.getElementById('pubMobileMenu');
+
+pubHamburger.addEventListener('click', function() {
+  var isOpen = pubMobileMenu.style.display === 'flex';
+  pubMobileMenu.style.display = isOpen ? 'none' : 'flex';
+});
+</script>
+
+</body>
+</html>
