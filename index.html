@@ -182,6 +182,51 @@
     nav { order: 3; width: 100%; justify-content: flex-start; gap: 18px; }
   }
 
+/* Hamburger button (mobile only) */
+.pub-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+
+/* Mobile menu container */
+.pub-mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 0;
+  margin-top: 10px;
+}
+
+.pub-mobile-menu a {
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pub-mobile-menu a:hover {
+  color: var(--accent);
+}
+
+/* Show hamburger on mobile */
+@media (max-width: 860px) {
+  .pub-hamburger {
+    display: block;
+  }
+
+  /* Hide desktop dropdown on mobile */
+  .dropdown {
+    display: none;
+  }
+}
+
 </style>
 </head>
 
@@ -207,6 +252,16 @@
           <a href="/pub/culture/">Culture</a>
           <a href="/pub/systems/">Systems</a>
           <a href="/pub/souldragon/">Soul Dragon™</a>
+<div class="pub-mobile-menu" id="pubMobileMenu">
+  <a href="/pub/tech/">Tech</a>
+  <a href="/pub/philosophy/">Philosophy</a>
+  <a href="/pub/culture/">Culture</a>
+  <a href="/pub/systems/">Systems</a>
+  <a href="/pub/souldragon/">Soul Dragon™</a>
+</div>
+<button class="pub-hamburger" id="pubHamburger" aria-label="Open publications menu">
+  ☰
+</button>
         </div>
       </div>
     </nav>
@@ -279,6 +334,15 @@
       moon.style.display = 'block';
     }
   });
+
+/* Mobile Publications menu toggle */
+var pubHamburger = document.getElementById('pubHamburger');
+var pubMobileMenu = document.getElementById('pubMobileMenu');
+
+pubHamburger.addEventListener('click', function() {
+  var isOpen = pubMobileMenu.style.display === 'flex';
+  pubMobileMenu.style.display = isOpen ? 'none' : 'flex';
+});
 
 </script>
 
