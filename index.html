@@ -6,46 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root {
-  --bg: #34D597;
-  --border: #0d1b4c;
-  --border-light: #ddd;
-  --logo: #121112;
-  --text: #1a1a2e;
-  --accent: #7012a6;
-
-  --cta-bg: #6b0dbd;
-  --cta-text-light: #ffffff; /* CTA text color (light mode) */
-  --cta-text-dark: #ffffff;  /* CTA text color (dark mode) */
-
-  --toggle-bg: #ffffff;
-  --toggle-icon: #1a5cff;
-}
-
-html[data-theme="dark"] {
-  --bg: #0d1128;
-  --border: #1a5cff;
-  --border-light: #333a5c;
-
-  --logo: #34D597;
-  --text: #eaeaf5;
-  --accent: #34D597;
-
-  --cta-bg: #34D597;
-  --cta-text-dark: #1a1a1a; /* CTA text color in dark mode */
-
-  --toggle-bg: #0d1128;
-  --toggle-icon: #34D597;
-}
-
 body { margin: 0; }
 
 /* Header */
-
 header {
   width: 100%;
-  background: var(--bg);
-  border-bottom: 3px solid var(--border);
+  background: #34D597;
+  border-bottom: 3px solid #0d1b4c;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -69,7 +36,7 @@ header.scrolled {
 .logo {
   font-size: 22px;
   font-weight: 800;
-  color: var(--logo);
+  color: #121112;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -84,7 +51,7 @@ nav {
 }
 
 nav a {
-  color: var(--text);
+  color: #1a1a2e;
   text-decoration: none;
   font-weight: 600;
   font-size: 15px;
@@ -92,7 +59,7 @@ nav a {
 }
 
 nav a:hover {
-  color: var(--accent);
+  color: #7012a6;
 }
 
 /* Dropdown */
@@ -104,7 +71,7 @@ nav a:hover {
 .dropbtn {
   background: none;
   border: none;
-  color: var(--text);
+  color: #1a1a2e;
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
@@ -113,8 +80,8 @@ nav a:hover {
 .dropdown-content {
   display: none;
   position: absolute;
-  background: var(--bg);
-  border: 2px solid var(--border);
+  background: #34D597;
+  border: 2px solid #0d1b4c;
   border-radius: 6px;
   min-width: 180px;
   padding: 10px 0;
@@ -124,7 +91,7 @@ nav a:hover {
 .dropdown-content a {
   display: block;
   padding: 10px 16px;
-  color: var(--text);
+  color: #1a1a2e;
   font-weight: 600;
 }
 
@@ -137,8 +104,8 @@ nav a:hover {
   position: relative;
   display: flex;
   align-items: center;
-  background: var(--toggle-bg);
-  border: 1px solid var(--border-light);
+  background: #ffffff;
+  border: 1px solid #ddd;
   border-radius: 8px;
   padding: 6px 10px;
 }
@@ -147,7 +114,7 @@ nav a:hover {
   border: none;
   outline: none;
   background: transparent;
-  color: var(--text);
+  color: #1a1a2e;
   font-size: 14px;
   width: 140px;
 }
@@ -157,8 +124,8 @@ nav a:hover {
   top: 40px;
   left: 0;
   right: 0;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: #34D597;
+  border: 1px solid #0d1b4c;
   border-radius: 6px;
   display: none;
   flex-direction: column;
@@ -169,11 +136,11 @@ nav a:hover {
   padding: 8px 12px;
   cursor: pointer;
   font-weight: 600;
-  color: var(--text);
+  color: #1a1a2e;
 }
 
 .autocomplete-list div:hover {
-  background: var(--accent);
+  background: #7012a6;
   color: white;
 }
 
@@ -184,7 +151,7 @@ nav a:hover {
   border: none;
   font-size: 28px;
   font-weight: 700;
-  color: var(--text);
+  color: #1a1a2e;
   cursor: pointer;
 }
 
@@ -195,8 +162,8 @@ nav a:hover {
   right: -100%;
   width: 70%;
   height: 100%;
-  background: var(--bg);
-  border-left: 3px solid var(--border);
+  background: #34D597;
+  border-left: 3px solid #0d1b4c;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -211,7 +178,7 @@ nav a:hover {
 .pub-mobile-menu a {
   padding: 12px 0;
   text-decoration: none;
-  color: var(--text);
+  color: #1a1a2e;
   font-weight: 600;
   font-size: 16px;
 }
@@ -222,7 +189,7 @@ nav a:hover {
   border: none;
   font-size: 32px;
   font-weight: 700;
-  color: var(--text);
+  color: #1a1a2e;
   cursor: pointer;
   margin-bottom: 20px;
 }
@@ -230,7 +197,7 @@ nav a:hover {
 /* CTA inside menu */
 .mobile-cta {
   margin-top: auto;
-  background: var(--cta-bg);
+  background: #6b0dbd;
   color: #ffffff;
   text-decoration: none;
   font-weight: 700;
@@ -240,10 +207,6 @@ nav a:hover {
   text-align: center;
   position: relative;
   bottom: 20px;
-}
-
-html[data-theme="dark"] .mobile-cta {
-  color: var(--cta-text-dark);
 }
 
 /* Actions */
@@ -257,13 +220,91 @@ html[data-theme="dark"] .mobile-cta {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--border-light);
-  background: var(--toggle-bg);
-  color: var(--toggle-icon);
+  border: 1px solid #ddd;
+  background: #ffffff;
+  color: #1a5cff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+/* Dark mode overrides */
+html[data-theme="dark"] header {
+  background: #0d1128;
+  border-bottom-color: #1a5cff;
+}
+
+html[data-theme="dark"] .logo {
+  color: #34D597;
+}
+
+html[data-theme="dark"] nav a {
+  color: #eaeaf5;
+}
+
+html[data-theme="dark"] nav a:hover {
+  color: #34D597;
+}
+
+html[data-theme="dark"] .dropdown-content {
+  background: #0d1128;
+  border-color: #1a5cff;
+}
+
+html[data-theme="dark"] .dropdown-content a {
+  color: #eaeaf5;
+}
+
+html[data-theme="dark"] .search-box {
+  background: #0d1128;
+  border-color: #333a5c;
+}
+
+html[data-theme="dark"] .search-box input {
+  color: #eaeaf5;
+}
+
+html[data-theme="dark"] .autocomplete-list {
+  background: #0d1128;
+  border-color: #1a5cff;
+}
+
+html[data-theme="dark"] .autocomplete-list div {
+  color: #eaeaf5;
+}
+
+html[data-theme="dark"] .autocomplete-list div:hover {
+  background: #34D597;
+  color: #1a1a1a;
+}
+
+html[data-theme="dark"] .pub-mobile-menu {
+  background: #0d1128;
+  border-left-color: #1a5cff;
+}
+
+html[data-theme="dark"] .pub-mobile-menu a {
+  color: #eaeaf5;
+}
+
+html[data-theme="dark"] .close-btn {
+  color: #eaeaf5;
+}
+
+html[data-theme="dark"] .mobile-cta {
+  background: #34D597;
+  color: #1a1a1a;
+}
+
+html[data-theme="dark"] .toggle {
+  background: #0d1128;
+  border-color: #333a5c;
+  color: #34D597;
+}
+
+html[data-theme="dark"] .pub-hamburger {
+  color: #eaeaf5;
 }
 
 /* Mobile */
@@ -420,7 +461,9 @@ searchInput.addEventListener('input', function() {
     return;
   }
 
-  var matches = suggestions.filter(s => s.toLowerCase().includes(value));
+  var matches = suggestions.filter(function(s) {
+    return s.toLowerCase().includes(value);
+  });
 
   if (matches.length === 0) {
     autocompleteList.style.display = "none";
