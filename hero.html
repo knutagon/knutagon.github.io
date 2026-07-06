@@ -7,7 +7,6 @@
 
 <style>
 /* HEADER + SLIDE-IN MENU ONLY */
-/* Light mode = default colors */
 
 /* Header */
 header {
@@ -199,7 +198,7 @@ nav a:hover {
 .mobile-cta {
   margin-top: auto;
   background: #6b0dbd;
-  color: #ffffff; /* white in light mode */
+  color: #ffffff;
   text-decoration: none;
   font-weight: 700;
   font-size: 16px;
@@ -230,81 +229,81 @@ nav a:hover {
   cursor: pointer;
 }
 
-/* Dark mode overrides ONLY */
-html[data-theme="dark"] header {
+/* DARK MODE — FIXED SELECTORS */
+[data-theme="dark"] header {
   background: #0d1128;
   border-bottom-color: #1a5cff;
 }
 
-html[data-theme="dark"] .logo {
+[data-theme="dark"] .logo {
   color: #34D597;
 }
 
-html[data-theme="dark"] nav a {
+[data-theme="dark"] nav a {
   color: #eaeaf5;
 }
 
-html[data-theme="dark"] nav a:hover {
+[data-theme="dark"] nav a:hover {
   color: #34D597;
 }
 
-html[data-theme="dark"] .dropdown-content {
+[data-theme="dark"] .dropdown-content {
   background: #0d1128;
   border-color: #1a5cff;
 }
 
-html[data-theme="dark"] .dropdown-content a {
+[data-theme="dark"] .dropdown-content a {
   color: #eaeaf5;
 }
 
-html[data-theme="dark"] .search-box {
+[data-theme="dark"] .search-box {
   background: #0d1128;
   border-color: #333a5c;
 }
 
-html[data-theme="dark"] .search-box input {
+[data-theme="dark"] .search-box input {
   color: #eaeaf5;
 }
 
-html[data-theme="dark"] .autocomplete-list {
+[data-theme="dark"] .autocomplete-list {
   background: #0d1128;
   border-color: #1a5cff;
 }
 
-html[data-theme="dark"] .autocomplete-list div {
+[data-theme="dark"] .autocomplete-list div {
   color: #eaeaf5;
 }
 
-html[data-theme="dark"] .autocomplete-list div:hover {
+[data-theme="dark"] .autocomplete-list div:hover {
   background: #34D597;
   color: #1a1a1a;
 }
 
-html[data-theme="dark"] .pub-mobile-menu {
+[data-theme="dark"] .pub-mobile-menu {
   background: #0d1128;
   border-left-color: #1a5cff;
 }
 
-html[data-theme="dark"] .pub-mobile-menu a {
+[data-theme="dark"] .pub-mobile-menu a {
   color: #eaeaf5;
 }
 
-html[data-theme="dark"] .close-btn {
+[data-theme="dark"] .close-btn {
   color: #eaeaf5;
 }
 
-html[data-theme="dark"] .mobile-cta {
+[data-theme="dark"] .mobile-cta {
   background: #34D597;
   color: #1a1a1a;
 }
 
-html[data-theme="dark"] .toggle {
+[data-theme="dark"] .toggle {
   background: #0d1128;
   border-color: #333a5c;
   color: #34D597;
 }
 
-html[data-theme="dark"] .pub-hamburger {
+[data-theme="dark"] .pub-hamburger {
   color: #eaeaf5;
 }
 
