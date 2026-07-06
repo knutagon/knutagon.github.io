@@ -10,6 +10,7 @@ body {
   margin: 0;
   font-family: sans-serif;
 }
+
 main {
   max-width: 900px;
   margin: 40px auto;
@@ -20,7 +21,6 @@ main {
 
 <body>
 
-<!-- Hero will be injected here -->
 <div id="hero"></div>
 
 <main>
@@ -29,11 +29,101 @@ main {
 </main>
 
 <script>
-// Load hero.html into #hero
+// Load hero.html
 fetch("hero.html")
   .then(r => r.text())
   .then(html => {
     document.getElementById("hero").innerHTML = html;
+
+    // After injection, wire up JS
+    const header = document.getElementById('header');
+    const toggle = document.getElementById('themeToggle');
+    const sun = document.getElementById('iconSun');
+    const moon = document.getElementById('iconMoon');
+    const pubHamburger = document.getElementById('pubHamburger');
+    const pubMobileMenu = document.getElementById('pubMobileMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const searchInput = document.getElementById('searchInput');
+    const autocompleteList = document.getElementById('autocompleteList');
+
+    // Scroll shadow
+    function onScroll() {
+      header.classList.toggle('scrolled', window.scrollY > 8);
+    }
+    window.addEventListener('scroll', onScroll);
+    onScroll();
+
+    // Theme toggle
+    const root = document.documentElement;
+    const saved = localStorage.getItem('theme');
+
+    if (saved === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+      sun.style.display = 'none';
+      moon.style.display = 'block';
+    }
+
+    toggle.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      root.setAttribute('data-theme', isDark ? '' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      sun.style.display = isDark ? 'block' : 'none';
+      moon.style.display = isDark ? 'none' : 'block';
+    });
+
+    // Slide-in menu
+    pubHamburger.addEventListener('click', () => {
+      pubMobileMenu.classList.add('open');
+    });
+
+    closeMenu.addEventListener('click', () => {
+      pubMobileMenu.classList.remove('open');
+    });
+
+    // Autocomplete
+    const suggestions = [
+      "Home",
+      "About",
+      "Articles",
+      "Podcast",
+      "Press",
+      "Tech",
+      "Philosophy",
+      "Culture",
+      "Systems",
+      "Soul Dragon"
+    ];
+
+    searchInput.addEventListener('input', function() {
+      const value = this.value.toLowerCase();
+      autocompleteList.innerHTML = "";
+
+      if (!value) {
+        autocompleteList.style.display = "none";
+        return;
+      }
+
+      const matches = suggestions.filter(s =>
+        s.toLowerCase().includes(value)
+      );
+
+      if (matches.length === 0) {
+        autocompleteList.style.display = "none";
+        return;
+      }
+
+      matches.forEach(match => {
+        const item = document.createElement('div');
+        item.textContent = match;
+        item.addEventListener('click', () => {
+          searchInput.value = match;
+          autocompleteList.style.display = "none";
+        });
+        autocompleteList.appendChild(item);
+      });
+
+      autocompleteList.style.display = "flex";
+    });
   });
 </script>
 
