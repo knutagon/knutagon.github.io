@@ -8,12 +8,14 @@
 <style>
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: system-ui, sans-serif;
+  background: #f7f8f8;
+  color: #111;
 }
 
 main {
   max-width: 900px;
-  margin: 40px auto;
+  margin: 60px auto;
   padding: 0 24px;
 }
 </style>
@@ -22,6 +24,7 @@ main {
 <body>
 
 <div id="hero"></div>
+<div id="heroSlider"></div>
 
 <main>
   <h1>Welcome</h1>
@@ -35,7 +38,7 @@ fetch("hero.html")
   .then(html => {
     document.getElementById("hero").innerHTML = html;
 
-    // After injection, wire up JS
+    // Header JS
     const header = document.getElementById('header');
     const toggle = document.getElementById('themeToggle');
     const sun = document.getElementById('iconSun');
@@ -46,17 +49,14 @@ fetch("hero.html")
     const searchInput = document.getElementById('searchInput');
     const autocompleteList = document.getElementById('autocompleteList');
 
-    // Scroll shadow
     function onScroll() {
       header.classList.toggle('scrolled', window.scrollY > 8);
     }
     window.addEventListener('scroll', onScroll);
     onScroll();
 
-    // Theme toggle
     const root = document.documentElement;
     const saved = localStorage.getItem('theme');
-
     if (saved === 'dark') {
       root.setAttribute('data-theme', 'dark');
       sun.style.display = 'none';
@@ -71,59 +71,38 @@ fetch("hero.html")
       moon.style.display = isDark ? 'none' : 'block';
     });
 
-    // Slide-in menu
-    pubHamburger.addEventListener('click', () => {
-      pubMobileMenu.classList.add('open');
-    });
+    pubHamburger.addEventListener('click', () => pubMobileMenu.classList.add('open'));
+    closeMenu.addEventListener('click', () => pubMobileMenu.classList.remove('open'));
 
-    closeMenu.addEventListener('click', () => {
-      pubMobileMenu.classList.remove('open');
-    });
-
-    // Autocomplete
     const suggestions = [
-      "Home",
-      "About",
-      "Articles",
-      "Podcast",
-      "Press",
-      "Tech",
-      "Philosophy",
-      "Culture",
-      "Systems",
-      "Soul Dragon"
+      "Home","About","Articles","Podcast","Press",
+      "Tech","Philosophy","Culture","Systems","Soul Dragon"
     ];
 
     searchInput.addEventListener('input', function() {
       const value = this.value.toLowerCase();
       autocompleteList.innerHTML = "";
-
-      if (!value) {
-        autocompleteList.style.display = "none";
-        return;
-      }
-
-      const matches = suggestions.filter(s =>
-        s.toLowerCase().includes(value)
-      );
-
-      if (matches.length === 0) {
-        autocompleteList.style.display = "none";
-        return;
-      }
-
+      if (!value) { autocompleteList.style.display = "none"; return; }
+      const matches = suggestions.filter(s => s.toLowerCase().includes(value));
+      if (!matches.length) { autocompleteList.style.display = "none"; return; }
       matches.forEach(match => {
         const item = document.createElement('div');
         item.textContent = match;
-        item.addEventListener('click', () => {
+        item.onclick = () => {
           searchInput.value = match;
           autocompleteList.style.display = "none";
-        });
+        };
         autocompleteList.appendChild(item);
       });
-
       autocompleteList.style.display = "flex";
     });
+  });
+
+// Load hero_slider.html
+fetch("hero_slider.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("heroSlider").innerHTML = html;
   });
 </script>
 
