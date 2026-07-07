@@ -26,6 +26,7 @@ main {
 <div id="hero"></div>
 <div id="about"></div>
 <div id="heroSlider"></div>
+<div id="tagFilter"></div>
 
 <main>
   <h1>Welcome</h1>
@@ -110,6 +111,23 @@ fetch("hero_slider.html")
   .then(r => r.text())
   .then(html => {
     document.getElementById("heroSlider").innerHTML = html;
+  });
+
+// Load tag_filter.html
+fetch("tag_filter.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("tagFilter").innerHTML = html;
+
+    // Tag filter JS
+    const buttons = document.querySelectorAll('.tag-buttons button');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        // Filtering logic goes here later
+      });
+    });
   });
 </script>
 
