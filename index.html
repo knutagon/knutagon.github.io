@@ -24,6 +24,7 @@ main {
 <body>
 
 <div id="hero"></div>
+<div id="about"></div>
 <div id="heroSlider"></div>
 
 <main>
@@ -38,7 +39,6 @@ fetch("hero.html")
   .then(html => {
     document.getElementById("hero").innerHTML = html;
 
-    // Header JS
     const header = document.getElementById('header');
     const toggle = document.getElementById('themeToggle');
     const sun = document.getElementById('iconSun');
@@ -96,6 +96,13 @@ fetch("hero.html")
       });
       autocompleteList.style.display = "flex";
     });
+  });
+
+// Load about.html
+fetch("about.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("about").innerHTML = html;
   });
 
 // Load hero_slider.html
