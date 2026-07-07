@@ -24,6 +24,7 @@ main {
 <body>
 
 <div id="hero"></div>
+<div id="featuredPosts"></div>
 <div id="about"></div>
 <div id="heroSlider"></div>
 <div id="tagFilter"></div>
@@ -98,6 +99,14 @@ fetch("hero.html")
       autocompleteList.style.display = "flex";
     });
   });
+
+  // Load featured_posts.html
+fetch("featured_posts.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("featuredPosts").innerHTML = html;
+  });
+
 
 // Load about.html
 fetch("about.html")
