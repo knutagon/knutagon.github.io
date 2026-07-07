@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blog List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f7f8f8;
+  color: #111;
+}
+
+/* Layout */
+.blog-list-section {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 40px;
+}
+
+/* Featured post */
+.featured-post {
+  flex: 2;
+  position: relative;
+}
+
+.featured-post img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.featured-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0.1));
+  border-radius: 0 0 3px 3px;
+  color: #fff;
+}
+
+.featured-overlay h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.featured-overlay p {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.featured-overlay small {
+  font-size: 13px;
+  color: #ddd;
+}
+
+/* Sidebar */
+.blog-sidebar {
+  flex: 1;
+}
+
+.blog-sidebar h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+/* Recent list */
+.recent-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-list li {
+  margin-bottom: 18px;
+}
+
+.recent-list a {
+  font-weight: 600;
+  color: #111;
+  text-decoration: none;
+}
+
+.recent-list a:hover {
+  text-decoration: underline;
+}
+
+.recent-list small {
+  display: block;
+  color: #666;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* Archive link */
+.archive-link {
+  margin-top: 24px;
+  display: inline-block;
+  font-weight: 700;
+  color: #1a3cff;
+  text-decoration: none;
+}
+
+.archive-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .blog-list-section {
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<section class="blog-list-section">
+
+  <!-- FEATURED POST -->
+  <div class="featured-post">
+    <img src="https://via.placeholder.com/1200x600" alt="Featured">
+    <div class="featured-overlay">
+      <h2>How to Build a Modular Front Page System</h2>
+      <p>Discover how modular HTML sections can make your site flexible and lightning fast.</p>
+      <small>📅 July 7, 2026 • Category: Development • Tag: Modular</small>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="blog-sidebar">
+    <h3>Recent Posts</h3>
+
+    <ul class="recent-list">
+
+      <li>
+        <a href="#">Designing a Hero Slider</a>
+        <small>July 6, 2026 • UI • Slider</small>
+      </li>
+
+      <li>
+        <a href="#">Creating a Tag Filter System</a>
+        <small>July 5, 2026 • UX • Filter</small>
+      </li>
+
+      <li>
+        <a href="#">Building a Blog Sidebar</a>
+        <small>July 4, 2026 • Layout • Sidebar</small>
+      </li>
+
+      <li>
+        <a href="#">Featured Post Block Concept</a>
+        <small>July 3, 2026 • Design • Hero</small>
+      </li>
+
+      <li>
+        <a href="#">How to Structure Modular HTML</a>
+        <small>July 2, 2026 • Development • Architecture</small>
+      </li>
+
+      <li>
+        <a href="#">Creating a Clean Editorial Layout</a>
+        <small>July 1, 2026 • Design • Editorial</small>
+      </li>
+
+    </ul>
+
+    <a class="archive-link" href="#">View All Posts →</a>
+
+  </aside>
+
+</section>
+
+</body>
+</html>
