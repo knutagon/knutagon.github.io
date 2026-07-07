@@ -28,6 +28,8 @@ main {
 <div id="about"></div>
 <div id="heroSlider"></div>
 <div id="tagFilter"></div>
+<div id="blogList"></div>
+<div id="blogSidebar"></div>
 
 <main>
   <h1>Welcome</h1>
@@ -136,6 +138,20 @@ fetch("tag_filter.html")
         btn.classList.add('active');
         // Filtering logic goes here later
       });
+
+      // Load blog_list.html
+      fetch("blog_list.html")
+  .then(r => r.text())
+  .then(html => document.getElementById("blogList").innerHTML = html);
+
+      // Load blog_sidebar.html
+      fetch("blog_sidebar.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("blogSidebar").innerHTML = html;
+  });
+
+      
     });
   });
 </script>
