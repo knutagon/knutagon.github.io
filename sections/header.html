@@ -418,3 +418,105 @@
     font-size: 13.5px;
   }
 </style>
+
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <button class="hamburger icon-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+
+    <a href="#" class="logo"><span class="dot"></span>THE&nbsp;WIRE</a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="#featured">Latest</a>
+      <a href="#categories">Categories</a>
+      <a href="#posts">Journal</a>
+      <a href="#video">Watch</a>
+
+      <div class="nav-dropdown" id="navDropdown">
+        <button aria-haspopup="true" aria-expanded="false">
+          More
+          <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M1 1l5 5 5-5"/>
+          </svg>
+        </button>
+
+        <div class="dropdown-menu">
+          <a href="#about">About The Wire</a>
+          <a href="#testimonials">Reader Voices</a>
+          <a href="#cta">Newsletter</a>
+          <a href="#">Advertise</a>
+          <a href="#">Careers</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="searchOpenBtn" aria-label="Search articles">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+
+      <a href="#cta" class="btn btn-primary">Subscribe</a>
+
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="knob">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36A5.4 5.4 0 0112 3z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile slide-in menu -->
+<div class="mobile-menu-scrim" id="mobileScrim"></div>
+<aside class="mobile-menu" id="mobileMenu" aria-label="Mobile menu">
+  <div class="mobile-menu-top">
+    <a href="#" class="logo"><span class="dot"></span>THE&nbsp;WIRE</a>
+    <button class="mobile-menu-close" id="mobileCloseBtn" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="4" y1="4" x2="20" y2="20"/>
+        <line x1="20" y1="4" x2="4" y2="20"/>
+      </svg>
+    </button>
+  </div>
+  <nav>
+    <a href="#featured">Latest</a>
+    <a href="#categories">Categories</a>
+    <a href="#posts">Journal</a>
+    <a href="#video">Watch</a>
+    <a href="#about">About The Wire</a>
+    <a href="#testimonials">Reader Voices</a>
+  </nav>
+  <a href="#cta" class="btn btn-primary">Subscribe</a>
+</aside>
+
+<!-- Search overlay -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-box">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Search articles, e.g. “climate”" autocomplete="off">
+      <button class="search-close" id="searchCloseBtn" aria-label="Close search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="4" x2="20" y2="20"/>
+          <line x1="20" y1="4" x2="4" y2="20"/>
+        </svg>
+      </button>
+    </div>
+    <div class="search-results" id="searchResults">
+      <p class="search-empty">Start typing to search the archive…</p>
+    </div>
+  </div>
+</div>
