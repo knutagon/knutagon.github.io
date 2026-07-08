@@ -2,157 +2,93 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Home</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Wire — Independent Daily Dispatch</title>
+<meta name="description" content="A multi-desk publication covering world affairs, culture, technology, business and science.">
+
+<!-- Markdown renderer for the blog engine -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js" defer></script>
 
 <style>
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: #f7f8f8;
-  color: #111;
-}
-
-main {
-  max-width: 900px;
-  margin: 60px auto;
-  padding: 0 24px;
-}
+  /* Minimal global resets ONLY — allowed because they do not style layout */
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg, #fff); color: var(--fg, #111); }
+  img { max-width: 100%; display: block; }
 </style>
 </head>
 
 <body>
 
-<div id="hero"></div>
-<div id="featuredPosts"></div>
-<div id="about"></div>
-<div id="heroSlider"></div>
-<div id="tagFilter"></div>
-<div id="blogList"></div>
-<div id="blogSidebar"></div>
+<!-- Mount points for sovereign sections -->
+<div id="mount-header"></div>
+<div id="mount-featured"></div>
+<div id="mount-about"></div>
+<div id="mount-categories"></div>
+<div id="mount-blog-slider"></div>
+<div id="mount-posts-list"></div>
+<div id="mount-testimonials"></div>
+<div id="mount-video"></div>
+<div id="mount-cta"></div>
+<div id="mount-footer"></div>
 
-<main>
-  <h1>Welcome</h1>
-  <p>This is your front page.</p>
-</main>
+<!-- Back to top button -->
+<button id="backToTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="12" y1="19" x2="12" y2="5"/>
+    <polyline points="5 12 12 5 19 12"/>
+  </svg>
+</button>
 
-<script>
-// Load hero.html
-fetch("hero.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("hero").innerHTML = html;
+<!-- JS -->
+<script src="js/main.js" defer></script>
+<script src="js/blog.js" defer></script>
 
-    const header = document.getElementById('header');
-    const toggle = document.getElementById('themeToggle');
-    const sun = document.getElementById('iconSun');
-    const moon = document.getElementById('iconMoon');
-    const pubHamburger = document.getElementById('pubHamburger');
-    const pubMobileMenu = document.getElementById('pubMobileMenu');
-    const closeMenu = document.getElementById('closeMenu');
-    const searchInput = document.getElementById('searchInput');
-    const autocompleteList = document.getElementById('autocompleteList');
+<script defer>
+  /* Section list */
+  const SECTIONS = [
+    ["mount-header", "sections/header.html"],
+    ["mount-featured", "sections/featured-post.html"],
+    ["mount-about", "sections/about.html"],
+    ["mount-categories", "sections/categories.html"],
+    ["mount-blog-slider", "sections/blog-slider.html"],
+    ["mount-posts-list", "sections/posts-list.html"],
+    ["mount-testimonials", "sections/testimonials.html"],
+    ["mount-video", "sections/video.html"],
+    ["mount-cta", "sections/cta.html"],
+    ["mount-footer", "sections/footer.html"],
+  ];
 
-    function onScroll() {
-      header.classList.toggle('scrolled', window.scrollY > 8);
-    }
-    window.addEventListener('scroll', onScroll);
-    onScroll();
+  /* Load all sections */
+  async function loadSections() {
+    await Promise.all(SECTIONS.map(async ([mountId, url]) => {
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(res.status);
+        const html = await res.text();
+        document.getElementById(mountId).innerHTML = html;
+      } catch (err) {
+        console.error(`[Wire] Could not load ${url}.`, err);
+        document.getElementById(mountId).innerHTML =
+          `<div style="padding:24px;color:#b34;font-family:monospace;font-size:13px;">
+            Could not load ${url}. Serve this site with a local server (not file://).
+           </div>`;
+      }
+    }));
+  }
 
-    const root = document.documentElement;
-    const saved = localStorage.getItem('theme');
-    if (saved === 'dark') {
-      root.setAttribute('data-theme', 'dark');
-      sun.style.display = 'none';
-      moon.style.display = 'block';
-    }
+  /* Ready handler */
+  function whenReady(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else fn();
+  }
 
-    toggle.addEventListener('click', () => {
-      const isDark = root.getAttribute('data-theme') === 'dark';
-      root.setAttribute('data-theme', isDark ? '' : 'dark');
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      sun.style.display = isDark ? 'block' : 'none';
-      moon.style.display = isDark ? 'none' : 'block';
-    });
-
-    pubHamburger.addEventListener('click', () => pubMobileMenu.classList.add('open'));
-    closeMenu.addEventListener('click', () => pubMobileMenu.classList.remove('open'));
-
-    const suggestions = [
-      "Home","About","Articles","Podcast","Press",
-      "Tech","Philosophy","Culture","Systems","Soul Dragon"
-    ];
-
-    searchInput.addEventListener('input', function() {
-      const value = this.value.toLowerCase();
-      autocompleteList.innerHTML = "";
-      if (!value) { autocompleteList.style.display = "none"; return; }
-      const matches = suggestions.filter(s => s.toLowerCase().includes(value));
-      if (!matches.length) { autocompleteList.style.display = "none"; return; }
-      matches.forEach(match => {
-        const item = document.createElement('div');
-        item.textContent = match;
-        item.onclick = () => {
-          searchInput.value = match;
-          autocompleteList.style.display = "none";
-        };
-        autocompleteList.appendChild(item);
-      });
-      autocompleteList.style.display = "flex";
-    });
-  });
-
-  // Load featured_posts.html
-fetch("featured_posts.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("featuredPosts").innerHTML = html;
-  });
-
-
-// Load about.html
-fetch("about.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("about").innerHTML = html;
-  });
-
-// Load hero_slider.html
-fetch("hero_slider.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("heroSlider").innerHTML = html;
-  });
-
-// Load tag_filter.html
-fetch("tag_filter.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("tagFilter").innerHTML = html;
-
-    // Tag filter JS
-    const buttons = document.querySelectorAll('.tag-buttons button');
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        // Filtering logic goes here later
-      });
-
-      // Load blog_list.html
-      fetch("blog_list.html")
-  .then(r => r.text())
-  .then(html => document.getElementById("blogList").innerHTML = html);
-
-      // Load blog_sidebar.html
-      fetch("blog_sidebar.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("blogSidebar").innerHTML = html;
-  });
-
-      
-    });
+  /* Boot sequence */
+  whenReady(async () => {
+    await loadSections();
+    window.WireBoot && window.WireBoot();        // UI: header, menu, sliders, theme, animations
+    window.WireBlogBoot && window.WireBlogBoot(); // Blog: markdown → posts
   });
 </script>
 
