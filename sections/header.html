@@ -1,4 +1,57 @@
 <style>
+
+  :root {
+  --paper: #F7F5EF;
+  --paper-alt: #EEECE6;
+  --ink: #16181C;
+  --ink-soft: #4A4D52;
+  --ink-faint: #8A8D92;
+  --accent: #2A4CDB;
+  --signal: #D9481C;
+  --card: #FFFFFF;
+  --line: rgba(0,0,0,0.12);
+  --line-strong: rgba(0,0,0,0.22);
+
+  --radius: 4px;
+  --radius-s: 3px;
+  --radius-l: 8px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 20px;
+  --fs-xl: 28px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --dur: 260ms;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  --header-h: 72px;
+
+  --shadow-l: 0 12px 40px rgba(0,0,0,0.12);
+}
+
+
+ [data-theme="dark"] {
+  --paper: #111315;
+  --paper-alt: #1A1C1F;
+  --ink: #EEEFF2;
+  --ink-soft: #C8C9CC;
+  --ink-faint: #9A9CA0;
+  --card: #1A1C1F;
+  --line: rgba(255,255,255,0.12);
+  --line-strong: rgba(255,255,255,0.22);
+  --shadow-l: 0 12px 40px rgba(0,0,0,0.4);
+}
+ 
   /* ============================
      HEADER WRAPPER + STICKY LOGIC
      Controls sticky behavior, blur, border, shadow
