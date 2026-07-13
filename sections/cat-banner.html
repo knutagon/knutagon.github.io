@@ -1,0 +1,222 @@
+<!-- ══════════════════════════════════════
+     CATEGORY BANNER
+══════════════════════════════════════ -->
+<section class="catbanner-section">
+
+  <!-- HEADER ROW -->
+  <div class="catbanner-header">
+    <div class="catbanner-header-text">
+      <h2 class="catbanner-title">Explore by Category</h2>
+      <p class="catbanner-sub">Explore insightful articles, trending topics, and expert opinions from across the world — all in one place.</p>
+    </div>
+    <a class="catbanner-cta" href="#">
+      Explore More
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>
+  </div>
+
+  <!-- CARDS -->
+  <div class="catbanner-grid">
+
+    <a class="catbanner-card" href="#" style="--card-bg: #dbeafe; --card-bg-dark: #1e3a5f;">
+      <div class="catbanner-card-top">
+        <span class="catbanner-card-title">Technology</span>
+        <span class="catbanner-card-count">200+ Articles</span>
+      </div>
+      <div class="catbanner-card-img">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&q=80" alt="Technology" />
+      </div>
+    </a>
+
+    <a class="catbanner-card" href="#" style="--card-bg: #fef3c7; --card-bg-dark: #3d2e0a;">
+      <div class="catbanner-card-top">
+        <span class="catbanner-card-title">Business</span>
+        <span class="catbanner-card-count">50+ Articles</span>
+      </div>
+      <div class="catbanner-card-img">
+        <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=300&q=80" alt="Business" />
+      </div>
+    </a>
+
+    <a class="catbanner-card" href="#" style="--card-bg: #fce7f3; --card-bg-dark: #3d1a2e;">
+      <div class="catbanner-card-top">
+        <span class="catbanner-card-title">Lifestyle</span>
+        <span class="catbanner-card-count">50+ Articles</span>
+      </div>
+      <div class="catbanner-card-img">
+        <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=300&q=80" alt="Lifestyle" />
+      </div>
+    </a>
+
+    <a class="catbanner-card" href="#" style="--card-bg: #ccfbf1; --card-bg-dark: #0a3330;">
+      <div class="catbanner-card-top">
+        <span class="catbanner-card-title">Travel</span>
+        <span class="catbanner-card-count">500+ Articles</span>
+      </div>
+      <div class="catbanner-card-img">
+        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=300&q=80" alt="Travel" />
+      </div>
+    </a>
+
+    <a class="catbanner-card" href="#" style="--card-bg: #ede9fe; --card-bg-dark: #2d1a4d;">
+      <div class="catbanner-card-top">
+        <span class="catbanner-card-title">Health</span>
+        <span class="catbanner-card-count">50+ Articles</span>
+      </div>
+      <div class="catbanner-card-img">
+        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=300&q=80" alt="Health" />
+      </div>
+    </a>
+
+  </div>
+
+</section>
+
+<style>
+  .catbanner-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 64px 32px;
+  }
+
+  /* ── HEADER ROW ── */
+  .catbanner-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .catbanner-title {
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 800;
+    color: var(--text-primary, #1a1f2e);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .catbanner-sub {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-secondary, #6b7280);
+    max-width: 420px;
+  }
+
+  .catbanner-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: var(--purple, #7c3aed);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .catbanner-cta:hover {
+    background: var(--purple-hover, #6d28d9);
+    transform: translateY(-1px);
+  }
+
+  .catbanner-cta svg {
+    width: 16px;
+    height: 16px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    padding: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── GRID ── */
+  .catbanner-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+
+  /* ── CARD ── */
+  .catbanner-card {
+    background: var(--card-bg, #f3f4f6);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s, box-shadow 0.25s;
+    aspect-ratio: 3 / 4;
+  }
+
+  [data-theme="dark"] .catbanner-card {
+    background: var(--card-bg-dark, #1a1d27);
+  }
+
+  .catbanner-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+  }
+
+  [data-theme="dark"] .catbanner-card:hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,0.45);
+  }
+
+  .catbanner-card-top {
+    padding: 18px 18px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .catbanner-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary, #1a1f2e);
+  }
+
+  .catbanner-card-count {
+    font-size: 13px;
+    color: var(--text-secondary, #6b7280);
+  }
+
+  .catbanner-card-img {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0 8px;
+  }
+
+  .catbanner-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 10px 10px 0 0;
+    transition: transform 0.4s ease;
+  }
+
+  .catbanner-card:hover .catbanner-card-img img {
+    transform: scale(1.05);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .catbanner-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 700px) {
+    .catbanner-grid { grid-template-columns: repeat(2, 1fr); }
+    .catbanner-header { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    .catbanner-section { padding: 40px 16px; }
+    .catbanner-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  }
+</style>
