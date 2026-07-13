@@ -1,575 +1,423 @@
-<style>
-
-  :root {
-  --paper: #F7F5EF;
-  --paper-alt: #EEECE6;
-  --ink: #16181C;
-  --ink-soft: #4A4D52;
-  --ink-faint: #8A8D92;
-  --accent: #2A4CDB;
-  --signal: #D9481C;
-  --card: #FFFFFF;
-  --line: rgba(0,0,0,0.12);
-  --line-strong: rgba(0,0,0,0.22);
-
-  --radius: 4px;
-  --radius-s: 3px;
-  --radius-l: 8px;
-
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-
-  --fs-sm: 14px;
-  --fs-md: 16px;
-  --fs-lg: 20px;
-  --fs-xl: 28px;
-
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  --dur: 260ms;
-  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
-
-  --header-h: 72px;
-
-  --shadow-l: 0 12px 40px rgba(0,0,0,0.12);
-}
-
-
- [data-theme="dark"] {
-  --paper: #111315;
-  --paper-alt: #1A1C1F;
-  --ink: #EEEFF2;
-  --ink-soft: #C8C9CC;
-  --ink-faint: #9A9CA0;
-  --card: #1A1C1F;
-  --line: rgba(255,255,255,0.12);
-  --line-strong: rgba(255,255,255,0.22);
-  --shadow-l: 0 12px 40px rgba(0,0,0,0.4);
-}
- 
-  /* ============================
-     HEADER WRAPPER + STICKY LOGIC
-     Controls sticky behavior, blur, border, shadow
-     ============================ */
-  .site-header{
-    position: sticky; top: 0; z-index: 900; /* Sticks to top of page */
-    background: rgba(247,245,239,0.86);     /* Light translucent background */
-    backdrop-filter: blur(10px) saturate(1.4); /* Glassy blur effect */
-    -webkit-backdrop-filter: blur(10px) saturate(1.4);
-    border-bottom: 1px solid transparent;   /* Border appears when stuck */
-    transition: border-color var(--dur) var(--ease),
-                background var(--dur) var(--ease),
-                box-shadow var(--dur) var(--ease); /* Smooth transitions */
-  }
-
-  /* Dark mode header background */
-  [data-theme="dark"] .site-header{
-    background: rgba(16,18,21,0.82);
-  }
-
-  /* Header when scrolled past threshold */
-  .site-header.is-stuck{
-    border-color: var(--line); /* Visible border */
-    box-shadow: 0 2px 16px rgba(22,24,28,0.06); /* Drop shadow */
-  }
-
-  /* ============================
-     HEADER INNER LAYOUT 
-     Controls spacing + alignment of header content
-     ============================ */
-  .header-inner{
-    display:flex;
-    align-items:center;
-    gap:28px;
-    height: var(--header-h); /* Header height variable */
-  }
-
-  /* ============================
-     LOGO
-     Controls logo text + dot styling
-     ============================ */
-  .logo{
-    display:flex;
-    align-items:center;
-    gap:9px;
-    font-family: var(--font-display);
-    font-weight:800;
-    font-size: 21px;
-    margin-right: 6px;
-    flex-shrink:0;
-  }
-
-  .logo .dot{
-    width:9px; height:9px;
-    background: var(--signal); /* Red dot */
-    border-radius: 50%;
-    display:inline-block;
-  }
-
-  /* ============================
-     PRIMARY NAVIGATION
-     Controls top-level nav links
-     ============================ */
-  .primary-nav{
-    display:flex;
-    align-items:center;
-    gap:26px;
-    flex:1; /* Pushes nav to fill space */
-  }
-
-  .primary-nav a{
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink-soft); /* Soft gray */
-    padding: 6px 2px;
-    position:relative;
-    transition: color var(--dur);
-  }
-
-  .primary-nav a:hover{
-    color: var(--ink); /* Darker on hover */
-  }
-
-  /* Underline animation */
-  .primary-nav a::after{
-    content:"";
-    position:absolute;
-    left:0; bottom:-3px;
-    width:0; height:2px;
-    background:var(--accent);
-    transition: width var(--dur) var(--ease);
-  }
-  .primary-nav a:hover::after{
-    width:100%;
-  }
-
-  /* ============================
-     DROPDOWN MENU
-     Controls "More" dropdown
-     ============================ */
-  .nav-dropdown{ position:relative; }
-
-  .nav-dropdown > button{
-    background:none; border:none;
-    font: inherit;
-    font-size:14px; font-weight:600;
-    color: var(--ink-soft);
-    display:flex; align-items:center; gap:5px;
-    padding:6px 2px;
-  }
-
-  .nav-dropdown > button:hover{
-    color: var(--ink);
-  }
-
-  /* Dropdown arrow rotation */
-  .nav-dropdown svg{
-    width:11px;
-    transition: transform var(--dur);
-  }
-  .nav-dropdown:hover svg,
-  .nav-dropdown.open svg{
-    transform: rotate(180deg);
-  }
-
-  /* Dropdown menu container */
-  .dropdown-menu{
-    position:absolute; top: calc(100% + 14px); left: -14px;
-    background: var(--card);
-    border:1px solid var(--line);
-    border-radius: var(--radius);
-    min-width: 190px;
-    padding: 8px;
-    box-shadow: var(--shadow-l);
-    opacity:0; visibility:hidden;
-    transform: translateY(6px);
-    transition: opacity var(--dur) var(--ease),
-                transform var(--dur) var(--ease),
-                visibility var(--dur);
-  }
-
-  /* Dropdown visible */
-  .nav-dropdown:hover .dropdown-menu,
-  .nav-dropdown.open .dropdown-menu{
-    opacity:1; visibility:visible;
-    transform: translateY(0);
-  }
-
-  /* Dropdown links */
-  .dropdown-menu a{
-    display:block;
-    padding: 9px 10px;
-    font-size: 13.5px;
-    font-weight:500;
-    border-radius: var(--radius-s);
-    color: var(--ink-soft);
-  }
-
-  .dropdown-menu a:hover{
-    background: var(--paper-alt);
-    color: var(--ink);
-  }
-
-  /* ============================
-     HEADER ACTIONS
-     Search button, CTA button, theme toggle
-     ============================ */
-  .header-actions{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    flex-shrink:0;
-  }
-
-  /* Icon buttons (search, hamburger) */
-  .icon-btn{
-    background:none; border:none;
-    width:36px; height:36px;
-    display:flex; align-items:center; justify-content:center;
-    color: var(--ink);
-    border-radius: var(--radius);
-    transition: background var(--dur);
-  }
-
-  .icon-btn:hover{
-    background: var(--paper-alt);
-  }
-
-  .icon-btn svg{
-    width:18px; height:18px;
-  }
-
-  /* ============================
-     THEME TOGGLE SWITCH
-     ============================ */
-  .theme-toggle{
-    position:relative;
-    width:52px; height:28px;
-    border-radius: 20px;
-    background: var(--paper-alt);
-    border:1px solid var(--line-strong);
-    flex-shrink:0;
-  }
-
-  .theme-toggle .knob{
-    position:absolute; top:2px; left:2px;
-    width:22px; height:22px;
-    border-radius:50%;
-    background: var(--ink);
-    display:flex; align-items:center; justify-content:center;
-    color: var(--paper);
-    transition: transform var(--dur) var(--ease);
-  }
-
-  /* Knob moves right in dark mode */
-  [data-theme="dark"] .theme-toggle .knob{
-    transform: translateX(24px);
-    background: var(--accent);
-  }
-
-  .theme-toggle .knob svg{
-    width:13px; height:13px;
-  }
-
-  /* ============================
-     MOBILE NAVIGATION
-     ============================ */
-  .hamburger{ display:none; }
-
-  @media (max-width: 980px){
-    .primary-nav,
-    .nav-dropdown,
-    .header-actions .btn-primary{
-      display:none; /* Hide desktop nav */
-    }
-
-    .hamburger{
-      display:flex;
-      align-items:center; justify-content:center;
-      width:38px; height:38px;
-      background:none; border:none;
-      order:-1;
-    }
-
-    .hamburger svg{ width:22px; }
-
-    .header-inner{ gap: 10px; }
-  }
-
-  /* ============================
-     MOBILE SLIDE-IN MENU
-     ============================ */
-  .mobile-menu-scrim{
-    position:fixed; inset:0;
-    background: rgba(16,18,21,0.5);
-    z-index: 1100;
-    opacity:0; visibility:hidden;
-    transition: opacity var(--dur) var(--ease),
-                visibility var(--dur);
-  }
-
-  .mobile-menu-scrim.open{
-    opacity:1; visibility:visible;
-  }
-
-  .mobile-menu{
-    position:fixed; top:0; right:0; bottom:0;
-    width: min(320px, 84vw);
-    background: var(--card);
-    z-index:1200;
-    padding: 20px;
-    transform: translateX(100%); /* Hidden off-screen */
-    transition: transform 380ms var(--ease);
-    display:flex; flex-direction:column; gap: 22px;
-    box-shadow: -12px 0 40px rgba(0,0,0,0.18);
-  }
-
-  .mobile-menu.open{
-    transform: translateX(0); /* Slide in */
-  }
-
-  .mobile-menu-top{
-    display:flex; align-items:center; justify-content:space-between;
-  }
-
-  .mobile-menu-close{
-    background: var(--paper-alt);
-    border:none;
-    width:34px; height:34px;
-    border-radius: var(--radius);
-    display:flex; align-items:center; justify-content:center;
-  }
-
-  .mobile-menu-close svg{ width:16px; }
-
-  .mobile-menu nav{
-    display:flex; flex-direction:column;
-  }
-
-  .mobile-menu nav a{
-    padding: 14px 2px;
-    font-size: 17px;
-    font-weight:600;
-    border-bottom: 1px solid var(--line);
-    font-family: var(--font-display);
-  }
-
-  .mobile-menu .btn{ width:100%; }
-
-  /* ============================
-     SEARCH OVERLAY
-     Fullscreen search modal
-     ============================ */
-  .search-overlay{
-    position: fixed; inset:0;
-    background: rgba(16,18,21,0.5);
-    backdrop-filter: blur(2px);
-    z-index: 1000;
-    display:flex;
-    align-items:flex-start; justify-content:center;
-    padding-top: 12vh;
-    opacity:0; visibility:hidden;
-    transition: opacity var(--dur) var(--ease),
-                visibility var(--dur);
-  }
-
-  .search-overlay.open{
-    opacity:1; visibility:visible;
-  }
-
-  .search-box{
-    width: min(560px, 90vw);
-    background: var(--card);
-    border-radius: var(--radius-l);
-    box-shadow: var(--shadow-l);
-    overflow:hidden;
-    transform: translateY(-14px);
-    transition: transform var(--dur) var(--ease);
-    border: 1px solid var(--line);
-  }
-
-  .search-overlay.open .search-box{
-    transform: translateY(0);
-  }
-
-  .search-field{
-    display:flex; align-items:center; gap:12px;
-    padding: 16px 18px;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .search-field svg{
-    width:18px; height:18px;
-    color: var(--ink-faint);
-    flex-shrink:0;
-  }
-
-  .search-field input{
-    flex:1;
-    border:none; background:none; outline:none;
-    font-size: 16px;
-    font-family: var(--font-body);
-    color: var(--ink);
-  }
-
-  .search-field input::placeholder{
-    color: var(--ink-faint);
-  }
-
-  .search-close{
-    background:none; border:none;
-    color: var(--ink-faint);
-    width:26px; height:26px;
-  }
-
-  .search-results{
-    max-height: 46vh;
-    overflow-y:auto;
-    padding: 8px;
-  }
-
-  .search-results a{
-    display:flex; align-items:center; gap:12px;
-    padding: 10px;
-    border-radius: var(--radius);
-  }
-
-  .search-results a:hover,
-  .search-results a.active{
-    background: var(--paper-alt);
-  }
-
-  .search-results img{
-    width:46px; height:46px;
-    object-fit:cover;
-    flex-shrink:0;
-  }
-
-  .search-results .sr-title{
-    font-size:13.5px;
-    font-weight:600;
-    line-height:1.3;
-  }
-
-  .search-results .sr-meta{
-    font-family: var(--font-mono);
-    font-size:10.5px;
-    color: var(--ink-faint);
-    margin-top:3px;
-    text-transform:uppercase;
-  }
-
-  .search-empty{
-    padding: 22px 16px;
-    text-align:center;
-    color: var(--ink-faint);
-    font-size: 13.5px;
-  }
-</style>
-
-<header class="site-header" id="siteHeader">
-  <div class="container header-inner">
-    <button class="hamburger icon-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
-
-    <a href="#" class="logo"><span class="dot"></span>THE&nbsp;WIRE</a>
-
-    <nav class="primary-nav" aria-label="Primary">
-      <a href="#featured">Latest</a>
-      <a href="#categories">Categories</a>
-      <a href="#posts">Journal</a>
-      <a href="#video">Watch</a>
-
-      <div class="nav-dropdown" id="navDropdown">
-        <button aria-haspopup="true" aria-expanded="false">
-          More
-          <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6">
-            <path d="M1 1l5 5 5-5"/>
+<div class="site-header">
+  <div class="header-inner">
+
+    <!-- LOGO -->
+    <a class="logo" href="/">
+      <div class="logo-mark">KA</div>
+      <span class="logo-text">YourBrand<span class="logo-dot">.</span></span>
+    </a>
+
+    <!-- DESKTOP NAV -->
+    <nav class="main-nav">
+      <div class="nav-item">
+        <a class="nav-link active">
+          Home
+          <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 9l6 6 6-6"/>
           </svg>
-        </button>
+        </a>
+        <div class="dropdown">
+          <a href="#">Overview</a>
+          <a href="#">Latest Posts</a>
+          <a href="#">Trending</a>
+        </div>
+      </div>
 
-        <div class="dropdown-menu">
-          <a href="#about">About The Wire</a>
-          <a href="#testimonials">Reader Voices</a>
-          <a href="#cta">Newsletter</a>
-          <a href="#">Advertise</a>
-          <a href="#">Careers</a>
+      <div class="nav-item"><a class="nav-link">Lifestyle</a></div>
+      <div class="nav-item"><a class="nav-link">Culture</a></div>
+
+      <div class="nav-item">
+        <a class="nav-link">
+          Features
+          <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </a>
+        <div class="dropdown">
+          <a href="#">Long Reads</a>
+          <a href="#">Interviews</a>
+          <a href="#">Columns</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a class="nav-link">
+          Shop
+          <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </a>
+        <div class="dropdown">
+          <a href="#">Merch</a>
+          <a href="#">Books</a>
+          <a href="#">Bundles</a>
         </div>
       </div>
     </nav>
 
-    <div class="header-actions">
-      <button class="icon-btn" id="searchOpenBtn" aria-label="Search articles">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <!-- DESKTOP CONTROLS -->
+    <div class="header-controls">
+      <a class="btn-cta">Free Newsletter</a>
+
+      <button class="icon-btn">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
           <circle cx="11" cy="11" r="7"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <path d="M21 21l-4.35-4.35"/>
         </svg>
       </button>
 
-      <a href="#cta" class="btn btn-primary">Subscribe</a>
+      <label class="theme-toggle">
+        <input type="checkbox" id="themeToggle">
+        <div class="toggle-track">
+          <span class="t-icon">☀️</span>
+          <span class="t-icon">🌙</span>
+        </div>
+        <div class="toggle-knob"></div>
+      </label>
 
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-        <span class="knob">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36A5.4 5.4 0 0112 3z"/>
-          </svg>
-        </span>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
       </button>
     </div>
-  </div>
-</header>
 
-<!-- Mobile slide-in menu -->
-<div class="mobile-menu-scrim" id="mobileScrim"></div>
-<aside class="mobile-menu" id="mobileMenu" aria-label="Mobile menu">
-  <div class="mobile-menu-top">
-    <a href="#" class="logo"><span class="dot"></span>THE&nbsp;WIRE</a>
-    <button class="mobile-menu-close" id="mobileCloseBtn" aria-label="Close menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="4" y1="4" x2="20" y2="20"/>
-        <line x1="20" y1="4" x2="4" y2="20"/>
-      </svg>
-    </button>
-  </div>
-  <nav>
-    <a href="#featured">Latest</a>
-    <a href="#categories">Categories</a>
-    <a href="#posts">Journal</a>
-    <a href="#video">Watch</a>
-    <a href="#about">About The Wire</a>
-    <a href="#testimonials">Reader Voices</a>
-  </nav>
-  <a href="#cta" class="btn btn-primary">Subscribe</a>
-</aside>
-
-<!-- Search overlay -->
-<div class="search-overlay" id="searchOverlay">
-  <div class="search-box">
-    <div class="search-field">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <circle cx="11" cy="11" r="7"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input type="text" id="searchInput" placeholder="Search articles, e.g. “climate”" autocomplete="off">
-      <button class="search-close" id="searchCloseBtn" aria-label="Close search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="4" y1="4" x2="20" y2="20"/>
-          <line x1="20" y1="4" x2="4" y2="20"/>
-        </svg>
-      </button>
-    </div>
-    <div class="search-results" id="searchResults">
-      <p class="search-empty">Start typing to search the archive…</p>
-    </div>
   </div>
 </div>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <a class="nav-link active">Home</a>
+  <a class="nav-link">Lifestyle</a>
+  <a class="nav-link">Culture</a>
+  <a class="nav-link">Features</a>
+  <a class="nav-link">Shop</a>
+
+  <div class="mobile-controls">
+    <a class="btn-cta" style="flex:1; text-align:center;">Free Newsletter</a>
+
+    <button class="icon-btn">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+        <circle cx="11" cy="11" r="7"/>
+        <path d="M21 21l-4.35-4.35"/>
+      </svg>
+    </button>
+
+    <label class="theme-toggle">
+      <input type="checkbox" id="themeToggleMobile">
+      <div class="toggle-track">
+        <span class="t-icon">☀️</span>
+        <span class="t-icon">🌙</span>
+      </div>
+      <div class="toggle-knob"></div>
+    </label>
+  </div>
+</div>
+
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --border: #e8e8e8;
+    --text-primary: #1a1f2e;
+    --text-secondary: #6b7280;
+    --teal: #0d9488;
+    --teal-bg: rgba(13,148,136,0.1);
+    --purple: #7c3aed;
+    --purple-hover: #6d28d9;
+    --shadow: 0 2px 16px rgba(0,0,0,0.08);
+    --radius: 999px;
+    --toggle-bg: #e2e8f0;
+    --toggle-knob: #ffffff;
+    --nav-hover-text: #0d9488;
+  }
+
+  [data-theme="dark"] {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --teal: #2dd4bf;
+    --teal-bg: rgba(45,212,191,0.12);
+    --shadow: 0 2px 24px rgba(0,0,0,0.4);
+    --toggle-bg: #334155;
+    --toggle-knob: #f1f5f9;
+    --nav-hover-text: #2dd4bf;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    z-index: 1000;
+  }
+
+  .header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, var(--teal), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .logo-text { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+  .logo-dot { color: var(--teal); }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .nav-item { position: relative; }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--nav-hover-text);
+    background: var(--teal-bg);
+  }
+
+  .chevron {
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
+    transition: transform 0.2s;
+  }
+
+  .nav-item:hover .chevron { transform: rotate(180deg); }
+
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 160px;
+    box-shadow: var(--shadow);
+  }
+
+  .nav-item:hover .dropdown { display: block; }
+
+  .dropdown a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .dropdown a:hover {
+    color: var(--nav-hover-text);
+    background: var(--teal-bg);
+  }
+
+  .btn-cta {
+    padding: 9px 20px;
+    background: var(--purple);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-cta:hover {
+    background: var(--purple-hover);
+    transform: translateY(-1px);
+  }
+
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--teal-bg);
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .icon-btn:hover {
+    background: var(--teal);
+    color: #fff;
+    transform: scale(1.05);
+  }
+
+  .icon-btn svg { width: 17px; height: 17px; }
+
+  .theme-toggle {
+    position: relative;
+    width: 52px;
+    height: 28px;
+  }
+
+  .theme-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--toggle-bg);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+  }
+
+  .toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: var(--toggle-knob);
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  input:checked ~ .toggle-knob {
+    transform: translateX(24px);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    width: 22px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+  }
+
+  .mobile-drawer {
+    display: none;
+    position: fixed;
+    top: 68px;
+    left: 0; right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px 24px;
+    box-shadow: var(--shadow);
+    flex-direction: column;
+    gap: 4px;
+    z-index: 999;
+  }
+
+  .mobile-drawer.open { display: flex; }
+
+  .mobile-drawer .nav-link {
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+
+  .mobile-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px 4px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .main-nav { display: none; }
+    .hamburger { display: flex; }
+    .header-controls .btn-cta,
+    .header-controls .icon-btn,
+    .header-controls .theme-toggle { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .header-inner { padding: 0 16px; gap: 12px; }
+  }
+</style>
+
+<script>
+  const html = document.documentElement;
+  const desktopToggle = document.getElementById('themeToggle');
+  const mobileToggle = document.getElementById('themeToggleMobile');
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('mobileDrawer');
+
+  function setTheme(dark) {
+    html.setAttribute('data-theme', dark ? 'dark' : 'light');
+    desktopToggle.checked = dark;
+    mobileToggle.checked = dark;
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') setTheme(true);
+
+  desktopToggle.addEventListener('change', () => setTheme(desktopToggle.checked));
+  mobileToggle.addEventListener('change', () => setTheme(mobileToggle.checked));
+
+  hamburger.addEventListener('click', () => {
+    const open = drawer.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open);
+    drawer.setAttribute('aria-hidden', !open);
+  });
+
+  drawer.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      drawer.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', false);
+      drawer.setAttribute('aria-hidden', true);
+    });
+  });
+</script>
