@@ -1,0 +1,166 @@
+<!-- ══════════════════════════════════════
+     TAG SLIDER
+══════════════════════════════════════ -->
+<div class="tags-section">
+  <div class="tags-track-wrap">
+    <div class="tags-track" id="tagsTrack">
+      <a class="tag-pill" href="#"># Games</a>
+      <a class="tag-pill" href="#"># Science</a>
+      <a class="tag-pill" href="#"># Startup</a>
+      <a class="tag-pill" href="#"># Tech</a>
+      <a class="tag-pill" href="#"># Blockchain</a>
+      <a class="tag-pill" href="#"># Car</a>
+      <a class="tag-pill" href="#"># Design</a>
+      <a class="tag-pill" href="#"># Culture</a>
+      <a class="tag-pill" href="#"># AI</a>
+      <a class="tag-pill" href="#"># Finance</a>
+      <a class="tag-pill" href="#"># Travel</a>
+      <a class="tag-pill" href="#"># Health</a>
+      <a class="tag-pill" href="#"># Music</a>
+      <a class="tag-pill" href="#"># Space</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .tags-section {
+    width: 100%;
+    padding: 24px 0;
+    position: relative;
+  }
+
+  /* fade edges */
+  .tags-track-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tags-track-wrap::before,
+  .tags-track-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .tags-track-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg, #ffffff), transparent);
+  }
+
+  .tags-track-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg, #ffffff), transparent);
+  }
+
+  .tags-track {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 80px;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .tags-track:active { cursor: grabbing; }
+  .tags-track::-webkit-scrollbar { display: none; }
+
+  .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-decoration: none;
+    border: 2px solid #b8c8e8;
+    color: #5b7db8;
+    background: transparent;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+    flex-shrink: 0;
+  }
+
+  .tag-pill:hover {
+    background: var(--purple, #7c3aed);
+    border-color: var(--purple, #7c3aed);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  [data-theme="dark"] .tag-pill {
+    border-color: #2a3a5a;
+    color: #7a9acc;
+  }
+
+  [data-theme="dark"] .tag-pill:hover {
+    background: var(--purple, #7c3aed);
+    border-color: var(--purple, #7c3aed);
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  (function () {
+    const track = document.getElementById('tagsTrack');
+    let paused = false;
+    let animFrame;
+
+    // duplicate pills for seamless loop
+    const pills = Array.from(track.children);
+    pills.forEach(p => track.appendChild(p.cloneNode(true)));
+
+    const totalWidth = track.scrollWidth / 2;
+    let pos = 0;
+
+    function slide() {
+      if (!paused) {
+        pos += 0.5;
+        if (pos >= totalWidth) pos = 0;
+        track.scrollLeft = pos;
+      }
+      animFrame = requestAnimationFrame(slide);
+    }
+
+    slide();
+
+    // pause on hover over any pill
+    track.addEventListener('mouseenter', () => paused = true);
+    track.addEventListener('mouseleave', () => paused = false);
+
+    // drag support
+    let isDown = false, startX, scrollLeft;
+
+    track.addEventListener('mousedown', e => {
+      isDown = true;
+      paused = true;
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+      track.style.cursor = 'grabbing';
+    });
+
+    track.addEventListener('mouseup', () => {
+      isDown = false;
+      paused = false;
+      pos = track.scrollLeft;
+      track.style.cursor = 'grab';
+    });
+
+    track.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      track.scrollLeft = scrollLeft - (x - startX);
+      pos = track.scrollLeft;
+    });
+  })();
+</script>
