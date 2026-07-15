@@ -1,0 +1,168 @@
+<!-- ══════════════════════════════════════
+     FAQ SECTION
+══════════════════════════════════════ -->
+<section class="faq-section">
+  <div class="faq-wrap">
+
+    <!-- HEADER -->
+    <div class="faq-header">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <p class="faq-sub">Answers to common questions about the Soul Dragon™ ecosystem.</p>
+    </div>
+
+    <!-- ACCORDIONS -->
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">What is Soul Dragon™?</button>
+        <div class="faq-answer">
+          <p>Soul Dragon™ is a creative universe and technology framework built for storytelling, digital art, and interactive experiences. It merges mythic design with modern systems thinking.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">How do I join the community?</button>
+        <div class="faq-answer">
+          <p>You can join through the official portal once it launches. Membership will include access to creative tools, lore archives, and collaborative projects.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Can I contribute my own stories or art?</button>
+        <div class="faq-answer">
+          <p>Yes. The platform is designed for creators to submit, remix, and expand the universe. Guidelines will ensure thematic coherence and credit protection.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Is there a public roadmap?</button>
+        <div class="faq-answer">
+          <p>A roadmap will be published after the first release phase, outlining feature expansions, lore milestones, and community events.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Will there be monetization options?</button>
+        <div class="faq-answer">
+          <p>Yes. Creators will be able to monetize their contributions through digital collectibles, licensing, and collaborative publishing models.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">How can I stay updated?</button>
+        <div class="faq-answer">
+          <p>Follow the official channels and subscribe to the newsletter for updates, drops, and behind‑the‑scenes development insights.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINK TO FULL PAGE -->
+    <div class="faq-footer">
+      <a href="/faq" class="faq-link">View all FAQs →</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+
+  .faq-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .faq-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .faq-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 10px;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .faq-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .faq-question::after {
+    content: "▾";
+    position: absolute;
+    right: 24px;
+    transition: transform 0.3s;
+  }
+
+  .faq-item.active .faq-question::after {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    display: none;
+    padding: 0 24px 20px;
+    color: rgba(255,255,255,0.85);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .faq-item.active .faq-answer {
+    display: block;
+  }
+
+  .faq-footer {
+    text-align: center;
+    margin-top: 48px;
+  }
+
+  .faq-link {
+    color: #7c3aed;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s;
+  }
+
+  .faq-link:hover {
+    color: #a78bfa;
+  }
+
+  @media (max-width: 700px) {
+    .faq-section { padding: 60px 20px; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      item.classList.toggle('active');
+    });
+  });
+</script>
