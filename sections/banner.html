@@ -1,0 +1,91 @@
+<!-- ══════════════════════════════════════
+     COMMUNITY BANNER (NO CTA)
+══════════════════════════════════════ -->
+<section class="community-banner">
+  <div class="community-wrap">
+
+    <!-- TEXT -->
+    <div class="community-content">
+      <h2 class="community-title">Join the Community</h2>
+      <p class="community-desc">
+        Connect with creators, share your builds, and explore new worlds together.
+        The Soul Dragon™ network is where ideas evolve into universes.
+      </p>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="community-art">
+      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=80" alt="Community illustration" />
+      <div class="community-overlay"></div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .community-banner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 64px 32px;
+  }
+
+  .community-wrap {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    align-items: center;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1e1e2f, #2b3a6f);
+  }
+
+  .community-content {
+    padding: 60px 48px;
+    z-index: 2;
+  }
+
+  .community-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 16px;
+  }
+
+  .community-desc {
+    font-size: 16px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  .community-art {
+    position: relative;
+    height: 100%;
+  }
+
+  .community-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .community-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+  }
+
+  @media (max-width: 900px) {
+    .community-wrap {
+      grid-template-columns: 1fr;
+    }
+    .community-content {
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .community-desc {
+      margin: 0 auto;
+    }
+  }
+</style>
