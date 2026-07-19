@@ -471,35 +471,3 @@
     .header-inner { padding: 0 16px; gap: 12px; }
   }
 </style>
-
-<script>
-  (function() {
-    const hamburger = document.getElementById('hamburger');
-    
-    // Bubble theme interaction changes straight up to the window core handler
-    document.addEventListener('change', (e) => {
-      if (e.target && (e.target.id === 'themeToggle' || e.target.id === 'themeToggleMobile')) {
-        if (typeof window.toggleTheme === 'function') {
-          window.toggleTheme(e.target.checked);
-        }
-      }
-    });
-
-    hamburger.addEventListener('click', () => {
-      if (typeof window.toggleMobileMenu === "function") {
-        window.toggleMobileMenu();
-      } else {
-        document.body.classList.toggle('menu-active');
-      }
-      const open = document.body.classList.contains('menu-active');
-      hamburger.setAttribute('aria-expanded', open);
-    });
-
-    document.querySelectorAll('.mobile-drawer .nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        document.body.classList.remove('menu-active');
-        hamburger.setAttribute('aria-expanded', false);
-      });
-    });
-  })();
-</script>
