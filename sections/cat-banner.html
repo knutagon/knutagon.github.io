@@ -77,6 +77,7 @@
     max-width: 1280px;
     margin: 0 auto;
     padding: 64px 32px;
+    box-sizing: border-box;
   }
 
   /* ── HEADER ROW ── */
@@ -86,6 +87,11 @@
     justify-content: space-between;
     gap: 24px;
     margin-bottom: 32px;
+    box-sizing: border-box;
+  }
+
+  .catbanner-header-text {
+    min-width: 0; /* Allows parent flex containers to compress smoothly */
   }
 
   .catbanner-title {
@@ -117,6 +123,7 @@
     white-space: nowrap;
     flex-shrink: 0;
     transition: background 0.2s, transform 0.15s;
+    box-sizing: border-box;
   }
 
   .catbanner-cta:hover {
@@ -136,8 +143,9 @@
   /* ── GRID ── */
   .catbanner-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* Prevents columns from expanding beyond tracking boundaries */
     gap: 16px;
+    box-sizing: border-box;
   }
 
   /* ── CARD ── */
@@ -150,6 +158,8 @@
     flex-direction: column;
     transition: transform 0.25s, box-shadow 0.25s;
     aspect-ratio: 3 / 4;
+    box-sizing: border-box;
+    min-width: 0; /* Containment boundary for text elements inside cards */
   }
 
   [data-theme="dark"] .catbanner-card {
@@ -176,11 +186,17 @@
     font-size: 16px;
     font-weight: 700;
     color: var(--text-primary, #1a1f2e);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Gracefully truncates long categories on tiny screens */
   }
 
   .catbanner-card-count {
     font-size: 13px;
     color: var(--text-secondary, #6b7280);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .catbanner-card-img {
@@ -207,16 +223,17 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 1024px) {
-    .catbanner-grid { grid-template-columns: repeat(3, 1fr); }
+    .catbanner-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
   @media (max-width: 700px) {
-    .catbanner-grid { grid-template-columns: repeat(2, 1fr); }
-    .catbanner-header { flex-direction: column; align-items: flex-start; }
+    .catbanner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .catbanner-header { flex-direction: column; align-items: flex-start; gap: 16px; }
   }
 
   @media (max-width: 480px) {
     .catbanner-section { padding: 40px 16px; }
-    .catbanner-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .catbanner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .catbanner-cta { width: 100%; justify-content: center; } /* Adapts CTA smoothly to narrow devices */
   }
 </style>
