@@ -1,0 +1,627 @@
+<!-- ══════════════════════════════════════
+     BLOG LIST + SIDEBAR (Mobile Slider)
+══════════════════════════════════════ -->
+<section class="bloglist-section" 
+         style="
+           --bl-bg: #ffffff;
+           --bl-surface: #ffffff;
+           --bl-border: #e8e8e8;
+           --bl-text-primary: #1a1f2e;
+           --bl-text-secondary: #6b7280;
+           --bl-teal: #0d9488;
+           --bl-purple: #7c3aed;
+           --bl-purple-hover: #6d28d9;
+           --bl-shadow: rgba(0,0,0,0.08);
+         ">
+  <div class="bloglist-inner">
+
+    <!-- ── MAIN LIST ── -->
+    <div class="bloglist-main">
+      <!-- Mobile Slider Container -->
+      <div class="blog-slider-container">
+        <div class="blog-slider-track" id="blogSliderTrack">
+          
+          <!-- POST 1 -->
+          <article class="bl-post">
+            <a class="bl-post-img-wrap" href="#">
+              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80" alt="Post image" />
+              <span class="bl-post-type-icon" title="Video">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="15" height="10" rx="2"/><path d="M17 9l5-3v12l-5-3V9z"/></svg>
+              </span>
+            </a>
+            <div class="bl-post-body">
+              <span class="bl-cat">Lifestyle</span>
+              <h2 class="bl-title"><a href="#">10 Habits That Will Change Your Life for the Better</a></h2>
+              <div class="bl-meta">
+                <span>Joanna Wellick</span>
+                <span class="bl-sep">·</span>
+                <span>May 24, 2019</span>
+                <span class="bl-sep">·</span>
+                <span>No Comments</span>
+              </div>
+              <p class="bl-excerpt">✦ Explore refined details in clothing and footwear that blend sophistication with comfort...</p>
+              <div class="bl-share-row">
+                <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+                <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
+                <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  <span class="bl-copy-tip">Copied!</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 2 -->
+          <article class="bl-post">
+            <a class="bl-post-img-wrap" href="#">
+              <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&q=80" alt="Post image" />
+            </a>
+            <div class="bl-post-body">
+              <span class="bl-cat">Travel</span>
+              <h2 class="bl-title"><a href="#">5 Efficient Rules How to Organize Your Working Place</a></h2>
+              <div class="bl-meta">
+                <span>Joanna Wellick</span>
+                <span class="bl-sep">·</span>
+                <span>May 23, 2019</span>
+                <span class="bl-sep">·</span>
+                <span>No Comments</span>
+              </div>
+              <p class="bl-excerpt">✦ Explore key design details and materials that deliver both function and style...</p>
+              <div class="bl-share-row">
+                <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+                <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
+                <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  <span class="bl-copy-tip">Copied!</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 3 -->
+          <article class="bl-post">
+            <a class="bl-post-img-wrap" href="#">
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80" alt="Post image" />
+            </a>
+            <div class="bl-post-body">
+              <span class="bl-cat">Technology</span>
+              <h2 class="bl-title"><a href="#">The Future of AI in Everyday Life</a></h2>
+              <div class="bl-meta">
+                <span>Marcus Lane</span>
+                <span class="bl-sep">·</span>
+                <span>July 9, 2026</span>
+                <span class="bl-sep">·</span>
+                <span>4 Comments</span>
+              </div>
+              <p class="bl-excerpt">✦ Artificial intelligence is quietly reshaping how we work, create, and connect...</p>
+              <div class="bl-share-row">
+                <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+                <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
+                <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  <span class="bl-copy-tip">Copied!</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 4 -->
+          <article class="bl-post">
+            <a class="bl-post-img-wrap" href="#">
+              <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600&q=80" alt="Post image" />
+            </a>
+            <div class="bl-post-body">
+              <span class="bl-cat">Travel</span>
+              <h2 class="bl-title"><a href="#">Weekend Escapes: Hidden Gems Near the City</a></h2>
+              <div class="bl-meta">
+                <span>Sara Bloom</span>
+                <span class="bl-sep">·</span>
+                <span>July 8, 2026</span>
+                <span class="bl-sep">·</span>
+                <span>1 Comment</span>
+              </div>
+              <p class="bl-excerpt">✦ You don't need a long flight to find somewhere remarkable...</p>
+              <div class="bl-share-row">
+                <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+                <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
+                <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  <span class="bl-copy-tip">Copied!</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Pagination Dots -->
+        <div class="slider-dots" id="sliderDots"></div>
+      </div>
+
+      <!-- LOAD MORE + ARCHIVE -->
+      <div class="bl-footer">
+        <button class="bl-load-more">Load More Posts</button>
+        <a class="bl-archive-link" href="#">Browse Full Archive →</a>
+      </div>
+
+    </div>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="bloglist-sidebar">
+      <!-- ... (keep your existing sidebar content) ... -->
+    </aside>
+
+  </div>
+</section>
+
+<style>
+  /* ===== BLOG LIST COLORS (all local) ===== */
+  .bloglist-section {
+    max-width: 1280px;
+    margin: 68px auto 0;
+    padding: 0 32px 80px;
+    background: var(--bl-bg, #ffffff);
+  }
+
+  .bloglist-inner {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .bl-post {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 36px;
+    align-items: start;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--bl-border, #e8e8e8);
+    flex-shrink: 0;
+    width: 100%;
+  }
+
+  .bl-post:first-child { padding-top: 0; }
+
+  .bl-post-img-wrap {
+    position: relative;
+    display: block;
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--bl-border, #e8e8e8);
+    flex-shrink: 0;
+  }
+
+  .bl-post-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .bl-post-img-wrap:hover img { transform: scale(1.04); }
+
+  .bl-post-type-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+    background: rgba(0,0,0,0.55);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  .bl-post-type-icon svg { width: 16px; height: 16px; }
+
+  .bl-post-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 4px;
+  }
+
+  .bl-cat {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bl-teal, #0d9488);
+  }
+
+  .bl-title {
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--bl-text-primary, #1a1f2e);
+  }
+
+  .bl-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .bl-title a:hover { color: var(--bl-teal, #0d9488); }
+
+  .bl-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--bl-text-secondary, #6b7280);
+  }
+
+  .bl-sep { opacity: 0.4; }
+
+  .bl-excerpt {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--bl-text-secondary, #6b7280);
+    margin: 0;
+  }
+
+  .bl-share-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .bl-share-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--bl-text-secondary, #6b7280);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .bl-share-label svg { width: 14px; height: 14px; }
+
+  .bl-share-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--bl-border, #e8e8e8);
+    background: var(--bl-surface, #ffffff);
+    color: var(--bl-text-secondary, #6b7280);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    position: relative;
+  }
+
+  .bl-share-btn svg { width: 15px; height: 15px; }
+
+  .bl-share-btn:hover {
+    background: var(--bl-teal, #0d9488);
+    border-color: var(--bl-teal, #0d9488);
+    color: #ffffff;
+  }
+
+  .bl-copy-btn .bl-copy-tip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bl-text-primary, #1a1f2e);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .bl-copy-btn.copied .bl-copy-tip { display: block; }
+  .bl-copy-btn.copied {
+    background: var(--bl-teal, #0d9488);
+    border-color: var(--bl-teal, #0d9488);
+    color: #ffffff;
+  }
+
+  /* ===== BLOG FOOTER ===== */
+  .bl-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: 40px;
+  }
+
+  .bl-load-more {
+    padding: 12px 36px;
+    background: var(--bl-purple, #7c3aed);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .bl-load-more:hover {
+    background: var(--bl-purple-hover, #6d28d9);
+    transform: translateY(-1px);
+  }
+
+  .bl-archive-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--bl-text-secondary, #6b7280);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+
+  .bl-archive-link:hover { color: var(--bl-teal, #0d9488); }
+
+  /* ===== SIDEBAR ===== */
+  .bloglist-sidebar {
+    position: sticky;
+    top: 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sb-widget {
+    background: var(--bl-surface, #ffffff);
+    border: 1px solid var(--bl-border, #e8e8e8);
+    border-radius: 6px;
+    padding: 24px;
+  }
+
+  .sb-widget-title {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bl-text-primary, #1a1f2e);
+    margin-bottom: 18px;
+  }
+
+  .sb-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .sb-author img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .sb-author-info { display: flex; flex-direction: column; gap: 3px; }
+  .sb-author-name { font-size: 15px; font-weight: 700; color: var(--bl-text-primary, #1a1f2e); }
+  .sb-author-role { font-size: 12px; color: var(--bl-text-secondary, #6b7280); }
+  .sb-author-bio { font-size: 13px; line-height: 1.65; color: var(--bl-text-secondary, #6b7280); margin: 0; }
+
+  .sb-recent-list { display: flex; flex-direction: column; }
+
+  .sb-recent-post {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--bl-border, #e8e8e8);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .sb-recent-post:last-child { border-bottom: none; }
+  .sb-recent-post:hover { opacity: 0.7; }
+
+  .sb-recent-post img {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .sb-recent-info { display: flex; flex-direction: column; gap: 4px; }
+  .sb-recent-title { font-size: 13px; font-weight: 600; color: var(--bl-text-primary, #1a1f2e); line-height: 1.4; }
+  .sb-recent-info time { font-size: 11px; color: var(--bl-text-secondary, #6b7280); }
+
+  .sb-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .sb-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: rgba(13,148,136,0.08);
+    color: var(--bl-teal, #0d9488);
+    border: 1px solid transparent;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .sb-tag:hover { background: var(--bl-teal, #0d9488); color: #ffffff; }
+
+  /* ===== MOBILE SLIDER ===== */
+  .blog-slider-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blog-slider-track {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .slider-dots {
+    display: none;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0 10px;
+  }
+
+  .slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--bl-border, #e8e8e8);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .slider-dot.active {
+    background: var(--bl-purple, #7c3aed);
+    transform: scale(1.2);
+  }
+
+  .slider-dot:hover {
+    background: var(--bl-purple, #7c3aed);
+    opacity: 0.7;
+  }
+
+  /* ===== DARK MODE OVERRIDES ===== */
+  [data-theme="dark"] .bloglist-section {
+    --bl-bg: #0f1117;
+    --bl-surface: #1a1d27;
+    --bl-border: #2a2d3a;
+    --bl-text-primary: #f1f5f9;
+    --bl-text-secondary: #94a3b8;
+    --bl-teal: #2dd4bf;
+    --bl-shadow: rgba(0,0,0,0.4);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1100px) {
+    .bl-post { grid-template-columns: 320px 1fr; }
+  }
+
+  @media (max-width: 900px) {
+    .bloglist-inner { grid-template-columns: 1fr; }
+    .bloglist-sidebar { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .blog-slider-track {
+      flex-direction: row;
+      gap: 0;
+    }
+
+    .bl-post {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 20px 0;
+      min-width: 100%;
+      border-bottom: none;
+    }
+
+    .bl-post-img-wrap { aspect-ratio: 16/9; }
+    .bl-post-body { padding: 0 4px; }
+    .slider-dots { display: flex; }
+
+    .bl-post:not(:last-child) {
+      border-bottom: 1px solid var(--bl-border, #e8e8e8);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .bloglist-section { padding: 0 16px 64px; }
+    .bl-post { padding: 16px 0; }
+    .bl-title { font-size: 17px; }
+    .bl-excerpt { font-size: 14px; }
+  }
+</style>
+
+<script>
+  (function() {
+    const track = document.getElementById('blogSliderTrack');
+    const dotsContainer = document.getElementById('sliderDots');
+    
+    if (track && dotsContainer) {
+      const slides = track.querySelectorAll('.bl-post');
+      const slideCount = slides.length;
+      let currentIndex = 0;
+      let isMobile = window.innerWidth <= 768;
+
+      function updateDots() {
+        const dots = dotsContainer.querySelectorAll('.slider-dot');
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      function goToSlide(index) {
+        if (!isMobile) return;
+        if (index < 0) index = slideCount - 1;
+        if (index >= slideCount) index = 0;
+        currentIndex = index;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        updateDots();
+      }
+
+      function buildDots() {
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < slideCount; i++) {
+          const dot = document.createElement('button');
+          dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+          dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+          dot.addEventListener('click', () => goToSlide(i));
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      function handleResize() {
+        const newIsMobile = window.innerWidth <= 768;
+        if (newIsMobile !== isMobile) {
+          isMobile = newIsMobile;
+          if (isMobile) {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dotsContainer.style.display = 'flex';
+          } else {
+            track.style.transform = 'translateX(0)';
+            dotsContainer.style.display = 'none';
+          }
+        }
+      }
+
+      buildDots();
+      handleResize();
+      window.addEventListener('resize', handleResize);
+    }
+  })();
+</script>
