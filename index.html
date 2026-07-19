@@ -54,7 +54,7 @@
 
 <body>
 
-  <div class="menu-overlay" onclick="toggleMobileMenu()"></div>
+  <div class="menu-overlay" id="menuOverlay"></div>
 
   <!-- SECTION MOUNTS -->
   <div id="header"></div>
@@ -73,32 +73,55 @@
   <div id="footer"></div>
 
   <script>
-    // --- Central Theme State Engine ---
-    window.initTheme = function() {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      syncThemeCheckboxes(savedTheme === 'dark');
-    };
-    
-    window.toggleTheme = function(isDark) {
-      const targetTheme = isDark ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', targetTheme);
-      localStorage.setItem('theme', targetTheme);
-      syncThemeCheckboxes(isDark);
-    };
-
-    function syncThemeCheckboxes(isDark) {
-      const dt = document.getElementById('themeToggle');
-      const mt = document.getElementById('themeToggleMobile');
-      if (dt) dt.checked = isDark;
-      if (mt) mt.checked = isDark;
+    // 1. Theme Orchestration Engine
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      
+      // Sync UI checkboxes across modules if they exist in the DOM yet
+      const inputs = document.querySelectorAll('#themeToggle, #themeToggleMobile');
+      inputs.forEach(input => input.checked = (theme === 'dark'));
     }
 
-    window.toggleMobileMenu = function() {
-      document.body.classList.toggle('menu-active');
-    };
+    // Initialize layout immediately to prevent flashing
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
 
-    // --- Dynamic Section Loader ---
+    // 2. Global Event Listening (Handles elements dynamically loaded later)
+    document.addEventListener('change', (e) => {
+      if (e.target && (e.target.id === 'themeToggle' || e.target.id === 'themeToggleMobile')) {
+        applyTheme(e.target.checked ? 'dark' : 'light');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      // Hamburger button click
+      const hamburger = e.target.closest('#hamburger');
+      if (hamburger) {
+        document.body.classList.toggle('menu-active');
+        const isOpen = document.body.classList.contains('menu-active');
+        hamburger.setAttribute('aria-expanded', isOpen);
+        return;
+      }
+
+      // Close menu when overlay is clicked
+      if (e.target.id === 'menuOverlay') {
+        document.body.classList.remove('menu-active');
+        const burgerBtn = document.getElementById('hamburger');
+        if (burgerBtn) burgerBtn.setAttribute('aria-expanded', 'false');
+        return;
+      }
+
+      // Close menu when a link inside the mobile drawer is clicked
+      const mobileLink = e.target.closest('.mobile-drawer .nav-link');
+      if (mobileLink) {
+        document.body.classList.remove('menu-active');
+        const burgerBtn = document.getElementById('hamburger');
+        if (burgerBtn) burgerBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // 3. Dynamic Section Modules Fetcher
     async function loadSection(id, file) {
       try {
         const html = await fetch(`/sections/${file}`).then(r => r.text());
@@ -107,9 +130,10 @@
         
         // Post-load configuration hooks
         if (id === 'header') {
-          // Sync elements immediately after header HTML lands in DOM
-          const savedTheme = localStorage.getItem('theme') || 'light';
-          syncThemeCheckboxes(savedTheme === 'dark');
+          // Re-sync checkboxes right after header loads
+          const activeTheme = document.documentElement.getAttribute('data-theme');
+          const inputs = target.querySelectorAll('#themeToggle, #themeToggleMobile');
+          inputs.forEach(input => input.checked = (activeTheme === 'dark'));
         }
         if (id === 'tags') initTagSlider(target);
         if (id === 'bloglist' || id === 'readmore') initMobileSliders(target);
@@ -118,11 +142,11 @@
       }
     }
 
+    // 4. Slider Initialization Modules
     function initTagSlider(sectionElement) {
       const track = sectionElement.querySelector('.tag-track');
       if (track) {
-        const clone = track.innerHTML;
-        track.innerHTML += clone;
+        track.innerHTML += track.innerHTML;
       }
     }
 
@@ -156,9 +180,7 @@
       });
     }
 
-    // Run theme initialization before rendering layout framework
-    window.initTheme();
-    
+    // Kick off content rendering
     loadSection('header', 'header.html');
     loadSection('hero', 'hero.html');
     loadSection('about', 'about.html');
