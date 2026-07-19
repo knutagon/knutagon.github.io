@@ -29,12 +29,10 @@
       overflow-x: hidden;
     }
 
-    /* Prevent scrolling when mobile sidebar is open */
     body.menu-active {
       overflow: hidden;
     }
 
-    /* Visual overlay when hamburger menu slides open */
     .menu-overlay {
       position: fixed;
       top: 0;
@@ -56,7 +54,6 @@
 
 <body>
 
-  <!-- Background overlay for mobile navigation panel -->
   <div class="menu-overlay" onclick="toggleMobileMenu()"></div>
 
   <!-- SECTION MOUNTS -->
@@ -75,34 +72,45 @@
   <div id="trust"></div>
   <div id="footer"></div>
 
-  <!-- SECTION LOADER & GLOBAL CORE LOGIC -->
   <script>
-    // --- Global Theme Controls ---
-    function initTheme() {
+    // --- Central Theme State Engine ---
+    window.initTheme = function() {
       const savedTheme = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-theme', savedTheme);
-    }
+      syncThemeCheckboxes(savedTheme === 'dark');
+    };
     
-    function toggleTheme() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
+    window.toggleTheme = function(isDark) {
+      const targetTheme = isDark ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('theme', targetTheme);
+      syncThemeCheckboxes(isDark);
+    };
+
+    function syncThemeCheckboxes(isDark) {
+      const dt = document.getElementById('themeToggle');
+      const mt = document.getElementById('themeToggleMobile');
+      if (dt) dt.checked = isDark;
+      if (mt) mt.checked = isDark;
     }
 
-    // --- Global Mobile Menu Controller ---
-    function toggleMobileMenu() {
+    window.toggleMobileMenu = function() {
       document.body.classList.toggle('menu-active');
-    }
+    };
 
-    // --- Dynamic Module Fetcher ---
+    // --- Dynamic Section Loader ---
     async function loadSection(id, file) {
       try {
         const html = await fetch(`/sections/${file}`).then(r => r.text());
         const target = document.getElementById(id);
         target.innerHTML = html;
         
-        // Post-load initialization checks
+        // Post-load configuration hooks
+        if (id === 'header') {
+          // Sync elements immediately after header HTML lands in DOM
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          syncThemeCheckboxes(savedTheme === 'dark');
+        }
         if (id === 'tags') initTagSlider(target);
         if (id === 'bloglist' || id === 'readmore') initMobileSliders(target);
       } catch (e) {
@@ -110,20 +118,16 @@
       }
     }
 
-    // --- Automated Tag Slider Engine ---
     function initTagSlider(sectionElement) {
       const track = sectionElement.querySelector('.tag-track');
       if (track) {
-        // Double up elements inline to fulfill hardware infinite loop scrolling
         const clone = track.innerHTML;
         track.innerHTML += clone;
       }
     }
 
-    // --- Mobile Slider Layout with Dots ---
     function initMobileSliders(sectionElement) {
       const containers = sectionElement.querySelectorAll('.post-slider-container');
-      
       containers.forEach(container => {
         const row = container.querySelector('.post-row');
         const dotsContainer = container.querySelector('.slider-dots');
@@ -132,16 +136,12 @@
         function renderDots() {
           const items = row.children;
           if (items.length === 0) return;
-
-          // Figure out column structural math
           const gap = parseInt(window.getComputedStyle(row).gap) || 0;
           const cardWidth = items[0].offsetWidth + gap;
           const currentStep = Math.round(row.scrollLeft / cardWidth);
           
           dotsContainer.innerHTML = '';
-          const totalDots = items.length;
-
-          for (let i = 0; i < totalDots; i++) {
+          for (let i = 0; i < items.length; i++) {
             const dot = document.createElement('span');
             dot.className = `dot ${i === currentStep ? 'active' : ''}`;
             dot.addEventListener('click', () => {
@@ -150,15 +150,14 @@
             dotsContainer.appendChild(dot);
           }
         }
-
         row.addEventListener('scroll', renderDots);
         window.addEventListener('resize', renderDots);
-        setTimeout(renderDots, 150); // Small buffer to ensure rendering is complete
+        setTimeout(renderDots, 150);
       });
     }
 
-    // Running initialization
-    initTheme();
+    // Run theme initialization before rendering layout framework
+    window.initTheme();
     
     loadSection('header', 'header.html');
     loadSection('hero', 'hero.html');
@@ -175,6 +174,5 @@
     loadSection('trust', 'trust.html');
     loadSection('footer', 'footer.html');
   </script>
-
 </body>
 </html>
