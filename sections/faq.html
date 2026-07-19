@@ -101,7 +101,6 @@
 <style>
   /* ── CUSTOM PROPERTY CENTRALIZATION ── */
   :root {
-    /* Light Mode Defaults (Soft, low-contrast shadows and clean slate tones) */
     --faq-bg: #f9fafb;
     --faq-item-bg: rgba(0, 0, 0, 0.02);
     --faq-item-hover: rgba(0, 0, 0, 0.04);
@@ -116,7 +115,6 @@
     --faq-arrow: #9ca3af;
   }
 
-  /* Automatically adapt if the user's operating system is set to dark mode */
   @media (prefers-color-scheme: dark) {
     :root {
       --faq-item-bg: rgba(255, 255, 255, 0.03);
@@ -131,7 +129,6 @@
     }
   }
 
-  /* Explicit hook if you use a JS theme switcher toggling a [data-theme="dark"] attribute */
   [data-theme="dark"] {
     --faq-item-bg: rgba(255, 255, 255, 0.03);
     --faq-item-hover: rgba(255, 255, 255, 0.05);
@@ -301,8 +298,6 @@
       const currentItem = btn.parentElement;
       const isAlreadyActive = currentItem.classList.contains('active');
       
-      // OPTIONAL INTERACTION POLICY: Closes any other open tabs automatically 
-      // when a new item element is toggled. Remove this loop if you want multiple items open at once.
       document.querySelectorAll('.faq-item').forEach(item => {
         item.classList.remove('active');
       });
