@@ -99,37 +99,43 @@
 </section>
 
 <style>
-  /* ── CUSTOM PROPERTY CENTRALIZATION ── */
-  :root {
-    --faq-bg: #f9fafb;
-    --faq-item-bg: rgba(0, 0, 0, 0.02);
-    --faq-item-hover: rgba(0, 0, 0, 0.04);
-    --faq-item-active: rgba(13, 148, 136, 0.04);
-    --faq-border: rgba(0, 0, 0, 0.08);
-    --faq-border-hover: rgba(0, 0, 0, 0.15);
-    --faq-border-active: rgba(13, 148, 136, 0.4);
-    --faq-txt-main: #111827;
-    --faq-txt-muted: #4b5563;
+  /* ── CSS VARIABLES ── */
+  .faq-section {
+    /* Hardcoded crisp variables for Light Mode */
+    --faq-bg: #ffffff; /* Explicitly forces a white canvas background */
+    --faq-item-bg: #f9fafb; /* Soft light gray card color */
+    --faq-item-hover: #f3f4f6;
+    --faq-item-active: #f0fdfa;
+    --faq-border: #e5e7eb; /* Clearly visible mid-gray border lines */
+    --faq-border-hover: #d1d5db;
+    --faq-border-active: #5cbbb2;
+    --faq-txt-main: #111827; /* Very deep charcoal, high-contrast dark text */
+    --faq-txt-muted: #4b5563; /* Accessible gray paragraph text */
     --faq-accent: #0d9488;
     --faq-accent-hover: #14b8a6;
     --faq-arrow: #9ca3af;
   }
 
+  /* Automatically adapt if the user's system runs dark mode */
   @media (prefers-color-scheme: dark) {
-    :root {
+    .faq-section {
+      --faq-bg: transparent; /* Allows parent canvas dark mode to pull through */
       --faq-item-bg: rgba(255, 255, 255, 0.03);
       --faq-item-hover: rgba(255, 255, 255, 0.05);
       --faq-item-active: rgba(255, 255, 255, 0.04);
       --faq-border: rgba(255, 255, 255, 0.06);
       --faq-border-hover: rgba(255, 255, 255, 0.12);
       --faq-border-active: rgba(13, 148, 136, 0.3);
-      --faq-txt-main: #f3f4f6;
+      --faq-txt-main: #f3f4f6; /* Off-white text for dark mode visibility */
       --faq-txt-muted: #9ca3af;
       --faq-arrow: #6b7280;
     }
   }
 
-  [data-theme="dark"] {
+  /* Explicit hook selector targeting manual class/data attribute framework toggles */
+  [data-theme="dark"] .faq-section,
+  body.dark-mode .faq-section {
+    --faq-bg: transparent;
     --faq-item-bg: rgba(255, 255, 255, 0.03);
     --faq-item-hover: rgba(255, 255, 255, 0.05);
     --faq-item-active: rgba(255, 255, 255, 0.04);
@@ -147,6 +153,8 @@
     margin: 0 auto;
     padding: 80px 32px;
     box-sizing: border-box;
+    background-color: var(--faq-bg); /* Forces isolation from global backgrounds */
+    transition: background-color 0.25s;
   }
 
   .faq-header {
@@ -157,7 +165,7 @@
   .faq-title {
     font-size: clamp(24px, 3.5vw, 36px);
     font-weight: 800;
-    color: var(--faq-txt-main);
+    color: var(--faq-txt-main) !important; /* Forces override against layout leakages */
     letter-spacing: -0.02em;
     margin: 0 0 12px 0;
     transition: color 0.25s;
@@ -165,7 +173,7 @@
 
   .faq-sub {
     font-size: 15px;
-    color: var(--faq-txt-muted);
+    color: var(--faq-txt-muted) !important;
     margin: 0;
     line-height: 1.5;
     transition: color 0.25s;
@@ -178,21 +186,21 @@
   }
 
   .faq-item {
-    background: var(--faq-item-bg);
-    border: 1px solid var(--faq-border);
+    background-color: var(--faq-item-bg) !important;
+    border: 1px solid var(--faq-border) !important;
     border-radius: 8px;
     overflow: hidden;
-    transition: background 0.25s, border-color 0.25s;
+    transition: background-color 0.25s, border-color 0.25s;
   }
 
   .faq-item:hover {
-    background: var(--faq-item-hover);
-    border-color: var(--faq-border-hover);
+    background-color: var(--faq-item-hover) !important;
+    border-color: var(--faq-border-hover) !important;
   }
 
   .faq-item.active {
-    background: var(--faq-item-active);
-    border-color: var(--faq-border-active);
+    background-color: var(--faq-item-active) !important;
+    border-color: var(--faq-border-active) !important;
   }
 
   .faq-question {
@@ -202,9 +210,9 @@
     justify-content: space-between;
     gap: 16px;
     text-align: left;
-    background: none;
-    border: none;
-    color: var(--faq-txt-main);
+    background: none !important;
+    border: none !important;
+    color: var(--faq-txt-main) !important;
     font-weight: 600;
     font-size: 15.5px;
     padding: 20px 24px;
@@ -213,21 +221,17 @@
     transition: color 0.2s;
   }
 
-  .faq-question:hover {
-    color: var(--faq-txt-main);
-  }
-
   .faq-icon {
     width: 16px;
     height: 16px;
-    color: var(--faq-arrow);
+    color: var(--faq-arrow) !important;
     flex-shrink: 0;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s;
   }
 
   .faq-item.active .faq-icon {
     transform: rotate(180deg);
-    color: var(--faq-accent);
+    color: var(--faq-accent) !important;
   }
 
   /* ── ANIMS ── */
@@ -248,7 +252,7 @@
   .faq-answer-content p {
     padding: 0 24px 20px;
     margin: 0;
-    color: var(--faq-txt-muted);
+    color: var(--faq-txt-muted) !important;
     font-size: 14.5px;
     line-height: 1.65;
     transition: color 0.25s;
@@ -264,7 +268,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: var(--faq-accent);
+    color: var(--faq-accent) !important;
     font-weight: 600;
     text-decoration: none;
     font-size: 14px;
@@ -272,7 +276,7 @@
   }
 
   .faq-link:hover {
-    color: var(--faq-accent-hover);
+    color: var(--faq-accent-hover) !important;
   }
 
   .faq-link svg {
