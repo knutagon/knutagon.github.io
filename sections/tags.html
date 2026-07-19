@@ -87,6 +87,8 @@
     display: flex;
     width: max-content;
     user-select: none;
+    /* THE FIXED LAYOUT PROPERTY: Prevents physical mobile native overflow conflict */
+    overflow: visible; 
   }
 
   /* Structural groups containing the element lists */
@@ -95,12 +97,18 @@
     align-items: center;
     gap: 12px;
     padding: 8px 6px;
-    /* 35-second uniform slide loop. Adjust duration to change overall speed. */
+    flex-shrink: 0;
+    /* 35-second uniform slide loop. */
     animation: marqueeLinear 35s linear infinite;
+    /* THE MOBILE AUTO-SCROLL FIX: Forces mobile rendering engines to initialize animations */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
-  /* THE HOVER PAUSE FIX: Freezes animation on both sets instantly when interacting */
-  .tags-track:hover .tags-group {
+  /* THE HOVER PAUSE: Freezes animation on desktop hover & mobile press active states */
+  .tags-track:hover .tags-group,
+  .tags-track:active .tags-group {
     animation-play-state: paused;
   }
 
@@ -140,7 +148,7 @@
     color: #ffffff;
   }
 
-  /* Hardware-accelerated hardware marquee tracking loop */
+  /* Infinite hardware accelerated marquee tracking loop */
   @keyframes marqueeLinear {
     0% {
       transform: translate3d(0, 0, 0);
