@@ -3,21 +3,45 @@
 ══════════════════════════════════════ -->
 <div class="tags-section">
   <div class="tags-track-wrap">
-    <div class="tags-track" id="tagsTrack">
-      <a class="tag-pill" href="#"># Games</a>
-      <a class="tag-pill" href="#"># Science</a>
-      <a class="tag-pill" href="#"># Startup</a>
-      <a class="tag-pill" href="#"># Tech</a>
-      <a class="tag-pill" href="#"># Blockchain</a>
-      <a class="tag-pill" href="#"># Car</a>
-      <a class="tag-pill" href="#"># Design</a>
-      <a class="tag-pill" href="#"># Culture</a>
-      <a class="tag-pill" href="#"># AI</a>
-      <a class="tag-pill" href="#"># Finance</a>
-      <a class="tag-pill" href="#"># Travel</a>
-      <a class="tag-pill" href="#"># Health</a>
-      <a class="tag-pill" href="#"># Music</a>
-      <a class="tag-pill" href="#"># Space</a>
+    <!-- The marquee container runs the infinite animation loop -->
+    <div class="tags-track">
+      
+      <!-- Original Set of Tags -->
+      <div class="tags-group">
+        <a class="tag-pill" href="#"># Games</a>
+        <a class="tag-pill" href="#"># Science</a>
+        <a class="tag-pill" href="#"># Startup</a>
+        <a class="tag-pill" href="#"># Tech</a>
+        <a class="tag-pill" href="#"># Blockchain</a>
+        <a class="tag-pill" href="#"># Car</a>
+        <a class="tag-pill" href="#"># Design</a>
+        <a class="tag-pill" href="#"># Culture</a>
+        <a class="tag-pill" href="#"># AI</a>
+        <a class="tag-pill" href="#"># Finance</a>
+        <a class="tag-pill" href="#"># Travel</a>
+        <a class="tag-pill" href="#"># Health</a>
+        <a class="tag-pill" href="#"># Music</a>
+        <a class="tag-pill" href="#"># Space</a>
+      </div>
+      
+      <!-- Duplicate Set of Tags (Enables perfectly seamless looping) -->
+      <div class="tags-group" aria-hidden="true">
+        <a class="tag-pill" href="#"># Games</a>
+        <a class="tag-pill" href="#"># Science</a>
+        <a class="tag-pill" href="#"># Startup</a>
+        <a class="tag-pill" href="#"># Tech</a>
+        <a class="tag-pill" href="#"># Blockchain</a>
+        <a class="tag-pill" href="#"># Car</a>
+        <a class="tag-pill" href="#"># Design</a>
+        <a class="tag-pill" href="#"># Culture</a>
+        <a class="tag-pill" href="#"># AI</a>
+        <a class="tag-pill" href="#"># Finance</a>
+        <a class="tag-pill" href="#"># Travel</a>
+        <a class="tag-pill" href="#"># Health</a>
+        <a class="tag-pill" href="#"># Music</a>
+        <a class="tag-pill" href="#"># Space</a>
+      </div>
+
     </div>
   </div>
 </div>
@@ -27,12 +51,14 @@
     width: 100%;
     padding: 24px 0;
     position: relative;
+    box-sizing: border-box;
   }
 
-  /* fade edges */
+  /* Fade edges setup */
   .tags-track-wrap {
     position: relative;
     overflow: hidden;
+    width: 100%;
   }
 
   .tags-track-wrap::before,
@@ -48,29 +74,35 @@
 
   .tags-track-wrap::before {
     left: 0;
-    background: linear-gradient(to right, var(--bg, #ffffff), transparent);
+    background: linear-gradient(to right, var(--global-bg, #fafafa), transparent);
   }
 
   .tags-track-wrap::after {
     right: 0;
-    background: linear-gradient(to left, var(--bg, #ffffff), transparent);
+    background: linear-gradient(to left, var(--global-bg, #fafafa), transparent);
   }
 
+  /* Marquee Track Container */
   .tags-track {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    overflow-x: auto;
-    padding: 8px 80px;
-    scroll-behavior: smooth;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    cursor: grab;
+    width: max-content;
     user-select: none;
   }
 
-  .tags-track:active { cursor: grabbing; }
-  .tags-track::-webkit-scrollbar { display: none; }
+  /* Structural groups containing the element lists */
+  .tags-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 6px;
+    /* 35-second uniform slide loop. Adjust duration to change overall speed. */
+    animation: marqueeLinear 35s linear infinite;
+  }
+
+  /* THE HOVER PAUSE FIX: Freezes animation on both sets instantly when interacting */
+  .tags-track:hover .tags-group {
+    animation-play-state: paused;
+  }
 
   .tag-pill {
     display: inline-flex;
@@ -107,60 +139,22 @@
     border-color: var(--purple, #7c3aed);
     color: #ffffff;
   }
-</style>
 
-<script>
-  (function () {
-    const track = document.getElementById('tagsTrack');
-    let paused = false;
-    let animFrame;
-
-    // duplicate pills for seamless loop
-    const pills = Array.from(track.children);
-    pills.forEach(p => track.appendChild(p.cloneNode(true)));
-
-    const totalWidth = track.scrollWidth / 2;
-    let pos = 0;
-
-    function slide() {
-      if (!paused) {
-        pos += 0.5;
-        if (pos >= totalWidth) pos = 0;
-        track.scrollLeft = pos;
-      }
-      animFrame = requestAnimationFrame(slide);
+  /* Hardware-accelerated hardware marquee tracking loop */
+  @keyframes marqueeLinear {
+    0% {
+      transform: translate3d(0, 0, 0);
     }
+    100% {
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
 
-    slide();
-
-    // pause on hover over any pill
-    track.addEventListener('mouseenter', () => paused = true);
-    track.addEventListener('mouseleave', () => paused = false);
-
-    // drag support
-    let isDown = false, startX, scrollLeft;
-
-    track.addEventListener('mousedown', e => {
-      isDown = true;
-      paused = true;
-      startX = e.pageX - track.offsetLeft;
-      scrollLeft = track.scrollLeft;
-      track.style.cursor = 'grabbing';
-    });
-
-    track.addEventListener('mouseup', () => {
-      isDown = false;
-      paused = false;
-      pos = track.scrollLeft;
-      track.style.cursor = 'grab';
-    });
-
-    track.addEventListener('mousemove', e => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - track.offsetLeft;
-      track.scrollLeft = scrollLeft - (x - startX);
-      pos = track.scrollLeft;
-    });
-  })();
-</script>
+  /* Shrinks the edge shadows on narrow screens so pills stay visible */
+  @media (max-width: 580px) {
+    .tags-track-wrap::before,
+    .tags-track-wrap::after {
+      width: 40px;
+    }
+  }
+</style>
