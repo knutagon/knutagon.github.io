@@ -9,13 +9,13 @@
       <h2 class="community-title">Join the Community</h2>
       <p class="community-desc">
         Connect with creators, share your builds, and explore new worlds together.
-        The Soul Dragon™ network is where ideas evolve into universes.
+        The Soul Dragon™ network is where ideas evolve into universes.
       </p>
     </div>
 
     <!-- IMAGE -->
     <div class="community-art">
-      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=80" alt="Community illustration" />
+      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=80" alt="Community team brainstorming" />
       <div class="community-overlay"></div>
     </div>
 
@@ -27,40 +27,61 @@
     max-width: 1280px;
     margin: 0 auto;
     padding: 64px 32px;
+    box-sizing: border-box;
   }
 
   .community-wrap {
     position: relative;
     display: grid;
-    grid-template-columns: 1.3fr 1fr;
+    grid-template-columns: 1.2fr 1fr; /* Refined proportions for cleaner layout balancing */
     align-items: center;
     border-radius: 12px;
     overflow: hidden;
-    background: linear-gradient(135deg, #1e1e2f, #2b3a6f);
+    background: #111827; /* Fallback baseline dark neutral color */
+    border: 1px solid var(--border, #e5e7eb);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  }
+
+  /* Dynamic modern theme support rules */
+  [data-theme="dark"] .community-wrap {
+    border-color: #1f2937;
+    background: #1f2937;
   }
 
   .community-content {
-    padding: 60px 48px;
+    padding: 64px 48px;
     z-index: 2;
+    position: relative;
+    background: linear-gradient(135deg, #1e1e2f, #2b3a6f);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   .community-title {
-    font-size: clamp(28px, 4vw, 48px);
+    font-size: clamp(24px, 3.5vw, 42px); /* Smoother typography scale values */
     font-weight: 800;
     color: #ffffff;
-    margin-bottom: 16px;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
   }
 
   .community-desc {
-    font-size: 16px;
-    color: rgba(255,255,255,0.85);
-    line-height: 1.6;
-    max-width: 520px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 480px;
   }
 
   .community-art {
     position: relative;
     height: 100%;
+    width: 100%;
+    min-height: 380px; /* Ensures the split image keeps structural depth on desktop */
   }
 
   .community-art img {
@@ -70,22 +91,53 @@
     display: block;
   }
 
+  /* Editorial gradient blend layer */
   .community-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+    background: linear-gradient(to right, #2b3a6f, rgba(43, 58, 111, 0.2));
+    z-index: 1;
   }
 
-  @media (max-width: 900px) {
+  /* ── PROFESSIONAL MOBILE TRANSFORMATION ── */
+  @media (max-width: 768px) {
+    .community-banner {
+      padding: 32px 20px; /* Tighter padding for mobile screen viewports */
+    }
+
     .community-wrap {
       grid-template-columns: 1fr;
+      display: block; /* Changes to block to allow clean absolute layering */
     }
+
     .community-content {
-      padding: 40px 24px;
+      padding: 56px 24px;
       text-align: center;
+      align-items: center;
+      background: transparent; /* Drops background color to let image show through */
+      min-height: 320px;
     }
+
     .community-desc {
       margin: 0 auto;
+    }
+
+    /* Transform the image into a deep background layer for the text */
+    .community-art {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      min-height: 100%;
+      z-index: 1;
+    }
+
+    /* Full wrapper mobile dark overlay shield to keep text perfectly legible */
+    .community-overlay {
+      background: linear-gradient(
+        to bottom,
+        rgba(30, 30, 47, 0.9),
+        rgba(43, 58, 111, 0.92)
+      );
     }
   }
 </style>
