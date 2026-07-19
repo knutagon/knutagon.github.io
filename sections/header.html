@@ -474,24 +474,17 @@
 
 <script>
   (function() {
-    const html = document.documentElement;
-    const desktopToggle = document.getElementById('themeToggle');
-    const mobileToggle  = document.getElementById('themeToggleMobile');
-    const hamburger     = document.getElementById('hamburger');
+    const hamburger = document.getElementById('hamburger');
+    
+    // Bubble theme interaction changes straight up to the window core handler
+    document.addEventListener('change', (e) => {
+      if (e.target && (e.target.id === 'themeToggle' || e.target.id === 'themeToggleMobile')) {
+        if (typeof window.toggleTheme === 'function') {
+          window.toggleTheme(e.target.checked);
+        }
+      }
+    });
 
-    function setTheme(dark) {
-      html.setAttribute('data-theme', dark ? 'dark' : 'light');
-      desktopToggle.checked = dark;
-      mobileToggle.checked  = dark;
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-    }
-
-    if (localStorage.getItem('theme') === 'dark') setTheme(true);
-
-    desktopToggle.addEventListener('change', () => setTheme(desktopToggle.checked));
-    mobileToggle.addEventListener('change',  () => setTheme(mobileToggle.checked));
-
-    // Leverages global listener setup in index.html to manage open/close states safely
     hamburger.addEventListener('click', () => {
       if (typeof window.toggleMobileMenu === "function") {
         window.toggleMobileMenu();
