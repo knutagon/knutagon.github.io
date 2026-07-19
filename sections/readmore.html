@@ -1,5 +1,5 @@
 <!-- ══════════════════════════════════════
-     READ MORE GRID
+     READ MORE GRID / SLIDER
 ══════════════════════════════════════ -->
 <section class="readmore-section">
 
@@ -10,7 +10,7 @@
   </div>
   <div class="rm-divider"></div>
 
-  <!-- GRID -->
+  <!-- GRID / SLIDER WRAPPER -->
   <div class="rm-grid">
 
     <!-- CARD 1 -->
@@ -168,6 +168,7 @@
     max-width: 1280px;
     margin: 58px auto 0;
     padding: 0 32px 80px;
+    box-sizing: border-box;
   }
 
   /* ── HEADER ── */
@@ -205,7 +206,7 @@
     margin-bottom: 32px;
   }
 
-  /* ── GRID ── */
+  /* ── GRID (DESKTOP DEFAULT) ── */
   .rm-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -400,13 +401,49 @@
     color: #ffffff;
   }
 
-  /* ── RESPONSIVE ── */
+  /* ── RESPONSIVE RESPONSES ── */
   @media (max-width: 900px) {
     .rm-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
-  @media (max-width: 580px) {
-    .readmore-section { padding: 0 16px 64px; }
-    .rm-grid { grid-template-columns: 1fr; }
+  /* THE MOBILE SLIDER TRANSFORMATION ZONE */
+  @media (max-width: 640px) {
+    .readmore-section { 
+      padding: 0 0 64px 0; /* Clear container bounds padding to let cards slide off-canvas edges cleanly */
+    }
+
+    .rm-header, .rm-divider {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    /* Transform grid style rule into a horizontally continuous flexible track axis */
+    .rm-grid {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      
+      /* Pure CSS snapping attributes engine */
+      scroll-snap-type: x mandatory;
+      
+      /* Hides industrial default desktop scrollbars inside modern mobile browsers */
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
+      
+      gap: 16px;
+      padding: 4px 20px 24px; /* Bottom padding gives space for card shadow footprints */
+    }
+
+    .rm-grid::-webkit-scrollbar {
+      display: none; /* Safari / Chrome */
+    }
+
+    /* Force mobile slider widths onto structural cards */
+    .rm-card {
+      flex: 0 0 82vw; /* Cards fill 82% of screen viewport, hinting next post card is peeking out */
+      scroll-snap-align: start; /* Locks card directly to screen side bounds when flicked */
+    }
   }
 </style>
