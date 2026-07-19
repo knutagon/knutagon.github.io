@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knutagon Blog</title>
+
+  <!-- Global Base Variables & Reset -->
+  <style>
+    :root {
+      --global-bg: #fafafa;
+      --global-text: #111111;
+      --transition-speed: 0.3s;
+    }
+
+    [data-theme="dark"] {
+      --global-bg: #121212;
+      --global-text: #f5f5f5;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, sans-serif;
+      background-color: var(--global-bg);
+      color: var(--global-text);
+      padding-top: 68px; /* matches .site-header height */
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+      overflow-x: hidden;
+    }
+
+    /* Prevent scrolling when mobile sidebar is open */
+    body.menu-active {
+      overflow: hidden;
+    }
+
+    /* Visual overlay when hamburger menu slides open */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    body.menu-active .menu-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background overlay for mobile navigation panel -->
+  <div class="menu-overlay" onclick="toggleMobileMenu()"></div>
+
+  <!-- SECTION MOUNTS -->
+  <div id="header"></div>
+  <div id="hero"></div>
+  <div id="about"></div>
+  <div id="cat-banner"></div>
+  <div id="tags"></div>
+  <div id="feature"></div>
+  <div id="bloglist"></div>
+  <div id="readmore"></div>
+  <div id="video"></div>
+  <div id="banner"></div>
+  <div id="faq"></div>
+  <div id="glossary"></div>
+  <div id="trust"></div>
+  <div id="footer"></div>
+
+  <!-- SECTION LOADER & GLOBAL CORE LOGIC -->
+  <script>
+    // --- Global Theme Controls ---
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+    
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    // --- Global Mobile Menu Controller ---
+    function toggleMobileMenu() {
+      document.body.classList.toggle('menu-active');
+    }
+
+    // --- Dynamic Module Fetcher ---
+    async function loadSection(id, file) {
+      try {
+        const html = await fetch(`/sections/${file}`).then(r => r.text());
+        const target = document.getElementById(id);
+        target.innerHTML = html;
+        
+        // Post-load initialization checks
+        if (id === 'tags') initTagSlider(target);
+        if (id === 'bloglist' || id === 'readmore') initMobileSliders(target);
+      } catch (e) {
+        console.error("Failed loading section:", file, e);
+      }
+    }
+
+    // --- Automated Tag Slider Engine ---
+    function initTagSlider(sectionElement) {
+      const track = sectionElement.querySelector('.tag-track');
+      if (track) {
+        // Double up elements inline to fulfill hardware infinite loop scrolling
+        const clone = track.innerHTML;
+        track.innerHTML += clone;
+      }
+    }
+
+    // --- Mobile Slider Layout with Dots ---
+    function initMobileSliders(sectionElement) {
+      const containers = sectionElement.querySelectorAll('.post-slider-container');
+      
+      containers.forEach(container => {
+        const row = container.querySelector('.post-row');
+        const dotsContainer = container.querySelector('.slider-dots');
+        if (!row || !dotsContainer) return;
+
+        function renderDots() {
+          const items = row.children;
+          if (items.length === 0) return;
+
+          // Figure out column structural math
+          const gap = parseInt(window.getComputedStyle(row).gap) || 0;
+          const cardWidth = items[0].offsetWidth + gap;
+          const currentStep = Math.round(row.scrollLeft / cardWidth);
+          
+          dotsContainer.innerHTML = '';
+          const totalDots = items.length;
+
+          for (let i = 0; i < totalDots; i++) {
+            const dot = document.createElement('span');
+            dot.className = `dot ${i === currentStep ? 'active' : ''}`;
+            dot.addEventListener('click', () => {
+              row.scrollTo({ left: i * cardWidth, behavior: 'smooth' });
+            });
+            dotsContainer.appendChild(dot);
+          }
+        }
+
+        row.addEventListener('scroll', renderDots);
+        window.addEventListener('resize', renderDots);
+        setTimeout(renderDots, 150); // Small buffer to ensure rendering is complete
+      });
+    }
+
+    // Running initialization
+    initTheme();
+    
+    loadSection('header', 'header.html');
+    loadSection('hero', 'hero.html');
+    loadSection('about', 'about.html');
+    loadSection('cat-banner', 'cat-banner.html');
+    loadSection('tags', 'tags.html');
+    loadSection('feature', 'feature.html');
+    loadSection('bloglist', 'bloglist.html');
+    loadSection('readmore', 'readmore.html');
+    loadSection('video', 'video.html');
+    loadSection('banner', 'banner.html');
+    loadSection('faq', 'faq.html');
+    loadSection('glossary', 'glossary.html');
+    loadSection('trust', 'trust.html');
+    loadSection('footer', 'footer.html');
+  </script>
+
+</body>
+</html>
