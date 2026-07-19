@@ -101,16 +101,17 @@
 
 <style>
   .hero-section {
-    margin-top: 68px; /* matches header height */
     max-width: 1280px;
     margin: 0 auto;
     padding: 40px 32px 56px;
     position: relative;
+    box-sizing: border-box;
   }
 
   .hero-inner {
     display: grid;
-    grid-template-columns: 1fr 360px;
+    /* Clean column bounds that prevent calculation blowout */
+    grid-template-columns: minmax(0, 1fr) 360px;
     gap: 32px;
     align-items: stretch;
   }
@@ -122,7 +123,7 @@
     border-radius: 6px;
     overflow: hidden;
     text-decoration: none;
-    min-height: 300px;
+    min-height: 400px;
     background: #1a1d27;
   }
 
@@ -166,7 +167,7 @@
     color: #fff;
     font-size: 13px;
     font-weight: 600;
-    border-radius: var(--radius, 999px);
+    border-radius: 999px;
     margin-bottom: 12px;
   }
 
@@ -193,6 +194,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    min-width: 0; /* Prevents flex children blowout */
   }
 
   /* TABS */
@@ -242,10 +244,10 @@
     border-bottom: 1px solid var(--border, #e8e8e8);
     text-decoration: none;
     transition: opacity 0.2s;
+    min-width: 0; /* Essential for text truncation containment */
   }
 
   .hero-post:last-child { border-bottom: none; }
-
   .hero-post:hover { opacity: 0.75; }
 
   .hero-post img {
@@ -256,13 +258,20 @@
     flex-shrink: 0;
   }
 
-  .hero-post-info { display: flex; flex-direction: column; gap: 5px; }
+  .hero-post-info { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    min-width: 0; /* Forces long headings to wrap instead of overflowing */
+  }
 
   .hero-post-info h3 {
     font-size: 14px;
     font-weight: 600;
     color: var(--text-primary, #1a1f2e);
     line-height: 1.4;
+    margin: 0;
+    word-break: break-word; /* Prevents overflow line breaks */
   }
 
   .hero-post-info time {
@@ -304,31 +313,45 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .hero-inner {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
     }
-    .hero-featured { aspect-ratio: 16 / 9; }
+    .hero-featured { min-height: 320px; aspect-ratio: 16 / 9; }
   }
 
   @media (max-width: 480px) {
-    .hero-section { padding: 24px 16px 48px; }
+    .hero-section { padding: 16px 16px 32px; }
     .hero-featured-content { padding: 18px; }
     .hero-title { font-size: 18px; }
   }
 </style>
 
 <script>
+  // Dynamic Tab delegation logic (safe for modular content injection)
   (function() {
-    const tabs = document.querySelectorAll('.hero-tab');
-    const lists = document.querySelectorAll('.hero-list');
+    document.addEventListener('click', function(e) {
+      const tab = e.target.closest('.hero-tab');
+      if (!tab) return;
+      
+      const parentSection = tab.closest('.hero-sidebar');
+      if (!parentSection) return;
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', false); });
-        lists.forEach(l => l.classList.remove('active'));
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected', true);
-        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      const tabs = parentSection.querySelectorAll('.hero-tab');
+      const lists = parentSection.querySelectorAll('.hero-list');
+
+      tabs.forEach(t => { 
+        t.classList.remove('active'); 
+        t.setAttribute('aria-selected', false); 
       });
+      lists.forEach(l => l.classList.remove('active'));
+
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', true);
+      
+      const targetList = parentSection.querySelector('#tab-' + tab.dataset.tab);
+      if (targetList) {
+        targetList.classList.add('active');
+      }
     });
   })();
 </script>
