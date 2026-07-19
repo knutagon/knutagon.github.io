@@ -4,20 +4,7 @@
 <section class="video-feature">
   <div class="video-layout-container">
     
-    <!-- LEFT SIDEBAR: PLAYLIST + LIBRARY BUTTON (Desktop Arrangement) -->
-    <div class="video-sidebar-column">
-      <div class="video-playlist" id="videoPlaylist">
-        <!-- JS will dynamically inject 3 playlist item elements here -->
-      </div>
-      
-      <!-- VIDEOS LIBRARY NAVIGATION BUTTON -->
-      <a href="/video-library" class="video-library-btn">
-        <span>View Full Video Library</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-    </div>
-
-    <!-- CENTER ELEMENT: MAIN FEATURED VIDEO INTERFACE -->
+    <!-- LEFT SIDEBAR / MAIN ELEMENT: FEATURED VIDEO INTERFACE -->
     <div class="video-main-wrapper">
       <div class="video-main" id="mainVideoContainer">
         <img class="video-bg" src="https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1200&q=80" alt="Featured video cover" />
@@ -33,6 +20,19 @@
       </div>
     </div>
 
+    <!-- RIGHT SIDEBAR: PLAYLIST + LIBRARY BUTTON (Desktop Arrangement) -->
+    <div class="video-sidebar-column">
+      <div class="video-playlist" id="videoPlaylist">
+        <!-- JS will dynamically inject 3 playlist item elements here -->
+      </div>
+      
+      <!-- VIDEOS LIBRARY NAVIGATION BUTTON -->
+      <a href="/video-library" class="video-library-btn">
+        <span>View Full Video Library</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
   </div>
 </section>
 
@@ -44,15 +44,15 @@
     box-sizing: border-box;
   }
 
-  /* Structural wrapper handles left-sidebar and center-main layout alignment */
+  /* Structural wrapper handles center-main left-side and right-sidebar layout alignment */
   .video-layout-container {
     display: grid;
-    grid-template-columns: 320px 1fr; /* Rigid explicit width control over sidebar stack */
+    grid-template-columns: 1fr 320px; /* Reversely assigned column mechanics */
     gap: 40px;
     align-items: start;
   }
 
-  /* ── LEFT SIDEBAR COLUMN ── */
+  /* ── RIGHT SIDEBAR COLUMN ── */
   .video-sidebar-column {
     display: flex;
     flex-direction: column;
@@ -112,7 +112,7 @@
     align-items: center;
     justify-content: center;
     transition: background 0.2s, transform 0.2s;
-    pointer-events: none; /* Let click bubble up to the card element */
+    pointer-events: none;
   }
 
   .video-item:hover .video-item-btn {
@@ -167,7 +167,7 @@
 
   .video-library-btn svg { width: 16px; height: 16px; }
 
-  /* ── CENTER FEATURED VIDEO WRAPPER ── */
+  /* ── FEATURED VIDEO WRAPPER ── */
   .video-main-wrapper {
     width: 100%;
   }
@@ -177,7 +177,7 @@
     border-radius: 10px;
     overflow: hidden;
     width: 100%;
-    aspect-ratio: 16 / 9; /* Replaces rigid min-height with native fluid streaming proportions */
+    aspect-ratio: 16 / 9;
     background: #000;
     box-shadow: 0 20px 40px rgba(0,0,0,0.06);
   }
@@ -255,7 +255,6 @@
     line-height: 1.5;
   }
 
-  /* Embedded Player Object Iframe styling */
   .video-main iframe {
     position: absolute;
     inset: 0;
@@ -268,11 +267,11 @@
   /* ── RESPONSIVE RESPONSES ── */
   @media (max-width: 960px) {
     .video-layout-container {
-      grid-template-columns: 1fr; /* Stack into uniform single column view axis */
+      grid-template-columns: 1fr; /* Stack automatically into clean vertical views */
       gap: 32px;
     }
     
-    /* Flip DOM visual order on mobile viewports so Featured Video leads the section */
+    /* On small tablet and mobile screens, the main video stays securely at the top */
     .video-main-wrapper {
       order: 1;
     }
@@ -303,7 +302,6 @@
   const playlistContainer = document.getElementById("videoPlaylist");
   const mainVideoContainer = document.getElementById("mainVideoContainer");
 
-  // Reusable Native Player Embed Injector Engine (Supports YouTube & Vimeo)
   function injectVideoEmbed(container, videoId, platform = 'youtube') {
     let embedUrl = '';
     if (platform === 'youtube') {
@@ -321,7 +319,6 @@
     `;
   }
 
-  // Bind trigger click logic on Featured Element Hero
   mainVideoContainer.querySelector('.video-play-btn').addEventListener('click', function() {
     const vId = this.getAttribute('data-id');
     const platform = this.getAttribute('data-platform') || 'youtube';
@@ -329,9 +326,7 @@
   });
 
   async function loadPlaylist() {
-    // Graceful check for default keys
     if (apiKey === "YOUR_YOUTUBE_API_KEY" || playlistId === "YOUR_PLAYLIST_ID") {
-      // Fallback layout generation code for mock environments
       generateMockPlaylist();
       return;
     }
@@ -351,7 +346,7 @@
         });
       }
     } catch (error) {
-      console.error("Error loading YouTube playlist data details:", error);
+      console.error("Error loading YouTube playlist data:", error);
       generateMockPlaylist();
     }
   }
@@ -367,9 +362,7 @@
       <h3>${title}</h3>
     `;
     
-    // Clicking a item element triggers the main view embed injector swap sequence
     el.addEventListener('click', () => {
-      // Scroll smoothly to video focal point on mobile viewports
       mainVideoContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       injectVideoEmbed(mainVideoContainer, id, 'youtube');
     });
