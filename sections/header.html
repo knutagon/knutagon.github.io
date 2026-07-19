@@ -1,0 +1,572 @@
+<!-- ══════════════════════════════════════
+     HEADER - WITH SLIDE-IN MENU
+══════════════════════════════════════ -->
+<div class="site-header" 
+     style="
+       --header-bg: #ffffff;
+       --header-text: #1a1f2e;
+       --header-border: #e8e8e8;
+       --header-shadow: rgba(0,0,0,0.08);
+       --header-teal: #0d9488;
+       --header-purple: #7c3aed;
+       --header-purple-hover: #6d28d9;
+       --header-toggle-bg: #e2e8f0;
+       --header-toggle-knob: #ffffff;
+       --header-drawer-bg: #ffffff;
+       --header-nav-hover: #0d9488;
+     ">
+  <div class="header-inner">
+
+    <a class="logo" href="/">
+      <div class="logo-mark">KA</div>
+      <span class="logo-text"><span class="logo-dot">●</span>Knutagon</span>
+    </a>
+
+    <nav class="main-nav">
+      <div class="nav-item">
+        <a class="nav-link active" href="#">Home
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="dropdown">
+          <a href="#">Overview</a>
+          <a href="#">Latest Posts</a>
+          <a href="#">Trending</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-link" href="#">Lifestyle</a></div>
+      <div class="nav-item"><a class="nav-link" href="#">Culture</a></div>
+      <div class="nav-item">
+        <a class="nav-link" href="#">Features
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="dropdown">
+          <a href="#">Long Reads</a>
+          <a href="#">Interviews</a>
+          <a href="#">Columns</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link" href="#">Shop
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="dropdown">
+          <a href="#">Merch</a>
+          <a href="#">Books</a>
+          <a href="#">Bundles</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="header-controls">
+      <a class="btn-cta" href="#">Free Newsletter</a>
+
+      <button class="icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+      </button>
+
+      <label class="theme-toggle" aria-label="Toggle dark mode">
+        <input type="checkbox" id="themeToggle" />
+        <div class="toggle-track">
+          <span class="t-icon sun">☀️</span>
+          <span class="t-icon moon">🌙</span>
+        </div>
+        <div class="toggle-knob"></div>
+      </label>
+
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MOBILE SLIDE-IN DRAWER ===== -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="mobile-drawer-header">
+    <span class="mobile-drawer-logo">Knutagon</span>
+    <button class="close-menu" id="closeMenu" aria-label="Close menu">✕</button>
+  </div>
+  <nav class="mobile-nav">
+    <a class="nav-link active" href="#">Home</a>
+    <a class="nav-link" href="#">Lifestyle</a>
+    <a class="nav-link" href="#">Culture</a>
+    <a class="nav-link" href="#">Features</a>
+    <a class="nav-link" href="#">Shop</a>
+  </nav>
+  <div class="mobile-controls">
+    <a class="btn-cta" href="#" style="flex:1; text-align:center;">Free Newsletter</a>
+    <button class="icon-btn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <circle cx="11" cy="11" r="7"/>
+        <path d="M21 21l-4.35-4.35"/>
+      </svg>
+    </button>
+    <label class="theme-toggle" aria-label="Toggle dark mode">
+      <input type="checkbox" id="themeToggleMobile" />
+      <div class="toggle-track">
+        <span class="t-icon sun">☀️</span>
+        <span class="t-icon moon">🌙</span>
+      </div>
+      <div class="toggle-knob"></div>
+    </label>
+  </div>
+</div>
+
+<!-- ===== OVERLAY ===== -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<style>
+  /* ===== HEADER COLORS (all local) ===== */
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--header-bg, #ffffff);
+    border-bottom: 1px solid var(--header-border, #e8e8e8);
+    box-shadow: 0 2px 16px var(--header-shadow, rgba(0,0,0,0.08));
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--header-teal, #0d9488) 0%, var(--header-purple, #7c3aed) 100%);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--header-text, #1a1f2e);
+    letter-spacing: -0.4px;
+    white-space: nowrap;
+  }
+
+  .logo-dot { color: var(--header-teal, #0d9488); }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .nav-item { position: relative; }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--header-text-secondary, #6b7280);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--header-nav-hover, #0d9488);
+    background: rgba(13,148,136,0.1);
+  }
+
+  .chevron {
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .nav-item:hover .chevron { transform: rotate(180deg); }
+
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: var(--header-bg, #ffffff);
+    border: 1px solid var(--header-border, #e8e8e8);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 160px;
+    box-shadow: 0 2px 16px var(--header-shadow, rgba(0,0,0,0.08));
+    z-index: 100;
+  }
+
+  .nav-item:hover .dropdown { display: block; }
+
+  .dropdown a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--header-text-secondary, #6b7280);
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .dropdown a:hover {
+    color: var(--header-nav-hover, #0d9488);
+    background: rgba(13,148,136,0.1);
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 20px;
+    background: var(--header-purple, #7c3aed);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    line-height: 1;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-cta:hover {
+    background: var(--header-purple-hover, #6d28d9);
+    transform: translateY(-1px);
+  }
+
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(13,148,136,0.1);
+    color: var(--header-teal, #0d9488);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .icon-btn:hover {
+    background: var(--header-teal, #0d9488);
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+
+  .icon-btn svg { width: 17px; height: 17px; }
+
+  .theme-toggle {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .theme-toggle input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--header-toggle-bg, #e2e8f0);
+    border-radius: 999px;
+    transition: background 0.3s;
+    overflow: hidden;
+  }
+
+  .t-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .t-icon.sun { left: 5px; }
+  .t-icon.moon { right: 4px; }
+
+  .toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: var(--header-toggle-knob, #ffffff);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .theme-toggle input:checked ~ .toggle-knob {
+    transform: translateX(24px);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+    z-index: 1001;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--header-text, #1a1f2e);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* ===== MOBILE DRAWER ===== */
+  .mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    max-width: 80vw;
+    height: 100vh;
+    background: var(--header-drawer-bg, #ffffff);
+    box-shadow: 0 0 40px var(--header-shadow, rgba(0,0,0,0.2));
+    z-index: 9999;
+    padding: 24px 24px 32px;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .mobile-drawer.open { right: 0; }
+
+  .mobile-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--header-border, #e8e8e8);
+    margin-bottom: 20px;
+  }
+
+  .mobile-drawer-logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--header-text, #1a1f2e);
+  }
+
+  .close-menu {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--header-text, #1a1f2e);
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: transform 0.2s;
+  }
+
+  .close-menu:hover { transform: rotate(90deg); }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .mobile-nav .nav-link {
+    padding: 12px 16px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .mobile-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid var(--header-border, #e8e8e8);
+    margin-top: 8px;
+  }
+
+  .mobile-controls .btn-cta { flex: 1; justify-content: center; }
+
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .drawer-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ===== DARK MODE OVERRIDES ===== */
+  [data-theme="dark"] .site-header {
+    --header-bg: #1a1d27;
+    --header-text: #f1f5f9;
+    --header-border: #2a2d3a;
+    --header-shadow: rgba(0,0,0,0.4);
+    --header-toggle-bg: #7c3aed;
+    --header-toggle-knob: #f1f5f9;
+    --header-drawer-bg: #1a1d27;
+    --header-nav-hover: #2dd4bf;
+    --header-text-secondary: #94a3b8;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .main-nav { display: none; }
+    .hamburger { display: flex; }
+    .header-controls .btn-cta,
+    .header-controls .icon-btn { display: none; }
+    .header-controls .theme-toggle { display: inline-block; }
+  }
+
+  @media (max-width: 480px) {
+    .header-inner { padding: 0 16px; gap: 12px; }
+    .logo-text { font-size: 17px; }
+    .logo-mark { width: 30px; height: 30px; font-size: 12px; }
+    .mobile-drawer { width: 280px; padding: 20px; }
+  }
+</style>
+
+<script>
+  (function() {
+    const html = document.documentElement;
+    const desktopToggle = document.getElementById('themeToggle');
+    const mobileToggle = document.getElementById('themeToggleMobile');
+    const hamburger = document.getElementById('hamburger');
+    const closeMenu = document.getElementById('closeMenu');
+    const drawer = document.getElementById('mobileDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+
+    function setTheme(dark) {
+      html.setAttribute('data-theme', dark ? 'dark' : 'light');
+      if (desktopToggle) desktopToggle.checked = dark;
+      if (mobileToggle) mobileToggle.checked = dark;
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+
+    if (localStorage.getItem('theme') === 'dark') setTheme(true);
+
+    if (desktopToggle) {
+      desktopToggle.addEventListener('change', () => setTheme(desktopToggle.checked));
+    }
+    if (mobileToggle) {
+      mobileToggle.addEventListener('change', () => setTheme(mobileToggle.checked));
+    }
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      overlay.classList.add('active');
+      hamburger.classList.add('active');
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      overlay.classList.remove('active');
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        if (drawer.classList.contains('open')) {
+          closeDrawer();
+        } else {
+          openDrawer();
+        }
+      });
+    }
+
+    if (closeMenu) closeMenu.addEventListener('click', closeDrawer);
+    if (overlay) overlay.addEventListener('click', closeDrawer);
+
+    drawer.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        closeDrawer();
+      }
+    });
+  })();
+</script>
