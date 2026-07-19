@@ -18,6 +18,12 @@
       --global-text: #f5f5f5;
     }
 
+    /* THE FIX: Hard-locks the HTML element against right-side boundary blowouts */
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -27,10 +33,22 @@
       padding-top: 68px; /* matches .site-header height */
       transition: background-color var(--transition-speed), color var(--transition-speed);
       overflow-x: hidden;
+      width: 100%;
     }
 
     body.menu-active {
       overflow: hidden;
+    }
+
+    /* THE FIX: Drops the off-screen mobile drawer completely out of the layout calculations when closed */
+    .mobile-drawer {
+      visibility: hidden;
+      transition: transform 0.3s ease, visibility 0.3s ease !important;
+    }
+
+    /* THE FIX: Restores layout calculations instantly when the hamburger menu is toggled active */
+    body.menu-active .mobile-drawer {
+      visibility: visible;
     }
 
     .menu-overlay {
