@@ -99,59 +99,99 @@
 </section>
 
 <style>
-  /* ── CSS VARIABLES ── */
+  /* ════════════════════════════════════════════════════════════════
+     MANUAL LIGHT MODE OVERRIDES (EDIT THESE VALUES FOR DEFAULT LIGHT)
+     ════════════════════════════════════════════════════════════════ */
   .faq-section {
-    --faq-bg: #ffffff; 
-    --faq-item-bg: #f9fafb; 
-    --faq-item-hover: #f3f4f6;
-    --faq-item-active: #f0fdfa;
-    --faq-border: #e5e7eb; 
-    --faq-border-hover: #d1d5db;
-    --faq-border-active: #5cbbb2;
-    --faq-txt-main: #111827; /* Deep charcoal dark text */
-    --faq-txt-muted: #374151; /* High-contrast gray text for readable answers */
-    --faq-accent: #0d9488;
-    --faq-accent-hover: #14b8a6;
-    --faq-arrow: #4b5563; /* Dark gray for visible arrows */
+    background-color: #ffffff !important;
   }
+  /* Charcoal Black for Accordion Questions */
+  .faq-section .faq-list .faq-item .faq-q-text {
+    color: #111827 !important; 
+  }
+  /* Clean Dark Grey for Accordion Body Text */
+  .faq-section .faq-list .faq-item .faq-answer-content p.faq-a-text {
+    color: #374151 !important; 
+  }
+  /* Light Mode Container/Card Backgrounds */
+  .faq-section .faq-list .faq-item {
+    background-color: #f9fafb !important;
+    border-color: #e5e7eb !important;
+  }
+  .faq-section .faq-list .faq-item:hover {
+    background-color: #f3f4f6 !important;
+    border-color: #d1d5db !important;
+  }
+  .faq-section .faq-list .faq-item.active {
+    background-color: #f0fdfa !important;
+    border-color: #5cbbb2 !important;
+  }
+  /* Light Mode Heading Text */
+  .faq-section .faq-title { color: #111827 !important; }
+  .faq-section .faq-sub { color: #4b5563 !important; }
+  .faq-section .faq-icon { color: #4b5563 !important; }
 
-  /* Automatically adapt if the system or body explicitly calls dark mode */
+  /* ════════════════════════════════════════════════════════════════
+     DARK MODE LOGIC (Triggers only when dark framework rules are active)
+     ════════════════════════════════════════════════════════════════ */
   @media (prefers-color-scheme: dark) {
-    .faq-section {
-      --faq-bg: transparent; 
-      --faq-item-bg: rgba(255, 255, 255, 0.03);
-      --faq-item-hover: rgba(255, 255, 255, 0.05);
-      --faq-item-active: rgba(255, 255, 255, 0.04);
-      --faq-border: rgba(255, 255, 255, 0.06);
-      --faq-border-hover: rgba(255, 255, 255, 0.12);
-      --faq-border-active: rgba(13, 148, 136, 0.3);
-      --faq-txt-main: #f3f4f6; 
-      --faq-txt-muted: #9ca3af;
-      --faq-arrow: #9ca3af;
+    .faq-section { background-color: transparent !important; }
+    .faq-section .faq-title { color: #f3f4f6 !important; }
+    .faq-section .faq-sub { color: #9ca3af !important; }
+    .faq-section .faq-icon { color: #9ca3af !important; }
+    .faq-section .faq-list .faq-item {
+      background-color: rgba(255, 255, 255, 0.03) !important;
+      border-color: rgba(255, 255, 255, 0.06) !important;
     }
+    .faq-section .faq-list .faq-item:hover {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+    }
+    .faq-section .faq-list .faq-item.active {
+      background-color: rgba(255, 255, 255, 0.04) !important;
+      border-color: rgba(13, 148, 136, 0.3) !important;
+    }
+    .faq-section .faq-list .faq-item .faq-q-text { color: #f3f4f6 !important; }
+    .faq-section .faq-list .faq-item .faq-answer-content p.faq-a-text { color: #9ca3af !important; }
   }
 
   [data-theme="dark"] .faq-section,
   body.dark-mode .faq-section {
-    --faq-bg: transparent;
-    --faq-item-bg: rgba(255, 255, 255, 0.03);
-    --faq-item-hover: rgba(255, 255, 255, 0.05);
-    --faq-item-active: rgba(255, 255, 255, 0.04);
-    --faq-border: rgba(255, 255, 255, 0.06);
-    --faq-border-hover: rgba(255, 255, 255, 0.12);
-    --faq-border-active: rgba(13, 148, 136, 0.3);
-    --faq-txt-main: #f3f4f6;
-    --faq-txt-muted: #9ca3af;
-    --faq-arrow: #9ca3af;
+    background-color: transparent !important;
   }
+  [data-theme="dark"] .faq-section .faq-title,
+  body.dark-mode .faq-section .faq-title { color: #f3f4f6 !important; }
+  [data-theme="dark"] .faq-section .faq-sub,
+  body.dark-mode .faq-section .faq-sub { color: #9ca3af !important; }
+  [data-theme="dark"] .faq-section .faq-icon,
+  body.dark-mode .faq-section .faq-icon { color: #9ca3af !important; }
+  
+  [data-theme="dark"] .faq-section .faq-list .faq-item,
+  body.dark-mode .faq-section .faq-list .faq-item {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+  }
+  [data-theme="dark"] .faq-section .faq-list .faq-item:hover,
+  body.dark-mode .faq-section .faq-list .faq-item:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  [data-theme="dark"] .faq-section .faq-list .faq-item.active,
+  body.dark-mode .faq-section .faq-list .faq-item.active {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(13, 148, 136, 0.3) !important;
+  }
+  [data-theme="dark"] .faq-section .faq-list .faq-item .faq-q-text,
+  body.dark-mode .faq-section .faq-list .faq-item .faq-q-text { color: #f3f4f6 !important; }
+  [data-theme="dark"] .faq-section .faq-list .faq-item .faq-answer-content p.faq-a-text,
+  body.dark-mode .faq-section .faq-list .faq-item .faq-answer-content p.faq-a-text { color: #9ca3af !important; }
 
-  /* ── MAIN RENDER LAYOUT ── */
+  /* ── MAIN STRUCTURE RENDER LAYOUT ── */
   .faq-section {
     max-width: 820px;
     margin: 0 auto;
     padding: 80px 32px;
     box-sizing: border-box;
-    background-color: var(--faq-bg); 
     transition: background-color 0.25s;
   }
 
@@ -163,14 +203,12 @@
   .faq-title {
     font-size: clamp(24px, 3.5vw, 36px);
     font-weight: 800;
-    color: var(--faq-txt-main) !important; 
     letter-spacing: -0.02em;
     margin: 0 0 12px 0;
   }
 
   .faq-sub {
     font-size: 15px;
-    color: var(--faq-txt-muted) !important;
     margin: 0;
     line-height: 1.5;
   }
@@ -182,21 +220,10 @@
   }
 
   .faq-item {
-    background-color: var(--faq-item-bg) !important;
-    border: 1px solid var(--faq-border) !important;
+    border: 1px solid;
     border-radius: 8px;
     overflow: hidden;
     transition: background-color 0.25s, border-color 0.25s;
-  }
-
-  .faq-item:hover {
-    background-color: var(--faq-item-hover) !important;
-    border-color: var(--faq-border-hover) !important;
-  }
-
-  .faq-item.active {
-    background-color: var(--faq-item-active) !important;
-    border-color: var(--faq-border-active) !important;
   }
 
   .faq-question {
@@ -212,13 +239,11 @@
     cursor: pointer;
     box-sizing: border-box;
     outline: none;
-    -webkit-appearance: none; /* Strips mobile browser button traits */
     appearance: none;
+    -webkit-appearance: none;
   }
 
-  /* Target the span and text explicitly to blow past user-agent defaults */
   .faq-q-text {
-    color: var(--faq-txt-main) !important;
     font-weight: 600;
     font-size: 15.5px;
     transition: color 0.2s;
@@ -227,17 +252,15 @@
   .faq-icon {
     width: 16px;
     height: 16px;
-    color: var(--faq-arrow) !important;
     flex-shrink: 0;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s;
   }
 
   .faq-item.active .faq-icon {
     transform: rotate(180deg);
-    color: var(--faq-accent) !important;
+    color: #0d9488 !important; /* Active teal arrow state */
   }
 
-  /* ── ANIMS ── */
   .faq-answer-wrapper {
     display: grid;
     grid-template-rows: 0fr;
@@ -252,16 +275,13 @@
     overflow: hidden;
   }
 
-  /* Forces dark dark grey on answer paragraphs */
   .faq-answer-content p.faq-a-text {
     padding: 0 24px 20px;
     margin: 0;
-    color: var(--faq-txt-muted) !important;
     font-size: 14.5px;
     line-height: 1.65;
   }
 
-  /* ── LINK ── */
   .faq-footer {
     text-align: center;
     margin-top: 40px;
@@ -271,7 +291,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: var(--faq-accent) !important;
+    color: #0d9488 !important;
     font-weight: 600;
     text-decoration: none;
     font-size: 14px;
@@ -279,7 +299,7 @@
   }
 
   .faq-link:hover {
-    color: var(--faq-accent-hover) !important;
+    color: #14b8a6 !important;
   }
 
   .faq-link svg {
@@ -301,7 +321,6 @@
 </style>
 
 <script>
-  // Re-applied your original dynamic load listener logic safely
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
       const currentItem = btn.parentElement;
