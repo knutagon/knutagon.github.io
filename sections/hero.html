@@ -4,7 +4,7 @@
 <section class="hero-section">
   <div class="hero-inner">
 
-    <!-- FEATURED POST (Dynamically Injected) -->
+    <!-- FEATURED POST -->
     <a class="hero-featured" id="hero-featured-post" href="#">
       <img class="hero-featured-img" src="" alt="Featured post" />
       <div class="hero-featured-overlay"></div>
@@ -29,7 +29,6 @@
         >
           Popular
         </button>
-        <!-- Hidden on mobile via mobile-hide-recent class -->
         <button 
           class="hero-tab mobile-hide-recent" 
           data-tab="recent" 
@@ -42,14 +41,10 @@
       </div>
 
       <!-- POPULAR LIST -->
-      <div class="hero-list active" id="tab-popular">
-        <!-- Populated via JavaScript -->
-      </div>
+      <div class="hero-list active" id="tab-popular"></div>
 
       <!-- RECENT LIST -->
-      <div class="hero-list mobile-hide-recent" id="tab-recent">
-        <!-- Populated via JavaScript -->
-      </div>
+      <div class="hero-list mobile-hide-recent" id="tab-recent"></div>
 
     </div>
   </div>
@@ -63,64 +58,72 @@
 </section>
 
 <script>
-  // Configured specifically for knutagon/knutagon.github.io repository
-  const GITHUB_USER = 'knutagon';
-  const GITHUB_REPO = 'knutagon.github.io';
+  // Add your fixed markdown filenames here once. No JSON files or GitHub Actions needed.
+  const BLOG_FILES = [
+    "welcome.md",
+    "second-post.md",
+    "third-post.md"
+  ];
 
   async function initHeroSection() {
     try {
-      const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/git/trees/main?recursive=1`);
-      const data = await response.json();
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      const basePath = pathParts.length > 1 ? '/' + pathParts[0] + '/' : './';
+      const postsDir = `${basePath}posts/`.replace(/\/+/g, '/');
 
-      if (!data.tree) return;
+      const postPromises = BLOG_FILES.map(async (filename) => {
+        try {
+          const res = await fetch(`${postsDir}${filename}`);
+          if (!res.ok) return null;
+          const text = await res.text();
+          const lines = text.split('\n');
 
-      // Filter files inside the "posts/" folder
-      const postFiles = data.tree.filter(node => node.path.startsWith('posts/') && node.type === 'blob');
+          let meta = {
+            title: filename.replace('.md', ''),
+            category: 'General',
+            date: 'Recent',
+            timestamp: 0,
+            views: Math.floor(Math.random() * 400) + 100,
+            image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80',
+            author: 'Katen Doe',
+            url: `post.html?file=${filename}`
+          };
 
-      let blogPosts = [];
-      
-      postFiles.forEach((file, index) => {
-        if (file.path.endsWith('.html') || file.path.endsWith('.md')) {
-          let fileName = file.path.split('/').pop();
-          if (fileName === 'index.html' || fileName === 'README.md') return;
-
-          let titleFormatted = fileName.replace(/\.[^/.]+$/, "").replace(/-/g, ' ');
-          titleFormatted = titleFormatted.charAt(0).toUpperCase() + titleFormatted.slice(1);
-
-          let postUrl = file.path;
-          if (file.path.endsWith('.md')) {
-            postUrl = file.path.replace('.md', '.html');
+          for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            if (line.startsWith('title:')) meta.title = line.replace('title:', '').trim().replace(/['"]/g, '');
+            if (line.startsWith('category:')) meta.category = line.replace('category:', '').trim().replace(/['"]/g, '');
+            if (line.startsWith('date:')) {
+              meta.date = line.replace('date:', '').trim().replace(/['"]/g, '');
+              meta.timestamp = new Date(meta.date).getTime() || Date.now();
+            }
+            if (line.startsWith('image:')) meta.image = line.replace('image:', '').trim().replace(/['"]/g, '');
+            if (line.startsWith('author:')) meta.author = line.replace('author:', '').trim().replace(/['"]/g, '');
+            if (line === '---' && i > 0) break;
           }
 
-          blogPosts.push({
-            id: index + 1,
-            title: titleFormatted,
-            category: "General",
-            author: "Katen Doe",
-            date: "Recently Added",
-            timestamp: Date.now() - (index * 86400000), 
-            views: Math.floor(Math.random() * 2000) + 100, 
-            image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80", 
-            url: postUrl
-          });
+          return meta;
+        } catch (e) {
+          return null;
         }
       });
 
+      const blogPosts = (await Promise.all(postPromises)).filter(Boolean);
       if (blogPosts.length === 0) return;
 
-      // 1. FEATURED POST
       const sortedByRecent = [...blogPosts].sort((a, b) => b.timestamp - a.timestamp);
       const featured = sortedByRecent[0];
 
-      document.getElementById('hero-featured-post').href = featured.url;
-      document.querySelector('.hero-featured-img').src = featured.image;
-      document.getElementById('hero-category').textContent = featured.category;
-      document.getElementById('hero-title').textContent = featured.title;
-      document.getElementById('hero-author').textContent = featured.author;
-      document.getElementById('hero-date').textContent = featured.date;
+      // 1. FEATURED POST
+      document.getElementById('hero-featured-post').href = featured.url || '#';
+      document.querySelector('.hero-featured-img').src = featured.image || '';
+      document.getElementById('hero-category').textContent = featured.category || '';
+      document.getElementById('hero-title').textContent = featured.title || '';
+      document.getElementById('hero-author').textContent = featured.author || '';
+      document.getElementById('hero-date').textContent = featured.date || '';
 
       // 2. RECENT TAB
-      const recentListHTML = sortedByRecent.slice(0, 4).map(post => `
+      document.getElementById('tab-recent').innerHTML = sortedByRecent.slice(0, 4).map(post => `
         <a class="hero-post" href="${post.url}">
           <img src="${post.image}" alt="" />
           <div class="hero-post-info">
@@ -129,11 +132,10 @@
           </div>
         </a>
       `).join('');
-      document.getElementById('tab-recent').innerHTML = recentListHTML;
 
       // 3. POPULAR TAB
       const sortedByPopular = [...blogPosts].sort((a, b) => b.views - a.views);
-      const popularListHTML = sortedByPopular.slice(0, 4).map(post => `
+      document.getElementById('tab-popular').innerHTML = sortedByPopular.slice(0, 4).map(post => `
         <a class="hero-post" href="${post.url}">
           <img src="${post.image}" alt="" />
           <div class="hero-post-info">
@@ -142,14 +144,12 @@
           </div>
         </a>
       `).join('');
-      document.getElementById('tab-popular').innerHTML = popularListHTML;
 
     } catch (error) {
-      console.error("Could not load posts from GitHub API:", error);
+      console.error("Error loading hero section posts:", error);
     }
   }
 
-  // Tab switching helper function
   function switchHeroTab(tabName, buttonElement) {
     const sidebar = buttonElement.closest('.hero-sidebar');
     
@@ -167,7 +167,6 @@
     sidebar.querySelector(`#tab-${tabName}`).classList.add('active');
   }
 
-  // Run on page load
   document.addEventListener('DOMContentLoaded', initHeroSection);
 </script>
 
@@ -189,7 +188,6 @@
     width: 100%;
   }
 
-  /* ── FEATURED ── */
   .hero-featured {
     position: relative;
     display: block;
@@ -269,7 +267,6 @@
 
   .hero-dot { opacity: 0.5; }
 
-  /* ── SIDEBAR ── */
   .hero-sidebar {
     display: flex;
     flex-direction: column;
@@ -277,7 +274,6 @@
     min-width: 0;
   }
 
-  /* TABS */
   .hero-tabs {
     display: flex;
     gap: 0;
@@ -303,7 +299,6 @@
     border-bottom-color: var(--purple, #7c3aed);
   }
 
-  /* LIST DISPLAY SETTINGS */
   .hero-list {
     display: none;
     flex-direction: column;
@@ -357,7 +352,6 @@
     color: var(--text-secondary, #6b7280);
   }
 
-  /* ── SCROLL BUTTON ── */
   .hero-scroll-btn {
     display: flex;
     align-items: center;
@@ -381,36 +375,17 @@
     50%        { transform: translateY(5px); }
   }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    .hero-section {
-      padding: 24px 20px;
-    }
-    .hero-inner {
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-    .hero-featured {
-      min-height: unset;
-      aspect-ratio: 16 / 10;
-    }
-    .mobile-hide-recent {
-      display: none !important;
-    }
+    .hero-section { padding: 24px 20px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    .hero-featured { min-height: unset; aspect-ratio: 16 / 10; }
+    .mobile-hide-recent { display: none !important; }
   }
 
   @media (max-width: 480px) {
-    .hero-section {
-      padding: 16px 12px 32px;
-    }
-    .hero-featured {
-      aspect-ratio: 4 / 3;
-    }
-    .hero-featured-content {
-      padding: 20px 16px;
-    }
-    .hero-title {
-      font-size: 20px;
-    }
+    .hero-section { padding: 16px 12px 32px; }
+    .hero-featured { aspect-ratio: 4 / 3; }
+    .hero-featured-content { padding: 20px 16px; }
+    .hero-title { font-size: 20px; }
   }
 </style>
