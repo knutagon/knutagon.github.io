@@ -40,6 +40,17 @@
       overflow: hidden;
     }
 
+    /* Structural baseline hidden state (Transitions are cleanly inherited from header.html) */
+    .mobile-drawer {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    body.menu-active .mobile-drawer {
+      visibility: visible;
+      pointer-events: auto;
+    }
+
     .menu-overlay {
       position: fixed;
       top: 0;
