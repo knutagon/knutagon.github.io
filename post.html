@@ -20,8 +20,8 @@
             background: var(--bg-color);
             color: var(--text-primary);
             max-width: 800px;
-            margin: 60px auto;
-            padding: 0 20px;
+            margin: 0 auto;
+            padding: 0 20px 60px 20px;
             line-height: 1.8;
         }
 
@@ -176,12 +176,39 @@
 </head>
 <body>
 
+    <!-- Header section target -->
+    <div id="header"></div>
+
     <article id="article-container">
         <p style="color: var(--text-secondary); text-align: center; margin-top: 80px;">Loading article...</p>
     </article>
 
+    <!-- Footer section target -->
+    <div id="footer"></div>
+
     <script>
+        async function loadSection(elementId, file) {
+            try {
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                pathParts.pop(); // Remove 'post.html'
+                const basePath = pathParts.length > 0 ? '/' + pathParts.join('/') + '/' : '/';
+                const fetchUrl = `${basePath}${file}`.replace(/\/+/g, '/');
+
+                const response = await fetch(fetchUrl);
+                if (response.ok) {
+                    const htmlText = await response.text();
+                    document.getElementById(elementId).innerHTML = htmlText;
+                }
+            } catch (e) {
+                console.log(`Could not load section: ${file}`);
+            }
+        }
+
         async function loadPost() {
+            // Load your shared sections automatically using your function convention
+            loadSection('header', 'header.html');
+            loadSection('footer', 'footer.html');
+
             const params = new URLSearchParams(window.location.search);
             const mdFile = params.get('file');
             const container = document.getElementById('article-container');
@@ -192,7 +219,6 @@
             }
 
             try {
-                // Dynamically computes path to handle GitHub Pages root vs subpath correctly
                 const pathParts = window.location.pathname.split('/').filter(Boolean);
                 pathParts.pop(); // Remove 'post.html'
                 const basePath = pathParts.length > 0 ? '/' + pathParts.join('/') + '/' : '/';
@@ -202,7 +228,6 @@
                 if (!response.ok) throw new Error("Post not found");
                 const markdownText = await response.text();
 
-                // Parse Frontmatter metadata block at the top of the .md file
                 const lines = markdownText.split('\n');
                 let metadata = {
                     title: "Untitled Post",
@@ -231,14 +256,10 @@
                 }
 
                 const rawBody = lines.slice(bodyStartIndex).join('\n');
-
-                // Compute Read Time (~200 words per minute)
                 const wordCount = rawBody.trim().split(/\s+/).length;
                 const readTime = Math.max(1, Math.ceil(wordCount / 200)) + " min read";
-
                 const htmlContent = marked.parse(rawBody);
 
-                // Render structure
                 container.innerHTML = `
                     <div class="category">${metadata.category}</div>
                     <h1 class="post-title">${metadata.title}</h1>
