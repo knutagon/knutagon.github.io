@@ -17,10 +17,21 @@
 <script>
   async function initHeroSection() {
     try {
-      const response = await fetch('sections/latest.html');
+      // Handles both absolute root-level and GitHub Pages repository subpaths automatically
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      const repoName = isGitHubPages ? '/' + window.location.pathname.split('/')[1] + '/' : '/';
+      const fetchPath = `${repoName}sections/latest.html`.replace(/\/+/g, '/');
+
+      const response = await fetch(fetchPath);
       if (response.ok) {
         const html = await response.text();
         document.getElementById('hero-container').innerHTML = html;
+      } else {
+        // Fallback direct root fetch if repo path variation fails
+        const fallback = await fetch('/sections/latest.html');
+        if (fallback.ok) {
+          document.getElementById('hero-container').innerHTML = await fallback.text();
+        }
       }
     } catch (error) {
       console.error("Error loading latest section:", error);
