@@ -4,50 +4,53 @@
 <section class="glossary-section">
   <div class="glossary-wrap">
 
-    <!-- HEADER -->
+    <!-- HEADER (Left-aligned to match the image) -->
     <div class="glossary-header">
-      <h2 class="glossary-title">Explore the Soul Dragon™ Glossary</h2>
+      <h2 class="glossary-title">Explore the Soul Dragon™ Glossary</h2>
       <p class="glossary-sub">
         Key concepts, systems, and creative frameworks that define the universe.
       </p>
     </div>
 
-    <!-- GRID -->
+    <!-- CLEAN, BORDERLESS GRID Layout -->
     <div class="glossary-grid">
       <div class="glossary-item">
-        <h3>⚙️ Core Engine</h3>
+        <h3><span>⚙️</span> Core Engine</h3>
         <p>The underlying framework powering all interactive experiences and lore systems.</p>
       </div>
 
       <div class="glossary-item">
-        <h3>🌌 Lore Nexus</h3>
+        <h3><span>🌌</span> Lore Nexus</h3>
         <p>A dynamic archive connecting stories, characters, and mythic timelines across worlds.</p>
       </div>
 
       <div class="glossary-item">
-        <h3>🧩 Modular Realms</h3>
+        <h3><span>🧩</span> Modular Realms</h3>
         <p>Independent creative zones that can merge or evolve through collaborative design.</p>
       </div>
 
       <div class="glossary-item">
-        <h3>🔥 Catalyst Nodes</h3>
+        <h3><span>🔥</span> Catalyst Nodes</h3>
         <p>Energy points within the system that trigger transformation, creation, or narrative shifts.</p>
       </div>
 
       <div class="glossary-item">
-        <h3>💎 Artifact Protocol</h3>
-        <p>Defines how digital relics are minted, stored, and shared within the Soul Dragon™ network.</p>
+        <h3><span>💎</span> Artifact Protocol</h3>
+        <p>Defines how digital relics are minted, stored, and shared within the Soul Dragon™ network.</p>
       </div>
 
       <div class="glossary-item">
-        <h3>🕊️ Creator Pathways</h3>
+        <h3><span>🕊️</span> Creator Pathways</h3>
         <p>Guided routes for artists and writers to expand the universe through their own mythos.</p>
       </div>
     </div>
 
     <!-- LINK TO FULL PAGE -->
     <div class="glossary-footer">
-      <a href="/glossary" class="glossary-link">View Full Glossary →</a>
+      <a href="/glossary" class="glossary-link">
+        <span>View Full Glossary</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
 
   </div>
@@ -55,80 +58,127 @@
 
 <style>
   .glossary-section {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 80px 32px;
-    background: #0f0f1a;
-    color: #fff;
+    width: 100%;
+    background: #0b0813; /* Deep dark palette matching reference image background */
+    color: #ffffff;
+    padding: 100px 0;
+    box-sizing: border-box;
   }
 
+  .glossary-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+  }
+
+  /* Left-aligned header framework */
   .glossary-header {
-    text-align: center;
-    margin-bottom: 64px;
+    text-align: left;
+    margin-bottom: 72px;
+    max-width: 700px;
   }
 
   .glossary-title {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 800;
-    color: #fff;
+    font-size: clamp(32px, 4.5vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin: 0 0 16px 0;
+    line-height: 1.15;
   }
 
   .glossary-sub {
-    font-size: 16px;
-    color: rgba(255,255,255,0.7);
-    margin-top: 10px;
+    font-size: 17px;
+    color: #94929c; /* Clean gray secondary text tracking */
+    line-height: 1.6;
+    margin: 0;
   }
 
+  /* Sharp 3-column asymmetric layout */
   .glossary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px 48px; /* Roomy grid layout spacing */
   }
 
   .glossary-item {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 28px;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .glossary-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(124,58,237,0.25);
+    background: transparent;
+    border: none;
+    padding: 0;
   }
 
   .glossary-item h3 {
-    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
     font-weight: 700;
-    margin-bottom: 10px;
-    color: #fff;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px 0;
+    color: #ffffff;
+  }
+
+  .glossary-item h3 span {
+    font-size: 16px;
+    opacity: 0.9;
+    display: inline-flex;
+    align-items: center;
   }
 
   .glossary-item p {
-    font-size: 15px;
-    color: rgba(255,255,255,0.85);
-    line-height: 1.6;
+    font-size: 14.5px;
+    color: #94929c;
+    line-height: 1.65;
+    margin: 0;
   }
 
+  /* Footer Layout Link Styling */
   .glossary-footer {
-    text-align: center;
+    text-align: left;
     margin-top: 64px;
   }
 
   .glossary-link {
-    color: #7c3aed;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #0d9488;
+    font-weight: 600;
     text-decoration: none;
     font-size: 15px;
     transition: color 0.2s;
   }
 
   .glossary-link:hover {
-    color: #a78bfa;
+    color: #14b8a6;
   }
 
-  @media (max-width: 700px) {
-    .glossary-section { padding: 60px 20px; }
+  .glossary-link svg {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.2s;
+  }
+  
+  .glossary-link:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Responsive breakpoints matching typical presentation viewports */
+  @media (max-width: 1024px) {
+    .glossary-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 48px 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .glossary-section { padding: 72px 0; }
+    .glossary-wrap { padding: 0 24px; }
+    .glossary-header { margin-bottom: 48px; }
+    .glossary-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
   }
 </style>
