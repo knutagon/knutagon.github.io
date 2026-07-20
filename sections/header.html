@@ -47,7 +47,7 @@
     <div class="header-controls">
       <a class="btn-cta" href="#">Free Newsletter</a>
 
-      <button class="icon-btn" aria-label="Search">
+      <button class="icon-btn search-trigger" aria-label="Search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <circle cx="11" cy="11" r="7"/>
           <path d="M21 21l-4.35-4.35"/>
@@ -87,7 +87,7 @@
     <div class="mobile-controls">
       <a class="btn-cta" href="#">Free Newsletter</a>
       <div class="control-row">
-        <button class="icon-btn" aria-label="Search">
+        <button class="icon-btn search-trigger" aria-label="Search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <circle cx="11" cy="11" r="7"/>
             <path d="M21 21l-4.35-4.35"/>
@@ -103,6 +103,19 @@
         </label>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- 🔍 LIVE INLINE OVERLAY SEARCH COMPONENT -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-container">
+    <div class="search-input-wrapper">
+      <!-- Gray inline backdrop text suggestion engine alignment -->
+      <div class="search-suggestion-hint" id="searchHint"></div>
+      <input type="text" id="searchInput" placeholder="Search sections..." autocomplete="off" spellcheck="false">
+      <button class="search-close" id="searchClose">✕</button>
+    </div>
+    <div class="search-results-list" id="searchResults"></div>
   </div>
 </div>
 
@@ -122,11 +135,12 @@
     --toggle-bg: #e2e8f0;
     --toggle-knob-color: #ffffff;
     --nav-hover-text: #0d9488;
+    --search-hint: #9ca3af;
   }
 
   [data-theme="dark"] {
-    --bg: #0f1117;             /* Fixed: Reinstated core page background variable */
-    --surface: #1a1d27;        /* Header background token */
+    --bg: #0f1117;
+    --surface: #1a1d27;
     --border: #2a2d3a;
     --text-primary: #f1f5f9;
     --text-secondary: #94a3b8;
@@ -136,6 +150,7 @@
     --toggle-bg: #7c3aed;
     --toggle-knob-color: #f1f5f9;
     --nav-hover-text: #2dd4bf;
+    --search-hint: #4b5563;
   }
 
   .site-header {
@@ -418,7 +433,6 @@
     transition: transform 0.25s cubic-bezier(0, 0, 0.2, 1);
   }
 
-  /* Shortened content wrapper: removes space-between behavior */
   .drawer-content-wrapper {
     flex: 1;
     display: flex;
@@ -486,12 +500,131 @@
     width: 100%;
   }
 
+  /* 🎬 SEARCH SYSTEM OVERLAY ANIMATION ENGINE */
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 17, 23, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 3000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 120px 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .search-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: 600px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+  }
+
+  #searchInput {
+    width: 100%;
+    height: 60px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    color: var(--text-primary);
+    position: relative;
+    z-index: 2;
+  }
+
+  .search-suggestion-hint {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: var(--search-hint);
+    pointer-events: none;
+    z-index: 1;
+    white-space: pre;
+  }
+
+  .search-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .search-results-list {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+
+  .search-result-item {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: background 0.15s;
+    border-bottom: 1px solid linear-gradient(to right, var(--border), transparent);
+  }
+
+  .search-result-item:last-child {
+    border-bottom: none;
+  }
+
+  .search-result-item:hover, .search-result-item.selected {
+    background: var(--teal-bg);
+    color: var(--teal);
+  }
+
+  .search-result-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+
+  .search-result-snippet {
+    font-size: 13px;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+
   @media (max-width: 900px) {
     .main-nav { display: none; }
     .hamburger { display: flex; }
     .header-controls .btn-cta,
     .header-controls .icon-btn,
     .header-controls .theme-toggle { display: none; }
+    .search-overlay { padding: 60px 16px; }
   }
 
   @media (max-width: 480px) {
