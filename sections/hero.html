@@ -4,34 +4,28 @@
 <section class="hero-section">
   <div class="hero-inner">
 
-    <!-- FEATURED POST -->
-    <a class="hero-featured" href="#">
-      <img class="hero-featured-img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80" alt="Featured post" />
+    <!-- FEATURED POST (Dynamically Injected) -->
+    <a class="hero-featured" id="hero-featured-post" href="#">
+      <img class="hero-featured-img" src="" alt="Featured post" />
       <div class="hero-featured-overlay"></div>
       <div class="hero-featured-content">
-        <span class="hero-category">Inspiration</span>
-        <h2 class="hero-title">5 Easy Ways You Can Turn Your Future Into Success</h2>
-        <p class="hero-meta"><span class="hero-author">Katen Doe</span> <span class="hero-dot">·</span> August 20, 2022</p>
+        <span class="hero-category" id="hero-category"></span>
+        <h2 class="hero-title" id="hero-title"></h2>
+        <p class="hero-meta"><span class="hero-author" id="hero-author"></span> <span class="hero-dot">·</span> <time id="hero-date"></time></p>
       </div>
     </a>
 
     <!-- SIDEBAR -->
     <div class="hero-sidebar">
 
-      <!-- TABS (Using native inline functions) -->
+      <!-- TABS -->
       <div class="hero-tabs" role="tablist">
         <button 
           class="hero-tab active" 
           data-tab="popular" 
           role="tab" 
           aria-selected="true"
-          onclick="
-            this.parentElement.querySelectorAll('.hero-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-            this.closest('.hero-sidebar').querySelectorAll('.hero-list').forEach(l => l.classList.remove('active'));
-            this.classList.add('active'); 
-            this.setAttribute('aria-selected', 'true');
-            this.closest('.hero-sidebar').querySelector('#tab-popular').classList.add('active');
-          "
+          onclick="switchHeroTab('popular', this)"
         >
           Popular
         </button>
@@ -40,13 +34,7 @@
           data-tab="recent" 
           role="tab" 
           aria-selected="false"
-          onclick="
-            this.parentElement.querySelectorAll('.hero-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-            this.closest('.hero-sidebar').querySelectorAll('.hero-list').forEach(l => l.classList.remove('active'));
-            this.classList.add('active'); 
-            this.setAttribute('aria-selected', 'true');
-            this.closest('.hero-sidebar').querySelector('#tab-recent').classList.add('active');
-          "
+          onclick="switchHeroTab('recent', this)"
         >
           Recent
         </button>
@@ -54,66 +42,12 @@
 
       <!-- POPULAR LIST -->
       <div class="hero-list active" id="tab-popular">
-        <a class="hero-post" href="#">
-          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=120&q=70" alt="" />
-          <div class="hero-post-info">
-            <h3>What Can You Do About Fashion Right Now</h3>
-            <time>August 17, 2022</time>
-          </div>
-        </a>
-        <a class="hero-post" href="#">
-          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=120&q=70" alt="" />
-          <div class="hero-post-info">
-            <h3>3 Easy Ways To Make Your iPhone Faster</h3>
-            <time>August 19, 2022</time>
-          </div>
-        </a>
-        <a class="hero-post" href="#">
-          <img src="https://images.unsplash.com/photo-1495837174058-628aafc7d610?w=120&q=70" alt="" />
-          <div class="hero-post-info">
-            <h3>Your Light Is About To Stop Being Relevant</h3>
-            <time>August 23, 2022</time>
-          </div>
-        </a>
-        <a class="hero-post" href="#">
-          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&q=70" alt="" />
-          <div class="hero-post-info">
-            <h3>Facts About Business That Will Help You Succeed</h3>
-            <time>August 23, 2022</time>
-          </div>
-        </a>
+        <!-- Populated via JavaScript -->
       </div>
 
       <!-- RECENT LIST -->
       <div class="hero-list mobile-hide-recent" id="tab-recent">
-        <a class="hero-post" href="#">
-          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=120&q=70" alt="" />
-          <div class="hero-post-info">
-            <h3>How to Build a Morning Routine That Actually Works</h3>
-            <time>July 10, 2026</time>
-          </div>
-        </a>
-        <a class="hero-post" href="#">
-          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=120&q=70" alt="" />
-          <div class="hero-post-info">
-            <h3>The Future of AI in Everyday Life</h3>
-            <time>July 9, 2026</time>
-          </div>
-        </a>
-        <a class="hero-post" href="#">
-          <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=120&q=70" alt="" />
-          <div class="hero-post-info">
-            <h3>Weekend Escapes: Hidden Gems Near the City</h3>
-            <time>July 8, 2026</time>
-          </div>
-        </a>
-        <a class="hero-post" href="#">
-          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=120&q=70" alt="" />
-          <div class="hero-post-info">
-            <h3>10 Recipes That Will Change Your Meal Prep Game</h3>
-            <time>July 7, 2026</time>
-          </div>
-        </a>
+        <!-- Populated via JavaScript -->
       </div>
 
     </div>
@@ -126,6 +60,128 @@
     </svg>
   </button>
 </section>
+
+<script>
+  // Master list of blog posts
+  let blogPosts = [
+    {
+      id: 1,
+      title: "How to Build a Morning Routine That Actually Works",
+      category: "Inspiration",
+      author: "Katen Doe",
+      date: "July 10, 2026",
+      timestamp: 1783728000,
+      views: 1420,
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&q=80",
+      url: "#"
+    },
+    {
+      id: 2,
+      title: "The Future of AI in Everyday Life",
+      category: "Technology",
+      author: "Katen Doe",
+      date: "July 9, 2026",
+      timestamp: 1783641600,
+      views: 3890,
+      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80",
+      url: "#"
+    },
+    {
+      id: 3,
+      title: "Weekend Escapes: Hidden Gems Near the City",
+      category: "Travel",
+      author: "Katen Doe",
+      date: "July 8, 2026",
+      timestamp: 1783555200,
+      views: 950,
+      image: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=900&q=80",
+      url: "#"
+    },
+    {
+      id: 4,
+      title: "10 Recipes That Will Change Your Meal Prep Game",
+      category: "Lifestyle",
+      author: "Katen Doe",
+      date: "July 7, 2026",
+      timestamp: 1783468800,
+      views: 2150,
+      image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900&q=80",
+      url: "#"
+    },
+    {
+      id: 5,
+      title: "What Can You Do About Fashion Right Now",
+      category: "Fashion",
+      author: "Katen Doe",
+      date: "August 17, 2022",
+      timestamp: 1660694400,
+      views: 4100,
+      image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=120&q=70",
+      url: "#"
+    }
+  ];
+
+  function initHeroSection() {
+    if (blogPosts.length === 0) return;
+
+    // 1. FEATURED POST: Always automatically takes the absolute newest post
+    const sortedByRecent = [...blogPosts].sort((a, b) => b.timestamp - a.timestamp);
+    const featured = sortedByRecent[0];
+
+    document.getElementById('hero-featured-post').href = featured.url;
+    document.querySelector('.hero-featured-img').src = featured.image;
+    document.getElementById('hero-category').textContent = featured.category;
+    document.getElementById('hero-title').textContent = featured.title;
+    document.getElementById('hero-author').textContent = featured.author;
+    document.getElementById('hero-date').textContent = featured.date;
+
+    // 2. RECENT TAB: Sorts chronologically (newest first), takes top 4
+    const recentListHTML = sortedByRecent.slice(0, 4).map(post => `
+      <a class="hero-post" href="${post.url}">
+        <img src="${post.image}" alt="" />
+        <div class="hero-post-info">
+          <h3>${post.title}</h3>
+          <time>${post.date}</time>
+        </div>
+      </a>
+    `).join('');
+    document.getElementById('tab-recent').innerHTML = recentListHTML;
+
+    // 3. POPULAR TAB: Sorts by highest views, takes top 4
+    const sortedByPopular = [...blogPosts].sort((a, b) => b.views - a.views);
+    const popularListHTML = sortedByPopular.slice(0, 4).map(post => `
+      <a class="hero-post" href="${post.url}">
+        <img src="${post.image}" alt="" />
+        <div class="hero-post-info">
+          <h3>${post.title}</h3>
+          <time>${post.date}</time>
+        </div>
+      </a>
+    `).join('');
+    document.getElementById('tab-popular').innerHTML = popularListHTML;
+  }
+
+  // Tab switching helper function
+  function switchHeroTab(tabName, buttonElement) {
+    const sidebar = buttonElement.closest('.hero-sidebar');
+    
+    sidebar.querySelectorAll('.hero-tab').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    sidebar.querySelectorAll('.hero-list').forEach(l => {
+      l.classList.remove('active');
+    });
+
+    buttonElement.classList.add('active');
+    buttonElement.setAttribute('aria-selected', 'true');
+    sidebar.querySelector(`#tab-${tabName}`).classList.add('active');
+  }
+
+  // Run on page load
+  document.addEventListener('DOMContentLoaded', initHeroSection);
+</script>
 
 <style>
   .hero-section {
@@ -350,7 +406,6 @@
       min-height: unset;
       aspect-ratio: 16 / 10;
     }
-    /* Hide Recent Tab and List entirely on mobile */
     .mobile-hide-recent {
       display: none !important;
     }
