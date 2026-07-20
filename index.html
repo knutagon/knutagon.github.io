@@ -40,18 +40,6 @@
       overflow: hidden;
     }
 
-    /* THE FIX: Snappy 0.2s exit animation. Delays visibility hide until slide completes. */
-    .mobile-drawer {
-      visibility: hidden;
-      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.2s !important;
-    }
-
-    /* THE FIX: Snappy 0.25s entrance animation. Instantly activates visibility. */
-    body.menu-active .mobile-drawer {
-      visibility: visible;
-      transition: transform 0.25s cubic-bezier(0, 0, 0.2, 1), visibility 0s linear 0s !important;
-    }
-
     .menu-overlay {
       position: fixed;
       top: 0;
