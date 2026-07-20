@@ -29,6 +29,7 @@
         >
           Popular
         </button>
+        <!-- Hidden on mobile via mobile-hide-recent class -->
         <button 
           class="hero-tab mobile-hide-recent" 
           data-tab="recent" 
@@ -406,6 +407,7 @@
       min-height: unset;
       aspect-ratio: 16 / 10;
     }
+    /* Hides the recent tab button and recent list completely on mobile screens */
     .mobile-hide-recent {
       display: none !important;
     }
