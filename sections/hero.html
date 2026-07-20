@@ -107,7 +107,7 @@
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    overflow: hidden; /* Lock down unexpected layout shifts */
+    overflow: hidden;
   }
 
   .hero-inner {
@@ -236,12 +236,14 @@
 
   /* LISTS */
   .hero-list {
-    display: none;
+    display: none; /* JavaScript switches this to flex */
     flex-direction: column;
     gap: 0;
   }
 
-  .hero-list.active { display: flex; }
+  .hero-list.active {
+    display: flex !important;
+  }
 
   .hero-post {
     display: flex;
@@ -317,7 +319,7 @@
     50%        { transform: translateY(5px); }
   }
 
-  /* ── RESPONSIVE RESPONSIVENESS REPAIRS ── */
+  /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .hero-inner {
       grid-template-columns: minmax(0, 1fr);
@@ -334,7 +336,7 @@
       padding: 24px 16px 40px; 
     }
     .hero-featured {
-      min-height: 280px; /* Safe fallback bounding height box */
+      min-height: 280px;
     }
     .hero-featured-content { 
       padding: 20px 16px; 
@@ -347,29 +349,39 @@
 
 <script>
   (function() {
-    document.addEventListener('click', function(e) {
-      const tab = e.target.closest('.hero-tab');
-      if (!tab) return;
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.hero-tab');
       
-      const parentSection = tab.closest('.hero-sidebar');
-      if (!parentSection) return;
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const parentSidebar = this.closest('.hero-sidebar');
+          if (!parentSidebar) return;
 
-      const tabs = parentSection.querySelectorAll('.hero-tab');
-      const lists = parentSection.querySelectorAll('.hero-list');
+          // Remove active state from all tabs in this container
+          const siblingTabs = parentSidebar.querySelectorAll('.hero-tab');
+          siblingTabs.forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
 
-      tabs.forEach(t => { 
-        t.classList.remove('active'); 
-        t.setAttribute('aria-selected', false); 
+          // Remove active state from all lists in this container
+          const lists = parentSidebar.querySelectorAll('.hero-list');
+          lists.forEach(l => l.classList.remove('active'));
+
+          // Activate current tab
+          this.classList.add('active');
+          this.setAttribute('aria-selected', 'true');
+
+          // Target exact corresponding content container cleanly
+          const targetId = 'tab-' + this.getAttribute('data-tab');
+          const targetList = parentSidebar.querySelector('#' + targetId);
+          if (targetList) {
+            targetList.classList.add('active');
+          }
+        });
       });
-      lists.forEach(l => l.classList.remove('active'));
-
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', true);
-      
-      const targetList = parentSection.querySelector('#tab-' + tab.dataset.tab);
-      if (targetList) {
-        targetList.classList.add('active');
-      }
     });
   })();
 </script>
