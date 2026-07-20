@@ -82,10 +82,15 @@
       postFiles.forEach((file, index) => {
         if (file.path.endsWith('.html') || file.path.endsWith('.md')) {
           let fileName = file.path.split('/').pop();
-          if (fileName === 'index.html') return;
+          if (fileName === 'index.html' || fileName === 'README.md') return;
 
           let titleFormatted = fileName.replace(/\.[^/.]+$/, "").replace(/-/g, ' ');
           titleFormatted = titleFormatted.charAt(0).toUpperCase() + titleFormatted.slice(1);
+
+          let postUrl = file.path;
+          if (file.path.endsWith('.md')) {
+            postUrl = file.path.replace('.md', '.html');
+          }
 
           blogPosts.push({
             id: index + 1,
@@ -96,7 +101,7 @@
             timestamp: Date.now() - (index * 86400000), 
             views: Math.floor(Math.random() * 2000) + 100, 
             image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80", 
-            url: file.path.replace('.md', '.html')
+            url: postUrl
           });
         }
       });
