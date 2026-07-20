@@ -58,19 +58,22 @@
 </section>
 
 <script>
-  // Add your actual markdown filenames here
-  const BLOG_FILES = [
-    "test-post.md",
-    "welcome.md",
-    "second-post.md",
-    "third-post.md"
-  ];
-
   async function initHeroSection() {
     try {
       const isGitHubPages = window.location.hostname.includes('github.io');
       const repoName = isGitHubPages ? '/' + window.location.pathname.split('/')[1] + '/' : '/';
       const postsDir = `${repoName}posts/`.replace(/\/+/g, '/');
+
+      // Loophole: Dynamically fetch posts via GitHub API for knutagon/knutagon.github.io
+      const apiResponse = await fetch('https://api.github.com/repos/knutagon/knutagon.github.io/contents/posts');
+      if (!apiResponse.ok) return;
+      const filesData = await apiResponse.json();
+      
+      const BLOG_FILES = filesData
+        .filter(file => file.name.endsWith('.md'))
+        .map(file => file.name);
+
+      if (BLOG_FILES.length === 0) return;
 
       const postPromises = BLOG_FILES.map(async (filename) => {
         try {
