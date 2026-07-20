@@ -18,10 +18,38 @@
     <!-- SIDEBAR -->
     <div class="hero-sidebar">
 
-      <!-- TABS -->
+      <!-- TABS (Using native inline functions) -->
       <div class="hero-tabs" role="tablist">
-        <button class="hero-tab active" data-tab="popular" role="tab" aria-selected="true">Popular</button>
-        <button class="hero-tab" data-tab="recent" role="tab" aria-selected="false">Recent</button>
+        <button 
+          class="hero-tab active" 
+          data-tab="popular" 
+          role="tab" 
+          aria-selected="true"
+          onclick="
+            this.parentElement.querySelectorAll('.hero-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+            this.closest('.hero-sidebar').querySelectorAll('.hero-list').forEach(l => l.classList.remove('active'));
+            this.classList.add('active'); 
+            this.setAttribute('aria-selected', 'true');
+            this.closest('.hero-sidebar').querySelector('#tab-popular').classList.add('active');
+          "
+        >
+          Popular
+        </button>
+        <button 
+          class="hero-tab mobile-hide-recent" 
+          data-tab="recent" 
+          role="tab" 
+          aria-selected="false"
+          onclick="
+            this.parentElement.querySelectorAll('.hero-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+            this.closest('.hero-sidebar').querySelectorAll('.hero-list').forEach(l => l.classList.remove('active'));
+            this.classList.add('active'); 
+            this.setAttribute('aria-selected', 'true');
+            this.closest('.hero-sidebar').querySelector('#tab-recent').classList.add('active');
+          "
+        >
+          Recent
+        </button>
       </div>
 
       <!-- POPULAR LIST -->
@@ -57,7 +85,7 @@
       </div>
 
       <!-- RECENT LIST -->
-      <div class="hero-list" id="tab-recent">
+      <div class="hero-list mobile-hide-recent" id="tab-recent">
         <a class="hero-post" href="#">
           <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=120&q=70" alt="" />
           <div class="hero-post-info">
@@ -211,8 +239,6 @@
     gap: 0;
     margin-bottom: 20px;
     border-bottom: 2px solid var(--border, #e8e8e8);
-    position: relative;
-    z-index: 5;
   }
 
   .hero-tab {
@@ -226,7 +252,6 @@
     cursor: pointer;
     color: var(--text-secondary, #6b7280);
     transition: color 0.2s, border-color 0.2s;
-    touch-action: manipulation; /* Improves mobile tap responsiveness */
   }
 
   .hero-tab.active {
@@ -325,6 +350,10 @@
       min-height: unset;
       aspect-ratio: 16 / 10;
     }
+    /* Hide Recent Tab and List entirely on mobile */
+    .mobile-hide-recent {
+      display: none !important;
+    }
   }
 
   @media (max-width: 480px) {
@@ -342,44 +371,3 @@
     }
   }
 </style>
-
-<script>
-  (function() {
-    function handleTabSwitch(e) {
-      const tabButton = e.target.closest('.hero-tab');
-      if (!tabButton) return;
-      
-      e.preventDefault();
-      e.stopPropagation();
-
-      const parentSidebar = tabButton.closest('.hero-sidebar');
-      if (!parentSidebar) return;
-
-      // Reset all tabs
-      parentSidebar.querySelectorAll('.hero-tab').forEach(btn => {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-selected', 'false');
-      });
-
-      // Hide all lists
-      parentSidebar.querySelectorAll('.hero-list').forEach(list => {
-        list.classList.remove('active');
-      });
-
-      // Activate clicked tab
-      tabButton.classList.add('active');
-      tabButton.setAttribute('aria-selected', 'true');
-
-      // Show target list
-      const targetId = 'tab-' + tabButton.getAttribute('data-tab');
-      const targetList = parentSidebar.querySelector('#' + targetId);
-      if (targetList) {
-        targetList.classList.add('active');
-      }
-    }
-
-    // Listen to both click and touchend for absolute cross-device reliability
-    document.addEventListener('click', handleTabSwitch, { passive: false });
-    document.addEventListener('touchend', handleTabSwitch, { passive: false });
-  })();
-</script>
