@@ -58,19 +58,22 @@
 </section>
 
 <script>
-  // Add your actual markdown filenames here
-  const BLOG_FILES = [
-    "test-post.md",
-    "welcome.md",
-    "second-post.md",
-    "third-post.md"
-  ];
-
   async function initHeroSection() {
     try {
       const isGitHubPages = window.location.hostname.includes('github.io');
       const repoName = isGitHubPages ? '/' + window.location.pathname.split('/')[1] + '/' : '/';
       const postsDir = `${repoName}posts/`.replace(/\/+/g, '/');
+
+      // Loophole: Dynamically fetch posts via GitHub API for knutagon/knutagon.github.io
+      const apiResponse = await fetch('https://api.github.com/repos/knutagon/knutagon.github.io/contents/posts');
+      if (!apiResponse.ok) return;
+      const filesData = await apiResponse.json();
+      
+      const BLOG_FILES = filesData
+        .filter(file => file.name.endsWith('.md'))
+        .map(file => file.name);
+
+      if (BLOG_FILES.length === 0) return;
 
       const postPromises = BLOG_FILES.map(async (filename) => {
         try {
@@ -98,13 +101,7 @@
               meta.date = line.replace('date:', '').trim().replace(/^["']|["']$/g, '');
               meta.timestamp = new Date(meta.date).getTime() || Date.now();
             }
-            if (line.startsWith('image:')) {
-              let imgPath = line.replace('image:', '').trim().replace(/^["']|["']$/g, '');
-              if (!imgPath.startsWith('http://') && !imgPath.startsWith('https://')) {
-                imgPath = imgPath.startsWith('/') ? `${repoName}${imgPath.slice(1)}` : `${repoName}${imgPath}`;
-              }
-              meta.image = imgPath.replace(/\/+/g, '/').replace(':/', '://');
-            }
+            if (line.startsWith('image:')) meta.image = line.replace('image:', '').trim().replace(/^["']|["']$/g, '');
             if (line.startsWith('author:')) meta.author = line.replace('author:', '').trim().replace(/^["']|["']$/g, '');
             if (line === '---' && i > 0) break;
           }
@@ -176,3 +173,223 @@
 
   document.addEventListener('DOMContentLoaded', initHeroSection);
 </script>
+
+<style>
+  .hero-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 32px 56px;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 32px;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .hero-featured {
+    position: relative;
+    display: block;
+    border-radius: 6px;
+    overflow: hidden;
+    text-decoration: none;
+    min-height: 450px;
+    background: #1a1d27;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .hero-featured-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .hero-featured:hover .hero-featured-img {
+    transform: scale(1.03);
+  }
+
+  .hero-featured-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 30%,
+      rgba(0,0,0,0.35) 60%,
+      rgba(0,0,0,0.78) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-featured-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 32px;
+    box-sizing: border-box;
+    z-index: 2;
+  }
+
+  .hero-category {
+    display: inline-block;
+    padding: 5px 14px;
+    background: linear-gradient(135deg, #f87171, #f97316);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-size: clamp(22px, 2.5vw, 32px);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+    margin: 0 0 12px 0;
+  }
+
+  .hero-meta {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .hero-dot { opacity: 0.5; }
+
+  .hero-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+  }
+
+  .hero-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border, #e8e8e8);
+  }
+
+  .hero-tab {
+    padding: 8px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    color: var(--text-secondary, #6b7280);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .hero-tab.active {
+    color: var(--purple, #7c3aed);
+    border-bottom-color: var(--purple, #7c3aed);
+  }
+
+  .hero-list {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .hero-list.active {
+    display: flex !important;
+  }
+
+  .hero-post {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border, #e8e8e8);
+    text-decoration: none;
+    transition: opacity 0.2s;
+    min-width: 0;
+  }
+
+  .hero-post:last-child { border-bottom: none; }
+  .hero-post:hover { opacity: 0.75; }
+
+  .hero-post img {
+    width: 64px;
+    height: 64px;
+    border-radius: 5px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .hero-post-info { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    min-width: 0;
+  }
+
+  .hero-post-info h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary, #1a1f2e);
+    line-height: 1.4;
+    margin: 0;
+    word-break: break-word;
+  }
+
+  .hero-post-info time {
+    font-size: 12px;
+    color: var(--text-secondary, #6b7280);
+  }
+
+  .hero-scroll-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border, #e8e8e8);
+    background: var(--surface, #ffffff);
+    color: var(--text-secondary, #6b7280);
+    cursor: pointer;
+    margin: 24px auto 0;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    animation: hero-bounce 2s ease-in-out infinite;
+  }
+
+  .hero-scroll-btn svg { width: 18px; height: 18px; }
+
+  @keyframes hero-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%        { transform: translateY(5px); }
+  }
+
+  @media (max-width: 900px) {
+    .hero-section { padding: 24px 20px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    .hero-featured { min-height: unset; aspect-ratio: 16 / 10; }
+    .mobile-hide-recent { display: none !important; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-section { padding: 16px 12px 32px; }
+    .hero-featured { aspect-ratio: 4 / 3; }
+    .hero-featured-content { padding: 20px 16px; }
+    .hero-title { font-size: 20px; }
+  }
+</style>
