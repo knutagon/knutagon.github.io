@@ -47,6 +47,29 @@
             transition: background-color var(--transition-speed), color var(--transition-speed);
         }
 
+        body.menu-active {
+            overflow: hidden;
+        }
+
+        /* Mobile Slide-in Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        body.menu-active .menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         /* Full-width wrappers for header and footer */
         #header, #footer {
             width: 100%;
@@ -251,6 +274,9 @@
 </head>
 <body>
 
+    <!-- Overlay Layer for Mobile Slide-in Menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
     <!-- Header section target (full width & responsive) -->
     <div id="header"></div>
 
@@ -274,10 +300,37 @@
         const savedTheme = localStorage.getItem('theme') || 'light';
         applyTheme(savedTheme);
 
-        // 2. Global Event Listening for Theme Toggle
+        function closeMenu() {
+            document.body.classList.remove('menu-active');
+            const burgerBtn = document.getElementById('hamburger');
+            if (burgerBtn) burgerBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        // 2. Global Event Listeners for Theme Toggle & Mobile Menu Drawer
         document.addEventListener('change', (e) => {
             if (e.target && (e.target.id === 'themeToggle' || e.target.id === 'themeToggleMobile')) {
                 applyTheme(e.target.checked ? 'dark' : 'light');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            // Toggle Hamburger Menu (works for dynamically loaded headers)
+            const hamburger = e.target.closest('#hamburger');
+            if (hamburger) {
+                document.body.classList.toggle('menu-active');
+                const isOpen = document.body.classList.contains('menu-active');
+                hamburger.setAttribute('aria-expanded', isOpen);
+                return;
+            }
+
+            if (e.target.id === 'menuOverlay' || e.target.closest('#drawerClose')) {
+                closeMenu();
+                return;
+            }
+
+            if (e.target.closest('.mobile-drawer .nav-link')) {
+                closeMenu();
+                return;
             }
         });
 
