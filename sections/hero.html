@@ -2,8 +2,8 @@
      HERO (Full Width Latest Post)
 ══════════════════════════════════════ -->
 <section class="hero-section">
-  <div class="hero-inner" id="hero-container">
-    <!-- Content fetched dynamically from sections/latest.html -->
+  <div class="hero-inner">
+    <div id="latest"></div>
   </div>
 
   <!-- SCROLL ARROW -->
@@ -15,30 +15,21 @@
 </section>
 
 <script>
-  async function initHeroSection() {
+  async function loadSection(elementId, file) {
     try {
-      // Handles both absolute root-level and GitHub Pages repository subpaths automatically
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      const repoName = isGitHubPages ? '/' + window.location.pathname.split('/')[1] + '/' : '/';
-      const fetchPath = `${repoName}sections/latest.html`.replace(/\/+/g, '/');
-
-      const response = await fetch(fetchPath);
+      const response = await fetch(`sections/${file}`);
       if (response.ok) {
         const html = await response.text();
-        document.getElementById('hero-container').innerHTML = html;
+        document.getElementById(elementId).innerHTML = html;
       } else {
-        // Fallback direct root fetch if repo path variation fails
-        const fallback = await fetch('/sections/latest.html');
-        if (fallback.ok) {
-          document.getElementById('hero-container').innerHTML = await fallback.text();
-        }
+        console.error(`Failed to load sections/${file}`);
       }
     } catch (error) {
-      console.error("Error loading latest section:", error);
+      console.error(`Error loading sections/${file}:`, error);
     }
   }
 
-  document.addEventListener('DOMContentLoaded', initHeroSection);
+  loadSection('latest', 'latest.html');
 </script>
 
 <style>
@@ -51,7 +42,6 @@
     width: 100%;
   }
 
-  /* Spans the entire width of where the old grid used to be */
   .hero-inner {
     width: 100%;
   }
