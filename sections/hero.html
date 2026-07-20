@@ -18,10 +18,38 @@
     <!-- SIDEBAR -->
     <div class="hero-sidebar">
 
-      <!-- TABS -->
+      <!-- TABS (Using bulletproof native onclick inline functions) -->
       <div class="hero-tabs" role="tablist">
-        <button class="hero-tab active" data-tab="popular" role="tab" aria-selected="true">Popular</button>
-        <button class="hero-tab" data-tab="recent" role="tab" aria-selected="false">Recent</button>
+        <button 
+          class="hero-tab active" 
+          data-tab="popular" 
+          role="tab" 
+          aria-selected="true"
+          onclick="
+            this.parentElement.querySelectorAll('.hero-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+            this.closest('.hero-sidebar').querySelectorAll('.hero-list').forEach(l => l.classList.remove('active'));
+            this.classList.add('active'); 
+            this.setAttribute('aria-selected', 'true');
+            this.closest('.hero-sidebar').querySelector('#tab-popular').classList.add('active');
+          "
+        >
+          Popular
+        </button>
+        <button 
+          class="hero-tab" 
+          data-tab="recent" 
+          role="tab" 
+          aria-selected="false"
+          onclick="
+            this.parentElement.querySelectorAll('.hero-tab').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+            this.closest('.hero-sidebar').querySelectorAll('.hero-list').forEach(l => l.classList.remove('active'));
+            this.classList.add('active'); 
+            this.setAttribute('aria-selected', 'true');
+            this.closest('.hero-sidebar').querySelector('#tab-recent').classList.add('active');
+          "
+        >
+          Recent
+        </button>
       </div>
 
       <!-- POPULAR LIST -->
@@ -152,7 +180,7 @@
       to bottom,
       transparent 30%,
       rgba(0,0,0,0.35) 60%,
-      rgba(0,0,0,0.78) 100-percent
+      rgba(0,0,0,0.78) 100%
     );
     z-index: 1;
   }
@@ -231,9 +259,9 @@
     border-bottom-color: var(--purple, #7c3aed);
   }
 
-  /* LIST DISPLAY FALLBACKS */
+  /* LIST DISPLAY SETTINGS */
   .hero-list {
-    display: none !important;
+    display: none;
     flex-direction: column;
     gap: 0;
   }
@@ -309,7 +337,7 @@
     50%        { transform: translateY(5px); }
   }
 
-  /* ── MOBILE ALIGNMENT REPAIRS ── */
+  /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .hero-section {
       padding: 24px 20px;
@@ -339,39 +367,3 @@
     }
   }
 </style>
-
-<script>
-  (function() {
-    // Immediate delegation: safe even if initialized before elements render
-    document.addEventListener('click', function(e) {
-      const tabButton = e.target.closest('.hero-tab');
-      if (!tabButton) return;
-      
-      e.preventDefault();
-      const parentSidebar = tabButton.closest('.hero-sidebar');
-      if (!parentSidebar) return;
-
-      // 1. Reset all tabs inside this component
-      parentSidebar.querySelectorAll('.hero-tab').forEach(btn => {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-selected', 'false');
-      });
-
-      // 2. Hide all post lists inside this component
-      parentSidebar.querySelectorAll('.hero-list').forEach(list => {
-        list.classList.remove('active');
-      });
-
-      // 3. Highlight selected tab
-      tabButton.classList.add('active');
-      tabButton.setAttribute('aria-selected', 'true');
-
-      // 4. Reveal target list container safely
-      const targetId = 'tab-' + tabButton.getAttribute('data-tab');
-      const targetList = parentSidebar.querySelector('#' + targetId);
-      if (targetList) {
-        targetList.classList.add('active');
-      }
-    });
-  })();
-</script>
