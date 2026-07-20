@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Knutagon Blog</title>
 
-  <!-- Global Base Variables  & Reset -->
+  <!-- Global Base Variables & Reset -->
   <style>
     :root {
       --global-bg: #fafafa;
@@ -104,8 +104,72 @@
       if (burgerBtn) burgerBtn.setAttribute('aria-expanded', 'false');
     }
 
+    // 🔍 INDEXED SEARCH MEMORY STORAGE ENGINE
+    let searchDatabase = [];
+    const sectionsToSearch = [
+      'about.html', 'banner.html', 'bloglist.html', 'cat-banner.html',
+      'faq.html', 'feature.html', 'footer.html', 'glossary.html',
+      'hero.html', 'readmore.html', 'tags.html', 'trust.html', 'video.html'
+    ];
+
+    async function buildSearchIndex() {
+      if (searchDatabase.length > 0) return; // Already built!
+      
+      const promises = sectionsToSearch.map(async (file) => {
+        try {
+          const rawHtml = await fetch(`/sections/${file}`).then(r => r.text());
+          // Parse HTML text cleanly out of the nodes
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(rawHtml, 'text/html');
+          
+          // Get text content and strip extra layout whitespaces
+          const cleanText = (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
+          
+          // Generate a clean title based on filename
+          const cleanTitle = file.replace('.html', '')
+                                 .split('-')
+                                 .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                                 .join(' ');
+
+          return {
+            filename: file,
+            title: cleanTitle,
+            text: cleanText,
+            words: cleanText.toLowerCase().split(/\W+/).filter(Boolean)
+          };
+        } catch (e) {
+          console.error("Could not index file for search:", file, e);
+          return null;
+        }
+      });
+
+      searchDatabase = (await Promise.all(promises)).filter(Boolean);
+    }
+
+    function openSearch() {
+      closeMenu(); // Safety check
+      const overlay = document.getElementById('searchOverlay');
+      if (overlay) {
+        overlay.classList.add('active');
+        const input = document.getElementById('searchInput');
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+        document.getElementById('searchHint').textContent = '';
+        document.getElementById('searchResults').innerHTML = '';
+        buildSearchIndex(); // Pre-fetch background data asynchronously
+      }
+    }
+
+    function closeSearch() {
+      const overlay = document.getElementById('searchOverlay');
+      if (overlay) overlay.classList.remove('active');
+    }
+
+    // Capture global document clicks
     document.addEventListener('click', (e) => {
-      // Open/close via hamburger
+      // Toggle Hamburger Menu
       const hamburger = e.target.closest('#hamburger');
       if (hamburger) {
         document.body.classList.toggle('menu-active');
@@ -114,22 +178,108 @@
         return;
       }
 
-      // Close via overlay
-      if (e.target.id === 'menuOverlay') {
+      if (e.target.id === 'menuOverlay' || e.target.closest('#drawerClose')) {
         closeMenu();
         return;
       }
 
-      // Close via X button inside drawer
-      if (e.target.closest('#drawerClose')) {
+      if (e.target.closest('.mobile-drawer .nav-link')) {
         closeMenu();
         return;
       }
 
-      // Close via nav link inside drawer
-      const mobileLink = e.target.closest('.mobile-drawer .nav-link');
-      if (mobileLink) {
-        closeMenu();
+      // Open search handler
+      if (e.target.closest('.search-trigger')) {
+        openSearch();
+        return;
+      }
+
+      // Close search handlers
+      if (e.target.id === 'searchOverlay' || e.target.closest('#searchClose')) {
+        closeSearch();
+        return;
+      }
+    });
+
+    // Handle Live Inline Input Suggestion Event Pipeline
+    document.addEventListener('input', (e) => {
+      if (e.target && e.target.id === 'searchInput') {
+        const query = e.target.value.toLowerCase().trim();
+        const hintLayer = document.getElementById('searchHint');
+        const resultsLayer = document.getElementById('searchResults');
+
+        if (!query) {
+          hintLayer.textContent = '';
+          resultsLayer.innerHTML = '';
+          return;
+        }
+
+        let bestHint = '';
+        let matchHtml = '';
+        let matchCount = 0;
+
+        searchDatabase.forEach(item => {
+          const indexIdx = item.text.toLowerCase().indexOf(query);
+          
+          if (indexIdx !== -1) {
+            matchCount++;
+            
+            // Try matching an active autocompletion hint phrase word sequence
+            if (!bestHint) {
+              const matchingWord = item.words.find(w => w.startsWith(query));
+              if (matchingWord && matchingWord !== query) {
+                // Prepend exact user typed casing to match visual layout length
+                bestHint = e.target.value + matchingWord.slice(query.length);
+              }
+            }
+
+            // Slice out context snippets dynamically
+            const start = Math.max(0, indexIdx - 30);
+            const end = Math.min(item.text.length, indexIdx + 80);
+            let snippet = item.text.slice(start, end);
+            if (start > 0) snippet = '...' + snippet;
+            if (end < item.text.length) snippet = snippet + '...';
+
+            // Highlight match matching regions
+            const safeSnippet = snippet.replace(new RegExp(query, 'gi'), match => `<strong>${match}</strong>`);
+
+            matchHtml += `
+              <a href="#${item.filename.replace('.html','')}" class="search-result-item" onclick="closeSearch()">
+                <div class="search-result-title">${item.title}</div>
+                <div class="search-result-snippet">${safeSnippet}</div>
+              </a>
+            `;
+          }
+        });
+
+        // Apply gray hint suggestion layer background alignment
+        hintLayer.textContent = bestHint;
+        
+        // Render out actual structural records matching the term
+        if (matchCount > 0) {
+          resultsLayer.innerHTML = matchHtml;
+        } else {
+          resultsLayer.innerHTML = `<div class="search-empty">No results found inside sections matching "${e.target.value}"</div>`;
+        }
+      }
+    });
+
+    // Capture Keyboard Events (Tab to accept hint, Escape to exit)
+    document.addEventListener('keydown', (e) => {
+      const searchInput = document.getElementById('searchInput');
+      if (!searchInput || !document.getElementById('searchOverlay').classList.contains('active')) return;
+
+      if (e.key === 'Escape') {
+        closeSearch();
+      }
+      
+      if (e.key === 'Tab') {
+        const hintLayer = document.getElementById('searchHint');
+        if (hintLayer && hintLayer.textContent) {
+          e.preventDefault(); // Stop window selection switching focus
+          searchInput.value = hintLayer.textContent;
+          hintLayer.textContent = '';
+        }
       }
     });
 
