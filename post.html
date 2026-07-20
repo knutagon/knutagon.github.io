@@ -192,8 +192,13 @@
             }
 
             try {
-                // Fetches the markdown file from the local 'posts/' folder
-                const response = await fetch(`posts/${mdFile}`);
+                // Dynamically computes path to handle GitHub Pages root vs subpath correctly
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                pathParts.pop(); // Remove 'post.html'
+                const basePath = pathParts.length > 0 ? '/' + pathParts.join('/') + '/' : '/';
+                const fetchUrl = `${basePath}posts/${mdFile}`.replace(/\/+/g, '/');
+
+                const response = await fetch(fetchUrl);
                 if (!response.ok) throw new Error("Post not found");
                 const markdownText = await response.text();
 
