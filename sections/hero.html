@@ -1,11 +1,12 @@
 <!-- ══════════════════════════════════════
      HERO
      Fetches featured post from /sections/latest.html
+     initHeroSection() is called from index.html after injection
 ══════════════════════════════════════ -->
 <section class="hero-section">
 
   <a class="hero-featured" id="hero-featured-post" href="#">
-    <img class="hero-featured-img" src="" alt="Featured post" />
+    <img class="hero-featured-img" id="hero-featured-img" src="" alt="Featured post" />
     <div class="hero-featured-overlay"></div>
     <div class="hero-featured-content">
       <span class="hero-category" id="hero-category"></span>
@@ -25,40 +26,6 @@
   </button>
 
 </section>
-
-<script>
-  async function initHeroSection() {
-    try {
-      const res = await fetch('/sections/latest.html');
-      if (!res.ok) return;
-      const html = await res.text();
-
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const data = doc.getElementById('latest-post-data');
-      if (!data) return;
-
-      const url      = data.dataset.url      || '#';
-      const image    = data.dataset.image    || '';
-      const category = data.dataset.category || '';
-      const title    = data.dataset.title    || '';
-      const author   = data.dataset.author   || '';
-      const date     = data.dataset.date     || '';
-
-      document.getElementById('hero-featured-post').href          = url;
-      document.querySelector('.hero-featured-img').src            = image;
-      document.getElementById('hero-category').textContent        = category;
-      document.getElementById('hero-title').textContent           = title;
-      document.getElementById('hero-author').textContent          = author;
-      document.getElementById('hero-date').textContent            = date;
-
-    } catch (err) {
-      console.error('Hero: failed to load latest.html', err);
-    }
-  }
-
-  initHeroSection();
-</script>
 
 <style>
   .hero-section {
@@ -149,7 +116,6 @@
 
   .hero-dot { opacity: 0.45; }
 
-  /* ── SCROLL BUTTON ── */
   .hero-scroll-btn {
     display: flex;
     align-items: center;
@@ -173,7 +139,6 @@
     50%       { transform: translateY(5px); }
   }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .hero-section { padding: 24px 20px 40px; }
     .hero-featured { aspect-ratio: 16 / 9; border-radius: 8px; }
