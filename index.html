@@ -40,15 +40,25 @@
       overflow: hidden;
     }
 
-    /* Structural baseline hidden state (Transitions are cleanly inherited from header.html) */
+    /* 
+      THE FIX: 
+      1. Added smooth cubic-bezier transitions for transforms and visibility.
+      2. Set overflow-y: auto so the menu scrolls internally if buttons are cut off.
+      3. Added -webkit-overflow-scrolling for buttery momentum scrolling on iOS devices.
+    */
     .mobile-drawer {
       visibility: hidden;
       pointer-events: none;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      max-height: 100vh;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.25s;
     }
 
     body.menu-active .mobile-drawer {
       visibility: visible;
       pointer-events: auto;
+      transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1), visibility 0s linear 0s;
     }
 
     .menu-overlay {
