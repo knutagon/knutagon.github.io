@@ -192,7 +192,7 @@
                 const pathParts = window.location.pathname.split('/').filter(Boolean);
                 pathParts.pop(); // Remove 'post.html'
                 const basePath = pathParts.length > 0 ? '/' + pathParts.join('/') + '/' : '/';
-                const fetchUrl = `${basePath}${file}`.replace(/\/+/g, '/');
+                const fetchUrl = `${basePath}sections/${file}`.replace(/\/+/g, '/');
 
                 const response = await fetch(fetchUrl);
                 if (response.ok) {
@@ -200,12 +200,12 @@
                     document.getElementById(elementId).innerHTML = htmlText;
                 }
             } catch (e) {
-                console.log(`Could not load section: ${file}`);
+                console.log(`Could not load section: sections/${file}`);
             }
         }
 
         async function loadPost() {
-            // Load your shared sections automatically using your function convention
+            // Load header and footer from sections/ folder
             loadSection('header', 'header.html');
             loadSection('footer', 'footer.html');
 
