@@ -1,6 +1,6 @@
 <!-- ══════════════════════════════════════
      HEADER
-═════════════════════════════════════ ═ -->
+══════════════════════════════════════ -->
 <div class="site-header">
   <div class="header-inner">
 
@@ -71,36 +71,37 @@
   </div>
 </div>
 
-<!-- MOBILE DRAWER (SLIDE-IN SIDEBAR) -->
+<!-- MOBILE DRAWER (GPU-ACCELERATED TRANSITION) -->
 <div class="mobile-drawer" id="mobileDrawer">
-  <!-- THE FIX: Hard Close Button with ID mapped to index.html click catcher -->
   <button class="drawer-close" id="drawerClose" aria-label="Close menu">✕</button>
 
-  <div class="drawer-nav-links">
-    <a class="nav-link active" href="#">Home</a>
-    <a class="nav-link" href="#">Lifestyle</a>
-    <a class="nav-link" href="#">Culture</a>
-    <a class="nav-link" href="#">Features</a>
-    <a class="nav-link" href="#">Shop</a>
-  </div>
-  
-  <div class="mobile-controls">
-    <a class="btn-cta" href="#">Free Newsletter</a>
-    <div class="control-row">
-      <button class="icon-btn" aria-label="Search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-          <circle cx="11" cy="11" r="7"/>
-          <path d="M21 21l-4.35-4.35"/>
-        </svg>
-      </button>
-      <label class="theme-toggle" aria-label="Toggle dark mode">
-        <input type="checkbox" id="themeToggleMobile" />
-        <div class="toggle-track">
-          <span class="t-icon sun">☀️</span>
-          <span class="t-icon moon">🌙</span>
-        </div>
-        <div class="toggle-knob"></div>
-      </label>
+  <div class="drawer-content-wrapper">
+    <div class="drawer-nav-links">
+      <a class="nav-link active" href="#">Home</a>
+      <a class="nav-link" href="#">Lifestyle</a>
+      <a class="nav-link" href="#">Culture</a>
+      <a class="nav-link" href="#">Features</a>
+      <a class="nav-link" href="#">Shop</a>
+    </div>
+    
+    <div class="mobile-controls">
+      <a class="btn-cta" href="#">Free Newsletter</a>
+      <div class="control-row">
+        <button class="icon-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="7"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
+        </button>
+        <label class="theme-toggle" aria-label="Toggle dark mode">
+          <input type="checkbox" id="themeToggleMobile" />
+          <div class="toggle-track">
+            <span class="t-icon sun">☀️</span>
+            <span class="t-icon moon">🌙</span>
+          </div>
+          <div class="toggle-knob"></div>
+        </label>
+      </div>
     </div>
   </div>
 </div>
@@ -396,38 +397,50 @@
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
-  /* Slide-In Sidebar Menu (Optimized Performance) */
+  /* ⚡️ FIXED SLIDE-IN PERFORMANCE ENGINE ⚡️ */
   .mobile-drawer {
     position: fixed;
     top: 0;
-    right: -300px;
+    right: 0;
     width: 280px;
-    height: 100dvh; 
+    height: 100dvh;
     background: var(--surface);
     border-left: 1px solid var(--border);
-    /* THE FIX: Top padding tweaked down to 24px to accommodate structural internal items */
-    padding: 24px 24px env(safe-area-inset-bottom, 32px);
-    overflow-y: auto; 
-    -webkit-overflow-scrolling: touch;
     box-shadow: var(--shadow);
     z-index: 1800;
+    
+    /* Layout Setup */
+    display: flex;
+    flex-direction: column;
+    padding: 24px 24px env(safe-area-inset-bottom, 32px);
+    box-sizing: border-box;
+
+    /* High Performance Transition Strategy: Use transform, not right */
+    transform: translate3d(100%, 0, 0);
+    will-change: transform;
+    transition: transform 0.25s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  /* The Scrolling Wrapper Box */
+  .drawer-content-wrapper {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: right 0.25s cubic-bezier(0, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  /* THE FIX: Explicit styling layout for the close X icon button */
   .drawer-close {
     align-self: flex-end;
     background: none;
     border: none;
-    font-size: 22px;
+    font-size: 24px;
     color: var(--text-secondary);
     cursor: pointer;
-    padding: 8px;
-    margin-right: -8px;
-    margin-bottom: 16px;
+    padding: 4px;
+    margin-right: -4px;
+    margin-bottom: 12px;
     line-height: 1;
     transition: color 0.2s;
   }
@@ -436,8 +449,9 @@
     color: var(--teal);
   }
 
+  /* Activation State */
   body.menu-active .mobile-drawer {
-    right: 0;
+    transform: translate3d(0, 0, 0);
   }
 
   .drawer-nav-links {
@@ -459,7 +473,7 @@
     flex-direction: column;
     gap: 16px;
     padding-top: 20px;
-    margin-top: 40px; /* Gives links breathing room from controls when scrolled */
+    margin-top: 40px;
     border-top: 1px solid var(--border);
   }
 
