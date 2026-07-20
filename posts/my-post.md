@@ -2,7 +2,7 @@
 title: "Security isn't just a technology problem, it's about design, too"
 category: "Design"
 date: "July 20, 2026"
-image: "https://knutagon.github.io/posts/images/imgX.jpeg"
+image: "/posts/images/imgX.jpeg"
 author: "axilthemes"
 ---
 
