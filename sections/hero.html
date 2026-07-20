@@ -58,7 +58,7 @@
 </section>
 
 <script>
-  // Add your fixed markdown filenames here once. No JSON files or GitHub Actions needed.
+  // Add your actual markdown filenames here
   const BLOG_FILES = [
     "welcome.md",
     "second-post.md",
@@ -67,9 +67,9 @@
 
   async function initHeroSection() {
     try {
-      const pathParts = window.location.pathname.split('/').filter(Boolean);
-      const basePath = pathParts.length > 1 ? '/' + pathParts[0] + '/' : './';
-      const postsDir = `${basePath}posts/`.replace(/\/+/g, '/');
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      const repoName = isGitHubPages ? '/' + window.location.pathname.split('/')[1] + '/' : '/';
+      const postsDir = `${repoName}posts/`.replace(/\/+/g, '/');
 
       const postPromises = BLOG_FILES.map(async (filename) => {
         try {
@@ -377,7 +377,7 @@
 
   @media (max-width: 900px) {
     .hero-section { padding: 24px 20px; }
-    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    .hero-inner {grid-template-columns: 1fr; gap: 32px; }
     .hero-featured { min-height: unset; aspect-ratio: 16 / 10; }
     .mobile-hide-recent { display: none !important; }
   }
