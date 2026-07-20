@@ -1,72 +1,94 @@
 <!-- ══════════════════════════════════════
-     HERO (Full Width Latest Post)
+     HERO
+     Fetches featured post from /sections/latest.html
 ══════════════════════════════════════ -->
 <section class="hero-section">
-  <div class="hero-inner">
-    <div id="latest"></div>
-  </div>
 
-  <!-- SCROLL ARROW -->
+  <a class="hero-featured" id="hero-featured-post" href="#">
+    <img class="hero-featured-img" src="" alt="Featured post" />
+    <div class="hero-featured-overlay"></div>
+    <div class="hero-featured-content">
+      <span class="hero-category" id="hero-category"></span>
+      <h2 class="hero-title" id="hero-title"></h2>
+      <p class="hero-meta">
+        <span class="hero-author" id="hero-author"></span>
+        <span class="hero-dot">·</span>
+        <time id="hero-date"></time>
+      </p>
+    </div>
+  </a>
+
   <button class="hero-scroll-btn" aria-label="Scroll down" onclick="window.scrollBy({top: window.innerHeight, behavior: 'smooth'})">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
       <path d="M12 5v14M5 12l7 7 7-7"/>
     </svg>
   </button>
+
 </section>
 
 <script>
-  async function loadSection(elementId, file) {
+  async function initHeroSection() {
     try {
-      const response = await fetch(`sections/${file}`);
-      if (response.ok) {
-        const html = await response.text();
-        document.getElementById(elementId).innerHTML = html;
-      } else {
-        console.error(`Failed to load sections/${file}`);
-      }
-    } catch (error) {
-      console.error(`Error loading sections/${file}:`, error);
+      const res = await fetch('/sections/latest.html');
+      if (!res.ok) return;
+      const html = await res.text();
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const data = doc.getElementById('latest-post-data');
+      if (!data) return;
+
+      const url      = data.dataset.url      || '#';
+      const image    = data.dataset.image    || '';
+      const category = data.dataset.category || '';
+      const title    = data.dataset.title    || '';
+      const author   = data.dataset.author   || '';
+      const date     = data.dataset.date     || '';
+
+      document.getElementById('hero-featured-post').href          = url;
+      document.querySelector('.hero-featured-img').src            = image;
+      document.getElementById('hero-category').textContent        = category;
+      document.getElementById('hero-title').textContent           = title;
+      document.getElementById('hero-author').textContent          = author;
+      document.getElementById('hero-date').textContent            = date;
+
+    } catch (err) {
+      console.error('Hero: failed to load latest.html', err);
     }
   }
 
-  loadSection('latest', 'latest.html');
+  document.addEventListener('DOMContentLoaded', initHeroSection);
 </script>
 
 <style>
   .hero-section {
+    position: relative;
+    width: 100%;
     max-width: 1280px;
     margin: 0 auto;
     padding: 40px 32px 56px;
-    position: relative;
     box-sizing: border-box;
-    width: 100%;
-  }
-
-  .hero-inner {
-    width: 100%;
   }
 
   .hero-featured {
     position: relative;
     display: block;
-    border-radius: 6px;
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    border-radius: 10px;
     overflow: hidden;
     text-decoration: none;
-    min-height: 480px;
     background: #1a1d27;
-    width: 100%;
-    box-sizing: border-box;
   }
 
   .hero-featured-img {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s ease;
   }
 
   .hero-featured:hover .hero-featured-img {
@@ -78,9 +100,9 @@
     inset: 0;
     background: linear-gradient(
       to bottom,
-      transparent 30%,
-      rgba(0,0,0,0.35) 60%,
-      rgba(0,0,0,0.78) 100%
+      transparent 20%,
+      rgba(0,0,0,0.25) 55%,
+      rgba(0,0,0,0.82) 100%
     );
     z-index: 1;
   }
@@ -90,41 +112,44 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 40px;
+    padding: 40px 48px;
     box-sizing: border-box;
     z-index: 2;
   }
 
   .hero-category {
     display: inline-block;
-    padding: 5px 14px;
+    padding: 5px 16px;
     background: linear-gradient(135deg, #f87171, #f97316);
     color: #fff;
     font-size: 13px;
     font-weight: 600;
     border-radius: 999px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
   }
 
   .hero-title {
-    font-size: clamp(24px, 3vw, 36px);
+    font-size: clamp(22px, 3vw, 42px);
     font-weight: 700;
     color: #ffffff;
-    line-height: 1.3;
-    margin: 0 0 12px 0;
+    line-height: 1.25;
+    margin: 0 0 14px 0;
+    max-width: 780px;
   }
 
   .hero-meta {
-    font-size: 13px;
-    color: rgba(255,255,255,0.75);
+    font-size: 14px;
+    color: rgba(255,255,255,0.72);
     display: flex;
     align-items: center;
     gap: 8px;
     margin: 0;
   }
 
-  .hero-dot { opacity: 0.5; }
+  .hero-dot { opacity: 0.45; }
 
+  /* ── SCROLL BUTTON ── */
   .hero-scroll-btn {
     display: flex;
     align-items: center;
@@ -137,7 +162,7 @@
     color: var(--text-secondary, #6b7280);
     cursor: pointer;
     margin: 24px auto 0;
-    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    transition: border-color 0.2s, color 0.2s;
     animation: hero-bounce 2s ease-in-out infinite;
   }
 
@@ -145,18 +170,22 @@
 
   @keyframes hero-bounce {
     0%, 100% { transform: translateY(0); }
-    50%        { transform: translateY(5px); }
+    50%       { transform: translateY(5px); }
   }
 
+  /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    .hero-section { padding: 24px 20px; }
-    .hero-featured { min-height: unset; aspect-ratio: 16 / 9; }
+    .hero-section { padding: 24px 20px 40px; }
+    .hero-featured { aspect-ratio: 16 / 9; border-radius: 8px; }
+    .hero-featured-content { padding: 28px 28px; }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 600px) {
     .hero-section { padding: 16px 12px 32px; }
-    .hero-featured { aspect-ratio: 4 / 3; }
-    .hero-featured-content { padding: 20px 16px; }
+    .hero-featured { aspect-ratio: 4 / 3; border-radius: 6px; }
+    .hero-featured-content { padding: 20px 18px; }
     .hero-title { font-size: 20px; }
+    .hero-category { font-size: 12px; padding: 4px 12px; }
+    .hero-meta { font-size: 12px; }
   }
 </style>
