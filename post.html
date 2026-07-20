@@ -19,10 +19,21 @@
             font-family: system-ui, -apple-system, sans-serif;
             background: var(--bg-color);
             color: var(--text-primary);
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px 60px 20px;
+            margin: 0;
+            padding: 0;
             line-height: 1.8;
+        }
+
+        /* Full-width wrappers for header and footer */
+        #header, #footer {
+            width: 100%;
+        }
+
+        /* Constrained container specifically for the blog post */
+        #article-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
         }
 
         .category {
@@ -176,14 +187,15 @@
 </head>
 <body>
 
-    <!-- Header section target -->
+    <!-- Header section target (full width) -->
     <div id="header"></div>
 
+    <!-- Article container (max-width 800px, centered) -->
     <article id="article-container">
         <p style="color: var(--text-secondary); text-align: center; margin-top: 80px;">Loading article...</p>
     </article>
 
-    <!-- Footer section target -->
+    <!-- Footer section target (full width) -->
     <div id="footer"></div>
 
     <script>
