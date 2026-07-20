@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <title>Loading...</title>
@@ -7,21 +7,27 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
-            --bg-color: #12161f;
+            --global-bg: #fafafa;
+            --global-text: #111111;
             --surface-color: #1a2233;
             --border-color: #2a3447;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
             --accent-color: #f43f5e;
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="dark"] {
+            --global-bg: #121212;
+            --global-text: #f5f5f5;
         }
 
         body {
             font-family: system-ui, -apple-system, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-primary);
+            background-color: var(--global-bg);
+            color: var(--global-text);
             margin: 0;
             padding: 0;
             line-height: 1.8;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
         }
 
         /* Full-width wrappers for header and footer */
@@ -71,11 +77,11 @@
 
         .meta-info {
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--text-secondary, #94a3b8);
         }
 
         .meta-info .author-name {
-            color: var(--text-primary);
+            color: var(--global-text);
             font-weight: 700;
         }
 
@@ -90,7 +96,6 @@
 
         .content {
             font-size: 18px;
-            color: #cbd5e1;
         }
 
         .content p {
@@ -101,7 +106,7 @@
             font-size: 26px;
             margin-top: 40px;
             margin-bottom: 16px;
-            color: var(--text-primary);
+            color: var(--global-text);
         }
 
         /* Author Signature Box */
@@ -127,12 +132,12 @@
         .author-box h3 {
             margin: 0 0 6px 0;
             font-size: 20px;
-            color: var(--text-primary);
+            color: var(--global-text);
         }
 
         .author-box p {
             margin: 0;
-            color: var(--text-secondary);
+            color: var(--text-secondary, #94a3b8);
             font-size: 14px;
             line-height: 1.6;
         }
@@ -164,7 +169,7 @@
         .nav-card span {
             font-size: 11px;
             text-transform: uppercase;
-            color: var(--text-secondary);
+            color: var(--text-secondary, #94a3b8);
             display: block;
             margin-bottom: 8px;
             letter-spacing: 0.08em;
@@ -174,7 +179,7 @@
         .nav-card h4 {
             margin: 0;
             font-size: 16px;
-            color: var(--text-primary);
+            color: var(--global-text);
             font-weight: 700;
             line-height: 1.4;
         }
@@ -192,13 +197,32 @@
 
     <!-- Article container (max-width 800px, centered) -->
     <article id="article-container">
-        <p style="color: var(--text-secondary); text-align: center; margin-top: 80px;">Loading article...</p>
+        <p style="color: var(--text-secondary, #94a3b8); text-align: center; margin-top: 80px;">Loading article...</p>
     </article>
 
     <!-- Footer section target (full width) -->
     <div id="footer"></div>
 
     <script>
+        // 1. Theme Orchestration Engine
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            const inputs = document.querySelectorAll('#themeToggle, #themeToggleMobile');
+            inputs.forEach(input => input.checked = (theme === 'dark'));
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+
+        // 2. Global Event Listening for Theme Toggle
+        document.addEventListener('change', (e) => {
+            if (e.target && (e.target.id === 'themeToggle' || e.target.id === 'themeToggleMobile')) {
+                applyTheme(e.target.checked ? 'dark' : 'light');
+            }
+        });
+
+        // 3. Dynamic Section Loader matching your project structure
         async function loadSection(elementId, file) {
             try {
                 const pathParts = window.location.pathname.split('/').filter(Boolean);
@@ -209,7 +233,14 @@
                 const response = await fetch(fetchUrl);
                 if (response.ok) {
                     const htmlText = await response.text();
-                    document.getElementById(elementId).innerHTML = htmlText;
+                    const target = document.getElementById(elementId);
+                    target.innerHTML = htmlText;
+
+                    if (elementId === 'header') {
+                        const activeTheme = document.documentElement.getAttribute('data-theme');
+                        const inputs = target.querySelectorAll('#themeToggle, #themeToggleMobile');
+                        inputs.forEach(input => input.checked = (activeTheme === 'dark'));
+                    }
                 }
             } catch (e) {
                 console.log(`Could not load section: sections/${file}`);
