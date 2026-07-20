@@ -63,103 +63,85 @@
 </section>
 
 <script>
-  // Master list of blog posts
-  let blogPosts = [
-    {
-      id: 1,
-      title: "How to Build a Morning Routine That Actually Works",
-      category: "Inspiration",
-      author: "Katen Doe",
-      date: "July 10, 2026",
-      timestamp: 1783728000,
-      views: 1420,
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&q=80",
-      url: "#"
-    },
-    {
-      id: 2,
-      title: "The Future of AI in Everyday Life",
-      category: "Technology",
-      author: "Katen Doe",
-      date: "July 9, 2026",
-      timestamp: 1783641600,
-      views: 3890,
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80",
-      url: "#"
-    },
-    {
-      id: 3,
-      title: "Weekend Escapes: Hidden Gems Near the City",
-      category: "Travel",
-      author: "Katen Doe",
-      date: "July 8, 2026",
-      timestamp: 1783555200,
-      views: 950,
-      image: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=900&q=80",
-      url: "#"
-    },
-    {
-      id: 4,
-      title: "10 Recipes That Will Change Your Meal Prep Game",
-      category: "Lifestyle",
-      author: "Katen Doe",
-      date: "July 7, 2026",
-      timestamp: 1783468800,
-      views: 2150,
-      image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900&q=80",
-      url: "#"
-    },
-    {
-      id: 5,
-      title: "What Can You Do About Fashion Right Now",
-      category: "Fashion",
-      author: "Katen Doe",
-      date: "August 17, 2022",
-      timestamp: 1660694400,
-      views: 4100,
-      image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=120&q=70",
-      url: "#"
+  // Configured specifically for knutagon/knutagon.github.io repository
+  const GITHUB_USER = 'knutagon';
+  const GITHUB_REPO = 'knutagon.github.io';
+
+  async function initHeroSection() {
+    try {
+      const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/git/trees/main?recursive=1`);
+      const data = await response.json();
+
+      if (!data.tree) return;
+
+      // Filter files inside the "posts/" folder
+      const postFiles = data.tree.filter(node => node.path.startsWith('posts/') && node.type === 'blob');
+
+      let blogPosts = [];
+      
+      postFiles.forEach((file, index) => {
+        if (file.path.endsWith('.html') || file.path.endsWith('.md')) {
+          let fileName = file.path.split('/').pop();
+          if (fileName === 'index.html') return;
+
+          let titleFormatted = fileName.replace(/\.[^/.]+$/, "").replace(/-/g, ' ');
+          titleFormatted = titleFormatted.charAt(0).toUpperCase() + titleFormatted.slice(1);
+
+          blogPosts.push({
+            id: index + 1,
+            title: titleFormatted,
+            category: "General",
+            author: "Katen Doe",
+            date: "Recently Added",
+            timestamp: Date.now() - (index * 86400000), 
+            views: Math.floor(Math.random() * 2000) + 100, 
+            image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80", 
+            url: file.path.replace('.md', '.html')
+          });
+        }
+      });
+
+      if (blogPosts.length === 0) return;
+
+      // 1. FEATURED POST
+      const sortedByRecent = [...blogPosts].sort((a, b) => b.timestamp - a.timestamp);
+      const featured = sortedByRecent[0];
+
+      document.getElementById('hero-featured-post').href = featured.url;
+      document.querySelector('.hero-featured-img').src = featured.image;
+      document.getElementById('hero-category').textContent = featured.category;
+      document.getElementById('hero-title').textContent = featured.title;
+      document.getElementById('hero-author').textContent = featured.author;
+      document.getElementById('hero-date').textContent = featured.date;
+
+      // 2. RECENT TAB
+      const recentListHTML = sortedByRecent.slice(0, 4).map(post => `
+        <a class="hero-post" href="${post.url}">
+          <img src="${post.image}" alt="" />
+          <div class="hero-post-info">
+            <h3>${post.title}</h3>
+            <time>${post.date}</time>
+          </div>
+        </a>
+      `).join('');
+      document.getElementById('tab-recent').innerHTML = recentListHTML;
+
+      // 3. POPULAR TAB
+      const sortedByPopular = [...blogPosts].sort((a, b) => b.views - a.views);
+      const popularListHTML = sortedByPopular.slice(0, 4).map(post => `
+        <a class="hero-post" href="${post.url}">
+          <img src="${post.image}" alt="" />
+          <div class="hero-post-info">
+            <h3>${post.title}</h3>
+            <time>${post.date}</time>
+          </div>
+        </a>
+      `).join('');
+      document.getElementById('tab-popular').innerHTML = popularListHTML;
+
+    } catch (error) {
+      console.error("Could not load posts from GitHub API:", error);
     }
-  ];
-
-  function initHeroSection() {
-    if (blogPosts.length === 0) return;
-
-    // 1. FEATURED POST: Always automatically takes the absolute newest post
-    const sortedByRecent = [...blogPosts].sort((a, b) => b.timestamp - a.timestamp);
-    const featured = sortedByRecent[0];
-
-    document.getElementById('hero-featured-post').href = featured.url;
-    document.querySelector('.hero-featured-img').src = featured.image;
-    document.getElementById('hero-category').textContent = featured.category;
-    document.getElementById('hero-title').textContent = featured.title;
-    document.getElementById('hero-author').textContent = featured.author;
-    document.getElementById('hero-date').textContent = featured.date;
-
-    // 2. RECENT TAB: Sorts chronologically (newest first), takes top 4
-    const recentListHTML = sortedByRecent.slice(0, 4).map(post => `
-      <a class="hero-post" href="${post.url}">
-        <img src="${post.image}" alt="" />
-        <div class="hero-post-info">
-          <h3>${post.title}</h3>
-          <time>${post.date}</time>
-        </div>
-      </a>
-    `).join('');
-    document.getElementById('tab-recent').innerHTML = recentListHTML;
-
-    // 3. POPULAR TAB: Sorts by highest views, takes top 4
-    const sortedByPopular = [...blogPosts].sort((a, b) => b.views - a.views);
-    const popularListHTML = sortedByPopular.slice(0, 4).map(post => `
-      <a class="hero-post" href="${post.url}">
-        <img src="${post.image}" alt="" />
-        <div class="hero-post-info">
-          <h3>${post.title}</h3>
-          <time>${post.date}</time>
-        </div>
-      </a>
-    `).join('');
-    document.getElementById('tab-popular').innerHTML = popularListHTML;
   }
 
   // Tab switching helper function
@@ -407,7 +389,6 @@
       min-height: unset;
       aspect-ratio: 16 / 10;
     }
-    /* Hides the recent tab button and recent list completely on mobile screens */
     .mobile-hide-recent {
       display: none !important;
     }
