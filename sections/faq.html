@@ -15,72 +15,72 @@
       
       <div class="faq-item">
         <button class="faq-question">
-          <span>What is Soul Dragon™?</span>
+          <span class="faq-q-text">What is Soul Dragon™?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="faq-answer-wrapper">
           <div class="faq-answer-content">
-            <p>Soul Dragon™ is a creative universe and technology framework built for storytelling, digital art, and interactive experiences. It merges mythic design with modern systems thinking.</p>
+            <p class="faq-a-text">Soul Dragon™ is a creative universe and technology framework built for storytelling, digital art, and interactive experiences. It merges mythic design with modern systems thinking.</p>
           </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question">
-          <span>How do I join the community?</span>
+          <span class="faq-q-text">How do I join the community?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="faq-answer-wrapper">
           <div class="faq-answer-content">
-            <p>You can join through the official portal once it launches. Membership will include access to creative tools, lore archives, and collaborative projects.</p>
+            <p class="faq-a-text">You can join through the official portal once it launches. Membership will include access to creative tools, lore archives, and collaborative projects.</p>
           </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question">
-          <span>Can I contribute my own stories or art?</span>
+          <span class="faq-q-text">Can I contribute my own stories or art?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="faq-answer-wrapper">
           <div class="faq-answer-content">
-            <p>Yes. The platform is designed for creators to submit, remix, and expand the universe. Guidelines will ensure thematic coherence and credit protection.</p>
+            <p class="faq-a-text">Yes. The platform is designed for creators to submit, remix, and expand the universe. Guidelines will ensure thematic coherence and credit protection.</p>
           </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question">
-          <span>Is there a public roadmap?</span>
+          <span class="faq-q-text">Is there a public roadmap?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="faq-answer-wrapper">
           <div class="faq-answer-content">
-            <p>A roadmap will be published after the first release phase, outlining feature expansions, lore milestones, and community events.</p>
+            <p class="faq-a-text">A roadmap will be published after the first release phase, outlining feature expansions, lore milestones, and community events.</p>
           </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question">
-          <span>Will there be monetization options?</span>
+          <span class="faq-q-text">Will there be monetization options?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="faq-answer-wrapper">
           <div class="faq-answer-content">
-            <p>Yes. Creators will be able to monetize their contributions through digital collectibles, licensing, and collaborative publishing models.</p>
+            <p class="faq-a-text">Yes. Creators will be able to monetize their contributions through digital collectibles, licensing, and collaborative publishing models.</p>
           </div>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question">
-          <span>How can I stay updated?</span>
+          <span class="faq-q-text">How can I stay updated?</span>
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div class="faq-answer-wrapper">
           <div class="faq-answer-content">
-            <p>Follow the official channels and subscribe to the newsletter for updates, drops, and behind‑the‑scenes development insights.</p>
+            <p class="faq-a-text">Follow the official channels and subscribe to the newsletter for updates, drops, and behind‑the‑scenes development insights.</p>
           </div>
         </div>
       </div>
@@ -101,38 +101,36 @@
 <style>
   /* ── CSS VARIABLES ── */
   .faq-section {
-    /* Hardcoded crisp variables for Light Mode */
-    --faq-bg: #ffffff; /* Explicitly forces a white canvas background */
-    --faq-item-bg: #f9fafb; /* Soft light gray card color */
+    --faq-bg: #ffffff; 
+    --faq-item-bg: #f9fafb; 
     --faq-item-hover: #f3f4f6;
     --faq-item-active: #f0fdfa;
-    --faq-border: #e5e7eb; /* Clearly visible mid-gray border lines */
+    --faq-border: #e5e7eb; 
     --faq-border-hover: #d1d5db;
     --faq-border-active: #5cbbb2;
-    --faq-txt-main: #111827; /* Very deep charcoal, high-contrast dark text */
-    --faq-txt-muted: #4b5563; /* Accessible gray paragraph text */
+    --faq-txt-main: #111827; /* Deep charcoal dark text */
+    --faq-txt-muted: #374151; /* High-contrast gray text for readable answers */
     --faq-accent: #0d9488;
     --faq-accent-hover: #14b8a6;
-    --faq-arrow: #9ca3af;
+    --faq-arrow: #4b5563; /* Dark gray for visible arrows */
   }
 
-  /* Automatically adapt if the user's system runs dark mode */
+  /* Automatically adapt if the system or body explicitly calls dark mode */
   @media (prefers-color-scheme: dark) {
     .faq-section {
-      --faq-bg: transparent; /* Allows parent canvas dark mode to pull through */
+      --faq-bg: transparent; 
       --faq-item-bg: rgba(255, 255, 255, 0.03);
       --faq-item-hover: rgba(255, 255, 255, 0.05);
       --faq-item-active: rgba(255, 255, 255, 0.04);
       --faq-border: rgba(255, 255, 255, 0.06);
       --faq-border-hover: rgba(255, 255, 255, 0.12);
       --faq-border-active: rgba(13, 148, 136, 0.3);
-      --faq-txt-main: #f3f4f6; /* Off-white text for dark mode visibility */
+      --faq-txt-main: #f3f4f6; 
       --faq-txt-muted: #9ca3af;
-      --faq-arrow: #6b7280;
+      --faq-arrow: #9ca3af;
     }
   }
 
-  /* Explicit hook selector targeting manual class/data attribute framework toggles */
   [data-theme="dark"] .faq-section,
   body.dark-mode .faq-section {
     --faq-bg: transparent;
@@ -144,7 +142,7 @@
     --faq-border-active: rgba(13, 148, 136, 0.3);
     --faq-txt-main: #f3f4f6;
     --faq-txt-muted: #9ca3af;
-    --faq-arrow: #6b7280;
+    --faq-arrow: #9ca3af;
   }
 
   /* ── MAIN RENDER LAYOUT ── */
@@ -153,7 +151,7 @@
     margin: 0 auto;
     padding: 80px 32px;
     box-sizing: border-box;
-    background-color: var(--faq-bg); /* Forces isolation from global backgrounds */
+    background-color: var(--faq-bg); 
     transition: background-color 0.25s;
   }
 
@@ -165,10 +163,9 @@
   .faq-title {
     font-size: clamp(24px, 3.5vw, 36px);
     font-weight: 800;
-    color: var(--faq-txt-main) !important; /* Forces override against layout leakages */
+    color: var(--faq-txt-main) !important; 
     letter-spacing: -0.02em;
     margin: 0 0 12px 0;
-    transition: color 0.25s;
   }
 
   .faq-sub {
@@ -176,7 +173,6 @@
     color: var(--faq-txt-muted) !important;
     margin: 0;
     line-height: 1.5;
-    transition: color 0.25s;
   }
 
   .faq-list {
@@ -210,14 +206,21 @@
     justify-content: space-between;
     gap: 16px;
     text-align: left;
-    background: none !important;
+    background: transparent !important;
     border: none !important;
-    color: var(--faq-txt-main) !important;
-    font-weight: 600;
-    font-size: 15.5px;
     padding: 20px 24px;
     cursor: pointer;
     box-sizing: border-box;
+    outline: none;
+    -webkit-appearance: none; /* Strips mobile browser button traits */
+    appearance: none;
+  }
+
+  /* Target the span and text explicitly to blow past user-agent defaults */
+  .faq-q-text {
+    color: var(--faq-txt-main) !important;
+    font-weight: 600;
+    font-size: 15.5px;
     transition: color 0.2s;
   }
 
@@ -249,13 +252,13 @@
     overflow: hidden;
   }
 
-  .faq-answer-content p {
+  /* Forces dark dark grey on answer paragraphs */
+  .faq-answer-content p.faq-a-text {
     padding: 0 24px 20px;
     margin: 0;
     color: var(--faq-txt-muted) !important;
     font-size: 14.5px;
     line-height: 1.65;
-    transition: color 0.25s;
   }
 
   /* ── LINK ── */
@@ -291,12 +294,14 @@
 
   @media (max-width: 640px) {
     .faq-section { padding: 48px 20px; }
-    .faq-question { padding: 18px 20px; font-size: 15px; }
-    .faq-answer-content p { padding: 0 20px 18px; }
+    .faq-question { padding: 18px 20px; }
+    .faq-q-text { font-size: 15px; }
+    .faq-answer-content p.faq-a-text { padding: 0 20px 18px; }
   }
 </style>
 
 <script>
+  // Re-applied your original dynamic load listener logic safely
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
       const currentItem = btn.parentElement;
