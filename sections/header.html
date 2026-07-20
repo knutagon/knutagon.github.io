@@ -73,6 +73,9 @@
 
 <!-- MOBILE DRAWER (SLIDE-IN SIDEBAR) -->
 <div class="mobile-drawer" id="mobileDrawer">
+  <!-- THE FIX: Hard Close Button with ID mapped to index.html click catcher -->
+  <button class="drawer-close" id="drawerClose" aria-label="Close menu">✕</button>
+
   <div class="drawer-nav-links">
     <a class="nav-link active" href="#">Home</a>
     <a class="nav-link" href="#">Lifestyle</a>
@@ -399,32 +402,42 @@
     top: 0;
     right: -300px;
     width: 280px;
-    height: 100dvh; /* Integrated Fix: Dynamic Viewport handles mobile toolbars */
+    height: 100dvh; 
     background: var(--surface);
     border-left: 1px solid var(--border);
-    padding: 88px 24px env(safe-area-inset-bottom, 32px); /* Integrated Fix: Bottom notch spacing protection */
-    overflow-y: auto; /* Integrated Fix: Safe scrolling */
+    /* THE FIX: Top padding tweaked down to 24px to accommodate structural internal items */
+    padding: 24px 24px env(safe-area-inset-bottom, 32px);
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch;
     box-shadow: var(--shadow);
     z-index: 1800;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: right 0.25s cubic-bezier(0, 0, 0.2, 1); /* Integrated Fix: Snappier execution curve */
+    transition: right 0.25s cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  /* THE FIX: Explicit styling layout for the close X icon button */
+  .drawer-close {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px;
+    margin-right: -8px;
+    margin-bottom: 16px;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .drawer-close:hover {
+    color: var(--teal);
   }
 
   body.menu-active .mobile-drawer {
     right: 0;
-  }
-
-  /* Hamburger transformation into close cross */
-  body.menu-active .hamburger span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-  body.menu-active .hamburger span:nth-child(2) {
-    opacity: 0;
-  }
-  body.menu-active .hamburger span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
   }
 
   .drawer-nav-links {
@@ -446,6 +459,7 @@
     flex-direction: column;
     gap: 16px;
     padding-top: 20px;
+    margin-top: 40px; /* Gives links breathing room from controls when scrolled */
     border-top: 1px solid var(--border);
   }
 
