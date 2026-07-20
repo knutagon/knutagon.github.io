@@ -209,19 +209,19 @@
         <h4 class="sb-poll-question">What type of news do you prefer?</h4>
         <div class="sb-poll-list" id="sbPoll">
           <label class="sb-poll-item">
-            <input type="checkbox" name="poll" value="38" />
+            <input type="radio" name="poll" value="0" data-votes="3" />
             <span class="sb-poll-label">Text News</span>
             <div class="sb-poll-bar-wrap"><div class="sb-poll-bar" style="--pct: 38%"></div></div>
             <span class="sb-poll-pct">38%</span>
           </label>
           <label class="sb-poll-item">
-            <input type="checkbox" name="poll" value="25" />
+            <input type="radio" name="poll" value="1" data-votes="2" />
             <span class="sb-poll-label">Audio Podcast</span>
             <div class="sb-poll-bar-wrap"><div class="sb-poll-bar" style="--pct: 25%"></div></div>
             <span class="sb-poll-pct">25%</span>
           </label>
           <label class="sb-poll-item">
-            <input type="checkbox" name="poll" value="38" />
+            <input type="radio" name="poll" value="2" data-votes="3" />
             <span class="sb-poll-label">Video News</span>
             <div class="sb-poll-bar-wrap"><div class="sb-poll-bar" style="--pct: 38%"></div></div>
             <span class="sb-poll-pct">38%</span>
@@ -615,9 +615,9 @@
     cursor: pointer;
   }
 
-  .sb-poll-item input[type="checkbox"] {
+  .sb-poll-item input[type="radio"] {
     width: 18px; height: 18px;
-    border-radius: 4px;
+    border-radius: 50%;
     accent-color: var(--purple, #7c3aed);
     cursor: pointer;
     grid-row: 1; grid-column: 1;
@@ -686,16 +686,41 @@
   }
 </style>
 
-
 <script>
   (function () {
     const voteBtn = document.getElementById('sbVoteBtn');
     const voteCount = document.getElementById('sbVoteCount');
+    const pollItems = document.querySelectorAll('.sb-poll-item');
     if (!voteBtn) return;
+
     voteBtn.addEventListener('click', () => {
-      const checked = document.querySelectorAll('#sbPoll input[type="checkbox"]:checked');
-      if (!checked.length) return;
-      voteCount.textContent = parseInt(voteCount.textContent) + 1;
+      const selected = document.querySelector('#sbPoll input[type="radio"]:checked');
+      if (!selected) return;
+
+      // Increment vote counts
+      let totalVotes = parseInt(voteCount.textContent) + 1;
+      voteCount.textContent = totalVotes;
+
+      let currentVotes = parseInt(selected.getAttribute('data-votes')) + 1;
+      selected.setAttribute('data-votes', currentVotes);
+
+      // Recalculate and update bars/percentages for all options
+      pollItems.forEach(item => {
+        const input = item.querySelector('input[type="radio"]');
+        const votes = parseInt(input.getAttribute('data-votes'));
+        const pct = Math.round((votes / totalVotes) * 100);
+
+        const bar = item.querySelector('.sb-poll-bar');
+        const pctSpan = item.querySelector('.sb-poll-pct');
+
+        bar.style.setProperty('--pct', pct + '%');
+        pctSpan.textContent = pct + '%';
+
+        // Disable inputs after voting
+        input.disabled = true;
+      });
+
+      // Update button state
       voteBtn.textContent = 'Voted!';
       voteBtn.disabled = true;
       voteBtn.style.background = 'var(--teal, #0d9488)';
