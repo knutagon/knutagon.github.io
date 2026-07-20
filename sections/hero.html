@@ -60,6 +60,7 @@
 <script>
   // Add your actual markdown filenames here
   const BLOG_FILES = [
+    "test-post.md",
     "welcome.md",
     "second-post.md",
     "third-post.md"
@@ -84,21 +85,21 @@
             date: 'Recent',
             timestamp: 0,
             views: Math.floor(Math.random() * 400) + 100,
-            image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80',
+            image: '',
             author: 'Katen Doe',
             url: `post.html?file=${filename}`
           };
 
           for (let i = 0; i < lines.length; i++) {
             let line = lines[i].trim();
-            if (line.startsWith('title:')) meta.title = line.replace('title:', '').trim().replace(/['"]/g, '');
-            if (line.startsWith('category:')) meta.category = line.replace('category:', '').trim().replace(/['"]/g, '');
+            if (line.startsWith('title:')) meta.title = line.replace('title:', '').trim().replace(/^["']|["']$/g, '');
+            if (line.startsWith('category:')) meta.category = line.replace('category:', '').trim().replace(/^["']|["']$/g, '');
             if (line.startsWith('date:')) {
-              meta.date = line.replace('date:', '').trim().replace(/['"]/g, '');
+              meta.date = line.replace('date:', '').trim().replace(/^["']|["']$/g, '');
               meta.timestamp = new Date(meta.date).getTime() || Date.now();
             }
-            if (line.startsWith('image:')) meta.image = line.replace('image:', '').trim().replace(/['"]/g, '');
-            if (line.startsWith('author:')) meta.author = line.replace('author:', '').trim().replace(/['"]/g, '');
+            if (line.startsWith('image:')) meta.image = line.replace('image:', '').trim().replace(/^["']|["']$/g, '');
+            if (line.startsWith('author:')) meta.author = line.replace('author:', '').trim().replace(/^["']|["']$/g, '');
             if (line === '---' && i > 0) break;
           }
 
@@ -377,7 +378,7 @@
 
   @media (max-width: 900px) {
     .hero-section { padding: 24px 20px; }
-    .hero-inner {grid-template-columns: 1fr; gap: 32px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
     .hero-featured { min-height: unset; aspect-ratio: 16 / 10; }
     .mobile-hide-recent { display: none !important; }
   }
