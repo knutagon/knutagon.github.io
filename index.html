@@ -120,17 +120,13 @@
       
       const promises = pagesToSearch.map(async (file) => {
         try {
-          // Fetch raw file text directly out of the content pages subdirectory
           const rawHtml = await fetch(`/sections/pages/${file}`).then(r => r.text());
           
-          // Parse HTML code out cleanly to isolate text strings
           const parser = new DOMParser();
           const doc = parser.parseFromString(rawHtml, 'text/html');
           
-          // Clean out excessive layout line breaks and spaces
           const cleanText = (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
           
-          // Generate a beautifully formatted visual title based on filename
           const cleanTitle = file.replace('.html', '')
                                  .split('-')
                                  .map(w => w.charAt(0).toUpperCase() + w.slice(1))
@@ -152,7 +148,7 @@
     }
 
     function openSearch() {
-      closeMenu(); // Close mobile panel if open
+      closeMenu();
       const overlay = document.getElementById('searchOverlay');
       if (overlay) {
         overlay.classList.add('active');
@@ -163,7 +159,7 @@
         }
         document.getElementById('searchHint').textContent = '';
         document.getElementById('searchResults').innerHTML = '';
-        buildSearchIndex(); // Pre-fetch and parse target content pages in background
+        buildSearchIndex();
       }
     }
 
@@ -172,9 +168,7 @@
       if (overlay) overlay.classList.remove('active');
     }
 
-    // Capture global layout click behaviors
     document.addEventListener('click', (e) => {
-      // Toggle Hamburger Menu
       const hamburger = e.target.closest('#hamburger');
       if (hamburger) {
         document.body.classList.toggle('menu-active');
@@ -193,20 +187,17 @@
         return;
       }
 
-      // Open search button click
       if (e.target.closest('.search-trigger')) {
         openSearch();
         return;
       }
 
-      // Close search triggers
       if (e.target.id === 'searchOverlay' || e.target.closest('#searchClose')) {
         closeSearch();
         return;
       }
     });
 
-    // Handle Live Inline Input Suggestion Event Pipeline
     document.addEventListener('input', (e) => {
       if (e.target && e.target.id === 'searchInput') {
         const query = e.target.value.toLowerCase().trim();
@@ -229,26 +220,21 @@
           if (indexIdx !== -1) {
             matchCount++;
             
-            // Try matching an active autocompletion hint phrase word sequence
             if (!bestHint) {
               const matchingWord = item.words.find(w => w.startsWith(query));
               if (matchingWord && matchingWord !== query) {
-                // Match visual text alignment length casing beautifully
                 bestHint = e.target.value + matchingWord.slice(query.length);
               }
             }
 
-            // Slice out relative contextual string preview snippet
             const start = Math.max(0, indexIdx - 30);
             const end = Math.min(item.text.length, indexIdx + 80);
             let snippet = item.text.slice(start, end);
             if (start > 0) snippet = '...' + snippet;
             if (end < item.text.length) snippet = snippet + '...';
 
-            // Wrap query match instances in strong emphasis tags
             const safeSnippet = snippet.replace(new RegExp(query, 'gi'), match => `<strong>${match}</strong>`);
 
-            // Direct links straight to your content sub-page files
             matchHtml += `
               <a href="/sections/pages/${item.filename}" class="search-result-item" onclick="closeSearch()">
                 <div class="search-result-title">${item.title}</div>
@@ -258,10 +244,8 @@
           }
         });
 
-        // Inject the inline gray hint suggestion layer text values
         hintLayer.textContent = bestHint;
         
-        // Render search structural records matching the key term
         if (matchCount > 0) {
           resultsLayer.innerHTML = matchHtml;
         } else {
@@ -270,7 +254,6 @@
       }
     });
 
-    // Capture Keyboard Operations (Tab handles auto-complete, Escape closes)
     document.addEventListener('keydown', (e) => {
       const searchInput = document.getElementById('searchInput');
       const searchOverlay = document.getElementById('searchOverlay');
@@ -283,12 +266,35 @@
       if (e.key === 'Tab') {
         const hintLayer = document.getElementById('searchHint');
         if (hintLayer && hintLayer.textContent) {
-          e.preventDefault(); // Lock cursor switching out of focus container elements
+          e.preventDefault();
           searchInput.value = hintLayer.textContent;
           hintLayer.textContent = '';
         }
       }
     });
+
+    // Hero Section Loader
+    function getAttr(html, attr) {
+      const match = html.match(new RegExp(attr + '="([^"]*)"'));
+      return match ? match[1] : '';
+    }
+
+    async function initHeroSection() {
+      try {
+        const res = await fetch('/sections/latest.html');
+        if (!res.ok) return;
+        const html = await res.text();
+
+        document.getElementById('hero-featured-post').href   = getAttr(html, 'data-url')      || '#';
+        document.getElementById('hero-featured-img').src     = getAttr(html, 'data-image')    || '';
+        document.getElementById('hero-category').textContent = getAttr(html, 'data-category') || '';
+        document.getElementById('hero-title').textContent    = getAttr(html, 'data-title')    || '';
+        document.getElementById('hero-author').textContent   = getAttr(html, 'data-author')   || '';
+        document.getElementById('hero-date').textContent     = getAttr(html, 'data-date')     || '';
+      } catch (err) {
+        console.error('Hero: failed to load latest.html', err);
+      }
+    }
 
     // 3. Dynamic Section Loader
     async function loadSection(id, file) {
@@ -302,6 +308,7 @@
           const inputs = target.querySelectorAll('#themeToggle, #themeToggleMobile');
           inputs.forEach(input => input.checked = (activeTheme === 'dark'));
         }
+        if (id === 'hero') initHeroSection();
         if (id === 'tags') initTagSlider(target);
         if (id === 'bloglist' || id === 'readmore') initMobileSliders(target);
       } catch (e) {
