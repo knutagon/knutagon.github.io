@@ -1,5 +1,5 @@
 <!-- ══════════════════════════════════════
-     TRUST SECTION (LIGHT BACKGROUND)
+     TRUST SECTION
 ══════════════════════════════════════ -->
 <section class="trust-section">
   <div class="trust-wrap">
@@ -9,68 +9,184 @@
       <p class="trust-sub">Trusted by the world’s most innovative teams</p>
     </div>
 
-    <!-- GRID -->
+    <!-- LOGO GRID (Perfect 4x2 layout mapping) -->
     <div class="trust-grid">
-      <div class="trust-item">⚡ Acme Corp</div>
-      <div class="trust-item">🌿 Echo Valley</div>
-      <div class="trust-item">🌍 Outside</div>
-      <div class="trust-item">💠 Pulse</div>
-      <div class="trust-item">🔮 Quantum</div>
-      <div class="trust-item">🌀 2TWICE</div>
-      <div class="trust-item">✨ Celestial</div>
-      <div class="trust-item">🚀 Apex</div>
+      
+      <div class="trust-item">
+        <span class="trust-logo-icon">⚡</span>
+        <span class="trust-logo-text">Acme Corp</span>
+      </div>
+      
+      <div class="trust-item">
+        <span class="trust-logo-icon">🌿</span>
+        <span class="trust-logo-text">Echo Valley</span>
+      </div>
+      
+      <div class="trust-item">
+        <span class="trust-logo-icon">🌍</span>
+        <span class="trust-logo-text">Outside</span>
+      </div>
+      
+      <div class="trust-item">
+        <span class="trust-logo-icon">💠</span>
+        <span class="trust-logo-text">PULSE</span>
+      </div>
+      
+      <div class="trust-item">
+        <span class="trust-logo-icon">🔮</span>
+        <span class="trust-logo-text">Quantum</span>
+      </div>
+      
+      <div class="trust-item">
+        <span class="trust-logo-icon">🌀</span>
+        <span class="trust-logo-text">2TWICE</span>
+      </div>
+      
+      <div class="trust-item">
+        <span class="trust-logo-icon">✨</span>
+        <span class="trust-logo-text">Celestial</span>
+      </div>
+      
+      <div class="trust-item">
+        <span class="trust-logo-icon">🚀</span>
+        <span class="trust-logo-text">APEX</span>
+      </div>
+
     </div>
 
   </div>
 </section>
 
 <style>
+  /* ════════════════════════════════════════════════════════════════
+     BASE LIGHT MODE THEME (Defaults to a clean gray context)
+     ════════════════════════════════════════════════════════════════ */
   .trust-section {
-    max-width: 1280px;
+    width: 100%;
+    background-color: #f9fafb; 
+    padding: 90px 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+  }
+
+  .trust-sub {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4b5563; /* Subtle gray subheader text */
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .trust-item {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    color: #111827;
+  }
+
+  .trust-item:hover {
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     DARK MODE THEME (Matches the uploaded black reference image layout)
+     ════════════════════════════════════════════════════════════════ */
+  [data-theme="dark"] .trust-section,
+  body.dark-mode .trust-section {
+    background-color: #000000 !important; /* Pure black aesthetic backdrop */
+  }
+
+  [data-theme="dark"] .trust-sub,
+  body.dark-mode .trust-sub {
+    color: #71717a !important; /* Clean charcoal gray header mapping */
+  }
+
+  [data-theme="dark"] .trust-item,
+  body.dark-mode .trust-item {
+    background-color: #040404 !important; /* Ultra-dark card panels */
+    border: 1px solid #141414 !important; /* Soft edge border container separating elements */
+    color: #ffffff !important;
+  }
+
+  [data-theme="dark"] .trust-item:hover,
+  body.dark-mode .trust-item:hover {
+    border-color: #222222 !important;
+    background-color: #080808 !important;
+  }
+
+  /* ── GRID LOGIC STRUCTURE ── */
+  .trust-wrap {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 80px 32px;
-    background: #fff;
-    color: #111;
+    padding: 0 40px;
+    box-sizing: border-box;
   }
 
   .trust-header {
     text-align: center;
-    margin-bottom: 48px;
-  }
-
-  .trust-sub {
-    font-size: 18px;
-    color: rgba(0,0,0,0.7);
+    margin-bottom: 56px;
   }
 
   .trust-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 24px;
-    justify-items: center;
+    grid-template-columns: repeat(4, 1fr); /* 4 horizontal items like the image layout */
+    gap: 20px 24px;
   }
 
   .trust-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    font-weight: 600;
+    gap: 12px;
     font-size: 16px;
-    color: #111;
-    background: #f9f9f9;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 10px;
-    padding: 20px 24px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    border-radius: 12px; /* Smooth corner tracking */
+    height: 84px;        /* Proportionate block sizing matching layout geometry */
+    padding: 0 24px;
+    box-sizing: border-box;
+    transition: background-color 0.25s, border-color 0.25s, transform 0.2s;
+    cursor: default;
   }
 
   .trust-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
   }
 
-  @media (max-width: 700px) {
-    .trust-section { padding: 60px 20px; }
+  /* Custom Logo Container Slots */
+  .trust-logo-icon {
+    font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .trust-logo-text {
+    white-space: nowrap;
+  }
+
+  /* Responsive viewports adjusting for compact mobile screens */
+  @media (max-width: 1024px) {
+    .trust-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .trust-section { padding: 64px 0; }
+    .trust-wrap { padding: 0 24px; }
+    .trust-header { margin-bottom: 40px; }
+    .trust-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .trust-item { height: 76px; font-size: 15px; }
+  }
+
+  @media (max-width: 440px) {
+    .trust-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
