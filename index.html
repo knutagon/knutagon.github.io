@@ -63,7 +63,7 @@
 
   <div class="menu-overlay" id="menuOverlay"></div>
 
-  <!-- SECTION MOUNTS -->
+  <!-- HOMEPAGE SECTION MOUNTS -->
   <div id="header"></div>
   <div id="hero"></div>
   <div id="about"></div>
@@ -104,28 +104,33 @@
       if (burgerBtn) burgerBtn.setAttribute('aria-expanded', 'false');
     }
 
-    // 🔍 INDEXED SEARCH MEMORY STORAGE ENGINE
+    // 🔍 INDEXED SUB-PAGE SEARCH STORAGE ENGINE
     let searchDatabase = [];
-    const sectionsToSearch = [
-      'about.html', 'banner.html', 'bloglist.html', 'cat-banner.html',
-      'faq.html', 'feature.html', 'footer.html', 'glossary.html',
-      'hero.html', 'readmore.html', 'tags.html', 'trust.html', 'video.html'
+    
+    // 📂 Add/modify the content page filenames you put inside /sections/pages/ here:
+    const pagesToSearch = [
+      'about-us.html', 
+      'privacy-policy.html', 
+      'terms.html',
+      'welcome-post.html'
     ];
 
     async function buildSearchIndex() {
       if (searchDatabase.length > 0) return; // Already built!
       
-      const promises = sectionsToSearch.map(async (file) => {
+      const promises = pagesToSearch.map(async (file) => {
         try {
-          const rawHtml = await fetch(`/sections/${file}`).then(r => r.text());
-          // Parse HTML text cleanly out of the nodes
+          // Fetch raw file text directly out of the content pages subdirectory
+          const rawHtml = await fetch(`/sections/pages/${file}`).then(r => r.text());
+          
+          // Parse HTML code out cleanly to isolate text strings
           const parser = new DOMParser();
           const doc = parser.parseFromString(rawHtml, 'text/html');
           
-          // Get text content and strip extra layout whitespaces
+          // Clean out excessive layout line breaks and spaces
           const cleanText = (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
           
-          // Generate a clean title based on filename
+          // Generate a beautifully formatted visual title based on filename
           const cleanTitle = file.replace('.html', '')
                                  .split('-')
                                  .map(w => w.charAt(0).toUpperCase() + w.slice(1))
@@ -138,7 +143,7 @@
             words: cleanText.toLowerCase().split(/\W+/).filter(Boolean)
           };
         } catch (e) {
-          console.error("Could not index file for search:", file, e);
+          console.error("Could not index sub-page for search:", file, e);
           return null;
         }
       });
@@ -147,7 +152,7 @@
     }
 
     function openSearch() {
-      closeMenu(); // Safety check
+      closeMenu(); // Close mobile panel if open
       const overlay = document.getElementById('searchOverlay');
       if (overlay) {
         overlay.classList.add('active');
@@ -158,7 +163,7 @@
         }
         document.getElementById('searchHint').textContent = '';
         document.getElementById('searchResults').innerHTML = '';
-        buildSearchIndex(); // Pre-fetch background data asynchronously
+        buildSearchIndex(); // Pre-fetch and parse target content pages in background
       }
     }
 
@@ -167,7 +172,7 @@
       if (overlay) overlay.classList.remove('active');
     }
 
-    // Capture global document clicks
+    // Capture global layout click behaviors
     document.addEventListener('click', (e) => {
       // Toggle Hamburger Menu
       const hamburger = e.target.closest('#hamburger');
@@ -188,13 +193,13 @@
         return;
       }
 
-      // Open search handler
+      // Open search button click
       if (e.target.closest('.search-trigger')) {
         openSearch();
         return;
       }
 
-      // Close search handlers
+      // Close search triggers
       if (e.target.id === 'searchOverlay' || e.target.closest('#searchClose')) {
         closeSearch();
         return;
@@ -228,23 +233,24 @@
             if (!bestHint) {
               const matchingWord = item.words.find(w => w.startsWith(query));
               if (matchingWord && matchingWord !== query) {
-                // Prepend exact user typed casing to match visual layout length
+                // Match visual text alignment length casing beautifully
                 bestHint = e.target.value + matchingWord.slice(query.length);
               }
             }
 
-            // Slice out context snippets dynamically
+            // Slice out relative contextual string preview snippet
             const start = Math.max(0, indexIdx - 30);
             const end = Math.min(item.text.length, indexIdx + 80);
             let snippet = item.text.slice(start, end);
             if (start > 0) snippet = '...' + snippet;
             if (end < item.text.length) snippet = snippet + '...';
 
-            // Highlight match matching regions
+            // Wrap query match instances in strong emphasis tags
             const safeSnippet = snippet.replace(new RegExp(query, 'gi'), match => `<strong>${match}</strong>`);
 
+            // Direct links straight to your content sub-page files
             matchHtml += `
-              <a href="#${item.filename.replace('.html','')}" class="search-result-item" onclick="closeSearch()">
+              <a href="/sections/pages/${item.filename}" class="search-result-item" onclick="closeSearch()">
                 <div class="search-result-title">${item.title}</div>
                 <div class="search-result-snippet">${safeSnippet}</div>
               </a>
@@ -252,22 +258,23 @@
           }
         });
 
-        // Apply gray hint suggestion layer background alignment
+        // Inject the inline gray hint suggestion layer text values
         hintLayer.textContent = bestHint;
         
-        // Render out actual structural records matching the term
+        // Render search structural records matching the key term
         if (matchCount > 0) {
           resultsLayer.innerHTML = matchHtml;
         } else {
-          resultsLayer.innerHTML = `<div class="search-empty">No results found inside sections matching "${e.target.value}"</div>`;
+          resultsLayer.innerHTML = `<div class="search-empty">No results found inside pages matching "${e.target.value}"</div>`;
         }
       }
     });
 
-    // Capture Keyboard Events (Tab to accept hint, Escape to exit)
+    // Capture Keyboard Operations (Tab handles auto-complete, Escape closes)
     document.addEventListener('keydown', (e) => {
       const searchInput = document.getElementById('searchInput');
-      if (!searchInput || !document.getElementById('searchOverlay').classList.contains('active')) return;
+      const searchOverlay = document.getElementById('searchOverlay');
+      if (!searchInput || !searchOverlay || !searchOverlay.classList.contains('active')) return;
 
       if (e.key === 'Escape') {
         closeSearch();
@@ -276,7 +283,7 @@
       if (e.key === 'Tab') {
         const hintLayer = document.getElementById('searchHint');
         if (hintLayer && hintLayer.textContent) {
-          e.preventDefault(); // Stop window selection switching focus
+          e.preventDefault(); // Lock cursor switching out of focus container elements
           searchInput.value = hintLayer.textContent;
           hintLayer.textContent = '';
         }
@@ -340,7 +347,7 @@
       });
     }
 
-    // Kick off rendering
+    // Kick off homepage assembly layout loaders
     loadSection('header', 'header.html');
     loadSection('hero', 'hero.html');
     loadSection('about', 'about.html');
