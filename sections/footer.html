@@ -1,12 +1,12 @@
 <!-- ══════════════════════════════════════
-     FOOTER SECTION (BLACK THEME)
+     FOOTER SECTION
 ══════════════════════════════════════ -->
 <footer class="footer-section">
   <div class="footer-wrap">
 
     <!-- LEFT BRAND COLUMN -->
     <div class="footer-brand">
-      <h2 class="footer-logo">Soul Dragon™</h2>
+      <h2 class="footer-logo">Soul Dragon™</h2>
       <p class="footer-desc">
         Building worlds that merge creativity, technology, and mythic design.  
         Crafted for visionaries shaping the future of storytelling.
@@ -23,7 +23,7 @@
       <div class="footer-column">
         <h3>Projects</h3>
         <ul>
-          <li><a href="#">Soul Dragon™ Universe</a></li>
+          <li><a href="#">Soul Dragon™ Universe</a></li>
           <li><a href="#">Codex2™ Cards</a></li>
           <li><a href="#">Creative Systems</a></li>
           <li><a href="#">Music & Sound</a></li>
@@ -47,9 +47,9 @@
         <ul>
           <li><a href="#">About</a></li>
           <li><a href="#">Sustainability</a></li>
-          <li><a href="#">Terms & Conditions</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
         </ul>
       </div>
     </div>
@@ -58,20 +58,49 @@
 
   <!-- BOTTOM LINE -->
   <div class="footer-bottom">
-    <p>© 2026 Soul Dragon™. All rights reserved.</p>
+    <p>© 2026 Soul Dragon™. All rights reserved.</p>
     <div class="footer-bottom-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Cookie Policy</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
     </div>
   </div>
 </footer>
 
 <style>
+  /* ════════════════════════════════════════════════════════════════
+     CUSTOM THEME CONFIGURATION VARIABLES
+     ════════════════════════════════════════════════════════════════ */
   .footer-section {
-    background: #000;
-    color: #fff;
+    /* DEFAULT CUSTOM LIGHT MODE COLORS (Edit these hex codes) */
+    --footer-bg: #f9fafb;
+    --footer-text-main: #111827;
+    --footer-text-sub: #4b5563;
+    --footer-border: #e5e7eb;
+    --footer-accent: #0d9488;      /* Hover states color */
+    --footer-accent-hover: #14b8a6;
+  }
+
+  /* CUSTOM DARK MODE COLORS (Edit these hex codes to anything you want!) */
+  [data-theme="dark"] .footer-section,
+  body.dark-mode .footer-section {
+    --footer-bg: #0b0813 !important;        /* Dark background color config */
+    --footer-text-main: #ffffff !important;  /* Dark main text config */
+    --footer-text-sub: #94929c !important;   /* Dark secondary text config */
+    --footer-border: rgba(255, 255, 255, 0.08) !important;
+    --footer-accent: #0d9488 !important;    /* Dark mode accent config */
+    --footer-accent-hover: #14b8a6 !important;
+  }
+
+  /* ════════════════════════════════════════════════════════════════
+     FUNCTIONAL FOOTER STYLES
+     ════════════════════════════════════════════════════════════════ */
+  .footer-section {
+    background-color: var(--footer-bg);
+    color: var(--footer-text-main);
     padding: 80px 32px 40px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   .footer-wrap {
@@ -85,26 +114,30 @@
   .footer-logo {
     font-size: 24px;
     font-weight: 800;
-    margin-bottom: 12px;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.02em;
+    color: var(--footer-text-main);
   }
 
   .footer-desc {
     font-size: 15px;
-    color: rgba(255,255,255,0.7);
+    color: var(--footer-text-sub);
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin: 0 0 20px 0;
   }
 
   .footer-social a {
     font-size: 20px;
     margin-right: 12px;
-    color: rgba(255,255,255,0.8);
+    color: var(--footer-text-sub);
     text-decoration: none;
-    transition: color 0.2s;
+    transition: color 0.2s, transform 0.2s;
+    display: inline-block;
   }
 
   .footer-social a:hover {
-    color: #7c3aed;
+    color: var(--footer-accent);
+    transform: translateY(-2px);
   }
 
   .footer-links {
@@ -117,7 +150,9 @@
   .footer-column h3 {
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.01em;
+    color: var(--footer-text-main);
   }
 
   .footer-column ul {
@@ -127,25 +162,25 @@
   }
 
   .footer-column ul li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .footer-column ul li a {
-    color: rgba(255,255,255,0.7);
+    color: var(--footer-text-sub);
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14.5px;
     transition: color 0.2s;
   }
 
   .footer-column ul li a:hover {
-    color: #a78bfa;
+    color: var(--footer-accent-hover);
   }
 
   .footer-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid var(--footer-border);
     margin-top: 60px;
     padding-top: 24px;
     max-width: 1280px;
@@ -155,11 +190,12 @@
 
   .footer-bottom p {
     font-size: 14px;
-    color: rgba(255,255,255,0.6);
+    color: var(--footer-text-sub);
+    margin: 0;
   }
 
   .footer-bottom-links a {
-    color: rgba(255,255,255,0.6);
+    color: var(--footer-text-sub);
     text-decoration: none;
     font-size: 14px;
     margin-left: 20px;
@@ -167,7 +203,7 @@
   }
 
   .footer-bottom-links a:hover {
-    color: #7c3aed;
+    color: var(--footer-accent);
   }
 
   @media (max-width: 900px) {
@@ -177,8 +213,11 @@
     }
     .footer-bottom {
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
       text-align: center;
+    }
+    .footer-bottom-links a {
+      margin: 0 10px;
     }
   }
 </style>
