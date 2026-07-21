@@ -1,5 +1,16 @@
 [
   {
+    "url": "posts/my-post.md",
+    "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80",
+    "hasVideo": true,
+    "category": "Business",
+    "title": "Consultant Business Strategy",
+    "author": "Calvin Carlo",
+    "date": "13th March 2025",
+    "comments": "2 Comments",
+    "excerpt": "A deep dive into how modern consultants scale operations and optimize client workflows for maximum sustainable growth."
+  },
+  {
     "url": "#",
     "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80",
     "hasVideo": true,
@@ -21,15 +32,4 @@
     "comments": "5 Comments",
     "excerpt": "Simple yet powerful marketing tactics that help small and mid-sized businesses capture new audiences without breaking the bank."
   },
-  {
-    "url": "#",
-    "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80",
-    "hasVideo": false,
-    "category": "Finance",
-    "title": "Look On The Glorious Balance",
-    "author": "Calvin Carlo",
-    "date": "19th June 2025",
-    "comments": "1 Comment",
-    "excerpt": "Balancing risk and reward in volatile markets requires discipline, a clear head, and a long-term strategic vision."
-  }
 ]
