@@ -5,136 +5,13 @@
   <div class="bloglist-inner">
 
     <!-- ── MAIN LIST ── -->
-    <div class="bloglist-main">
+    <div class="bloglist-main" id="dynamic-blog-list">
 
-      <!-- POST 1 -->
-      <article class="bl-post">
-        <a class="bl-post-img-wrap" href="#">
-          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80" alt="Post image" />
-          <span class="bl-post-type-icon" title="Video">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="15" height="10" rx="2"/><path d="M17 9l5-3v12l-5-3V9z"/></svg>
-          </span>
-        </a>
-        <div class="bl-post-body">
-          <span class="bl-cat">Lifestyle</span>
-          <h2 class="bl-title"><a href="#">10 Habits That Will Change Your Life for the Better</a></h2>
-          <div class="bl-meta">
-            <span>Joanna Wellick</span>
-            <span class="bl-sep">·</span>
-            <span>May 24, 2019</span>
-            <span class="bl-sep">·</span>
-            <span>No Comments</span>
-          </div>
-          <p class="bl-excerpt">✦ Explore refined details in clothing and footwear that blend sophistication with comfort, from tailored jackets to classic court shoes with unique accents.</p>
-          <div class="bl-share-row">
-            <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-            <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-            <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
-            <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              <span class="bl-copy-tip">Copied!</span>
-            </button>
-          </div>
-        </div>
-      </article>
-
-      <!-- POST 2 -->
-      <article class="bl-post">
-        <a class="bl-post-img-wrap" href="#">
-          <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&q=80" alt="Post image" />
-        </a>
-        <div class="bl-post-body">
-          <span class="bl-cat">Travel</span>
-          <h2 class="bl-title"><a href="#">5 Efficient Rules How to Organize Your Working Place</a></h2>
-          <div class="bl-meta">
-            <span>Joanna Wellick</span>
-            <span class="bl-sep">·</span>
-            <span>May 23, 2019</span>
-            <span class="bl-sep">·</span>
-            <span>No Comments</span>
-          </div>
-          <p class="bl-excerpt">✦ Explore key design details and materials that deliver both function and style while keeping your space focused and productive.</p>
-          <div class="bl-share-row">
-            <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-            <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-            <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
-            <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              <span class="bl-copy-tip">Copied!</span>
-            </button>
-          </div>
-        </div>
-      </article>
-
-      <!-- POST 3 -->
-      <article class="bl-post">
-        <a class="bl-post-img-wrap" href="#">
-          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80" alt="Post image" />
-        </a>
-        <div class="bl-post-body">
-          <span class="bl-cat">Technology</span>
-          <h2 class="bl-title"><a href="#">The Future of AI in Everyday Life</a></h2>
-          <div class="bl-meta">
-            <span>Marcus Lane</span>
-            <span class="bl-sep">·</span>
-            <span>July 9, 2026</span>
-            <span class="bl-sep">·</span>
-            <span>4 Comments</span>
-          </div>
-          <p class="bl-excerpt">✦ Artificial intelligence is quietly reshaping how we work, create, and connect — and the pace is only accelerating from here.</p>
-          <div class="bl-share-row">
-            <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-            <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-            <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
-            <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              <span class="bl-copy-tip">Copied!</span>
-            </button>
-          </div>
-        </div>
-      </article>
-
-      <!-- POST 4 -->
-      <article class="bl-post">
-        <a class="bl-post-img-wrap" href="#">
-          <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600&q=80" alt="Post image" />
-        </a>
-        <div class="bl-post-body">
-          <span class="bl-cat">Travel</span>
-          <h2 class="bl-title"><a href="#">Weekend Escapes: Hidden Gems Near the City</a></h2>
-          <div class="bl-meta">
-            <span>Sara Bloom</span>
-            <span class="bl-sep">·</span>
-            <span>July 8, 2026</span>
-            <span class="bl-sep">·</span>
-            <span>1 Comment</span>
-          </div>
-          <p class="bl-excerpt">✦ You don't need a long flight to find somewhere remarkable. These underrated spots are just a short drive away and worth every minute.</p>
-          <div class="bl-share-row">
-            <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-            <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-            <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
-            <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-              <span class="bl-copy-tip">Copied!</span>
-            </button>
-          </div>
-        </div>
-      </article>
-
-      <!-- LOAD MORE + ARCHIVE -->
-      <div class="bl-footer">
-        <button class="bl-load-more">Load More Posts</button>
-        <a class="bl-archive-link" href="#">Browse Full Archive →</a>
-      </div>
+      <!-- JavaScript will automatically load the top 3 posts from posts.json here -->
 
     </div>
 
-    <!-- ── SIDEBAR ── -->
+    <!-- ── SIDEBAR (Desktop Only) ── -->
     <aside class="bloglist-sidebar">
 
       <!-- ABOUT ME -->
@@ -457,43 +334,6 @@
     color: #ffffff;
   }
 
-  /* ── FOOTER ── */
-  .bl-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    padding-top: 40px;
-  }
-
-  .bl-load-more {
-    padding: 12px 36px;
-    background: var(--purple, #7c3aed);
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 600;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-  }
-
-  .bl-load-more:hover {
-    background: var(--purple-hover, #6d28d9);
-    transform: translateY(-1px);
-  }
-
-  .bl-archive-link {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-secondary, #6b7280);
-    text-decoration: none;
-    letter-spacing: 0.03em;
-    transition: color 0.2s;
-  }
-
-  .bl-archive-link:hover { color: var(--teal, #0d9488); }
-
   /* ── SIDEBAR ── */
   .bloglist-sidebar {
     position: sticky;
@@ -803,6 +643,72 @@
 </style>
 
 <script>
+  (async function () {
+    const container = document.getElementById('dynamic-blog-list');
+    if (!container) return;
+
+    try {
+      const response = await fetch('/posts/posts.json');
+      const posts = await response.json();
+      
+      container.innerHTML = '';
+
+      // Automatically grabs only the top 3 posts from your JSON file
+      posts.slice(0, 3).forEach(post => {
+        const article = document.createElement('article');
+        article.className = 'bl-post';
+        article.innerHTML = `
+          <a class="bl-post-img-wrap" href="${post.url}">
+            <img src="${post.image}" alt="${post.title}" />
+            ${post.hasVideo ? `
+              <span class="bl-post-type-icon" title="Video">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="15" height="10" rx="2"/><path d="M17 9l5-3v12l-5-3V9z"/></svg>
+              </span>
+            ` : ''}
+          </a>
+          <div class="bl-post-body">
+            <span class="bl-cat">${post.category}</span>
+            <h2 class="bl-title"><a href="${post.url}">${post.title}</a></h2>
+            <div class="bl-meta">
+              <span>${post.author}</span>
+              <span class="bl-sep">·</span>
+              <span>${post.date}</span>
+              <span class="bl-sep">·</span>
+              <span>${post.comments || 'No Comments'}</span>
+            </div>
+            <p class="bl-excerpt">✦ ${post.excerpt}</p>
+            <div class="bl-share-row">
+              <span class="bl-share-label">Share <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+              <a class="bl-share-btn" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+              <a class="bl-share-btn" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.865l4.258 5.63 5.871-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+              <a class="bl-share-btn" href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg></a>
+              <button class="bl-share-btn bl-copy-btn" aria-label="Copy link" title="Copy link" onclick="navigator.clipboard.writeText(window.location.href); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1800)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                <span class="bl-copy-tip">Copied!</span>
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(article);
+      });
+
+      // Append footer controls back right after the loop finishes injecting the 3 posts
+      const footerDiv = document.createElement('div');
+      footerDiv.className = 'bl-footer';
+      footerDiv.innerHTML = `
+        <button class="bl-load-more">Load More Posts</button>
+        <a class="bl-archive-link" href="#">Browse Full Archive →</a>
+      `;
+      container.appendChild(footerDiv);
+
+    } catch (err) {
+      console.error('Failed to load blog posts', err);
+    }
+  })();
+</script>
+
+<script>
+  // Poll Script untouched
   (function () {
     const voteBtn = document.getElementById('sbVoteBtn');
     const voteCount = document.getElementById('sbVoteCount');
@@ -813,14 +719,12 @@
       const selected = document.querySelector('#sbPoll input[type="radio"]:checked');
       if (!selected) return;
 
-      // Increment vote counts
       let totalVotes = parseInt(voteCount.textContent) + 1;
       voteCount.textContent = totalVotes;
 
       let currentVotes = parseInt(selected.getAttribute('data-votes')) + 1;
       selected.setAttribute('data-votes', currentVotes);
 
-      // Recalculate and update bars/percentages for all options
       pollItems.forEach(item => {
         const input = item.querySelector('input[type="radio"]');
         const votes = parseInt(input.getAttribute('data-votes'));
@@ -832,11 +736,9 @@
         bar.style.setProperty('--pct', pct + '%');
         pctSpan.textContent = pct + '%';
 
-        // Disable inputs after voting
         input.disabled = true;
       });
 
-      // Update button state
       voteBtn.textContent = 'Voted!';
       voteBtn.disabled = true;
       voteBtn.style.background = 'var(--teal, #0d9488)';
