@@ -2,43 +2,42 @@
      FEATURED POST BANNER
 ══════════════════════════════════════ -->
 <section class="feature-section">
-  <div class="feature-wrap">
+  <a class="feature-wrap" id="feature-post-link" href="#">
 
     <!-- CATEGORY BADGE -->
-    <span class="feature-badge">Trends</span>
+    <span class="feature-badge" id="feature-badge"></span>
 
     <!-- BG IMAGE -->
-    <img class="feature-bg" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1400&q=80" alt="Featured post background" />
+    <img class="feature-bg" id="feature-bg" src="" alt="Featured post background" />
     <div class="feature-overlay"></div>
 
-
-<!-- CONTENT -->
+    <!-- CONTENT -->
     <div class="feature-content">
-      <h2 class="feature-title">Bright Jackets Gain<br>Ground in Urban Fashion</h2>
-      <p class="feature-excerpt">✦ Bright jackets are reshaping urban fashion, blending bold colors with street-level attitude and a new generation of designers...</p>
+      <h2 class="feature-title" id="feature-title"></h2>
+      <p class="feature-excerpt" id="feature-excerpt"></p>
 
       <div class="feature-meta">
         <span class="feature-readtime">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          3 Min Read
+          <span id="feature-readtime"></span>
         </span>
         <span class="feature-sep">·</span>
         <span class="feature-author">
-          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&q=70" alt="Nicole Reed" />
-          by <a href="#">Nicole Reed</a>
+          <img id="feature-author-img" src="" alt="Author" />
+          by <span id="feature-author"></span>
         </span>
         <span class="feature-sep">·</span>
-        <span class="feature-date">Jan 24, 2025</span>
+        <span class="feature-date" id="feature-date"></span>
         <span class="feature-sep">·</span>
         <span class="feature-comments">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-          2
+          <span id="feature-comments"></span>
         </span>
       </div>
 
     </div>
 
-  </div>
+  </a>
 </section>
 
 <style>
@@ -56,6 +55,7 @@
     display: flex;
     align-items: flex-end;
     background: #111;
+    text-decoration: none;
   }
 
   /* BG IMAGE */
@@ -67,6 +67,11 @@
     object-fit: cover;
     object-position: center top;
     display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .feature-wrap:hover .feature-bg {
+    transform: scale(1.03);
   }
 
   /* OVERLAY */
@@ -114,7 +119,6 @@
     line-height: 1.15;
     letter-spacing: -0.02em;
     margin-bottom: 16px;
-    /* highlight blocks like the wireframe */
     display: inline;
     background: rgba(20,20,20,0.55);
     box-decoration-break: clone;
@@ -164,6 +168,8 @@
     display: flex;
     align-items: center;
     gap: 7px;
+    color: #ffffff;
+    font-weight: 600;
   }
 
   .feature-author img {
@@ -172,13 +178,6 @@
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(255,255,255,0.4);
-  }
-
-  .feature-author a {
-    color: #ffffff;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 2px;
   }
 
   .feature-sep {
@@ -190,7 +189,6 @@
   @media (max-width: 700px) {
     .feature-section { padding: 0 16px 48px; }
     .feature-content { padding: 28px 24px; }
-    .feature-nav { width: 36px; height: 36px; }
     .feature-meta { gap: 7px; font-size: 12px; }
   }
 </style>
