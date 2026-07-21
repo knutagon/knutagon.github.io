@@ -296,6 +296,28 @@
       }
     }
 
+    // Feature Banner Loader
+    async function initFeatureSection() {
+      try {
+        const res = await fetch('/sections/feature-banner.html');
+        if (!res.ok) return;
+        const html = await res.text();
+
+        document.getElementById('feature-post-link').href  = getAttr(html, 'data-url')     || '#';
+        document.getElementById('feature-badge').textContent = getAttr(html, 'data-badge') || '';
+        document.getElementById('feature-bg').src          = getAttr(html, 'data-image')   || '';
+        document.getElementById('feature-title').innerHTML = getAttr(html, 'data-title')   || '';
+        document.getElementById('feature-excerpt').textContent = getAttr(html, 'data-excerpt') || '';
+        document.getElementById('feature-readtime').textContent = getAttr(html, 'data-readtime') || '';
+        document.getElementById('feature-author-img').src  = getAttr(html, 'data-author-img') || '';
+        document.getElementById('feature-author').textContent = getAttr(html, 'data-author') || '';
+        document.getElementById('feature-date').textContent = getAttr(html, 'data-date') || '';
+        document.getElementById('feature-comments').textContent = getAttr(html, 'data-comments') || '0';
+      } catch (err) {
+        console.error('Feature Banner: failed to load feature-banner.html', err);
+      }
+    }
+
     // 3. Dynamic Section Loader
     async function loadSection(id, file) {
       try {
@@ -309,6 +331,7 @@
           inputs.forEach(input => input.checked = (activeTheme === 'dark'));
         }
         if (id === 'hero') initHeroSection();
+        if (id === 'feature') initFeatureSection();
         if (id === 'tags') initTagSlider(target);
         if (id === 'bloglist' || id === 'readmore') initMobileSliders(target);
       } catch (e) {
