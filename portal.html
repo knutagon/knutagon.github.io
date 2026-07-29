@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Portal Room · KnutA Multiverse</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #000;
+    overflow: hidden;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #fff;
+    height: 100dvh;
+    width: 100vw;
+  }
+
+  /* ── BACKGROUND CANVAS ── */
+  #bgCanvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* ── ROOM ── */
+  .room {
+    position: relative;
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    gap: 40px;
+  }
+
+  .room-title {
+    text-align: center;
+    z-index: 2;
+  }
+
+  .room-title h1 {
+    font-size: clamp(18px, 3vw, 32px);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .room-title p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 6px;
+    letter-spacing: 0.15em;
+  }
+
+  /* ── PORTALS ROW ── */
+  .portals {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 2.5vw, 32px);
+    padding: 0 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ── SINGLE PORTAL ── */
+  .portal-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .portal-wrap:hover {
+    transform: translateY(-8px) scale(1.04);
+  }
+
+  .portal-canvas-wrap {
+    position: relative;
+    width: clamp(100px, 14vw, 160px);
+    height: clamp(140px, 20vw, 230px);
+  }
+
+  .portal-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  }
+
+  .portal-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0.18) 0%,
+      transparent 50%,
+      rgba(255,255,255,0.04) 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .portal-ring {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    z-index: 1;
+    pointer-events: none;
+    animation: ring-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes ring-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .portal-label {
+    text-align: center;
+  }
+
+  .portal-rune {
+    font-size: clamp(18px, 2.5vw, 26px);
+    display: block;
+    margin-bottom: 4px;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  .portal-name {
+    font-size: clamp(11px, 1.2vw, 14px);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .portal-sub {
+    font-size: 11px;
+    opacity: 0.4;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* ── CURSOR GLOW ── */
+  .cursor-glow {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(120,80,255,0.08) 0%, transparent 70%);
+    transition: background 0.3s;
+  }
+
+  /* ── FLASH OVERLAY ── */
+  .flash {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  .flash.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── FOOTER ── */
+  .room-footer {
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .portals { gap: 10px; }
+    .room { gap: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background starfield -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- Cursor glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Flash transition overlay -->
+<div class="flash" id="flash"></div>
+
+<div class="room">
+
+  <div class="room-title">
+    <h1>The KnutA Multiverse</h1>
+    <p>Choose your realm · Step through a portal</p>
+  </div>
+
+  <div class="portals" id="portals"></div>
+
+  <div class="room-footer">KnutA · Soul Dragon Universe · Portal Room v2</div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// PORTAL CONFIG
+// ══════════════════════════════════════════════
+const PORTALS = [
+  {
+    name: 'Soul Dragon',
+    sub: 'Main Universe',
+    rune: '🐉',
+    url: '/SoulDragon/',
+    colors: ['#2dd4bf', '#0891b2', '#06b6d4'],
+    glow: '#2dd4bf',
+  },
+  {
+    name: 'Acvarius AI',
+    sub: 'Tech Realm',
+    rune: '🤖',
+    url: '/Acvarius/',
+    colors: ['#7c3aed', '#6d28d9', '#a855f7'],
+    glow: '#a855f7',
+  },
+  {
+    name: 'Music',
+    sub: 'Sound Realm',
+    rune: '🎵',
+    url: '/Music/',
+    colors: ['#f97316', '#ea580c', '#fb923c'],
+    glow: '#f97316',
+  },
+  {
+    name: 'Fiction',
+    sub: 'Story Realm',
+    rune: '📖',
+    url: '/Fiction/',
+    colors: ['#ec4899', '#db2777', '#f472b6'],
+    glow: '#ec4899',
+  },
+  {
+    name: 'General',
+    sub: 'The Commons',
+    rune: '✨',
+    url: '/General/',
+    colors: ['#f59e0b', '#d97706', '#fbbf24'],
+    glow: '#f59e0b',
+  },
+];
+
+// ══════════════════════════════════════════════
+// BACKGROUND STARFIELD
+// ══════════════════════════════════════════════
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+let bgW, bgH, bgStars = [];
+
+function resizeBg() {
+  bgW = bgCanvas.width = window.innerWidth;
+  bgH = bgCanvas.height = window.innerHeight;
+  bgStars = Array.from({ length: 280 }, () => ({
+    x: Math.random() * bgW,
+    y: Math.random() * bgH,
+    r: Math.random() * 1.4,
+    o: 0.1 + Math.random() * 0.6,
+    phase: Math.random() * Math.PI * 2,
+    speed: 0.0005 + Math.random() * 0.001,
+  }));
+}
+
+function drawBg(ts) {
+  bgCtx.clearRect(0, 0, bgW, bgH);
+  bgCtx.fillStyle = '#000';
+  bgCtx.fillRect(0, 0, bgW, bgH);
+
+  // Nebula
+  [[bgW*0.2, bgH*0.3, '#7c3aed', 0.04], [bgW*0.8, bgH*0.7, '#2dd4bf', 0.04], [bgW*0.5, bgH*0.5, '#f97316', 0.025]].forEach(([x, y, c, a]) => {
+    const g = bgCtx.createRadialGradient(x, y, 0, x, y, bgW * 0.45);
+    g.addColorStop(0, c + Math.round(a*255).toString(16).padStart(2,'0'));
+    g.addColorStop(1, 'transparent');
+    bgCtx.fillStyle = g;
+    bgCtx.fillRect(0, 0, bgW, bgH);
+  });
+
+  // Stars
+  bgStars.forEach(s => {
+    const tw = Math.sin(ts * s.speed + s.phase) * 0.3 + 0.7;
+    bgCtx.beginPath();
+    bgCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    bgCtx.fillStyle = `rgba(255,255,255,${s.o * tw})`;
+    bgCtx.fill();
+  });
+
+  requestAnimationFrame(drawBg);
+}
+
+resizeBg();
+window.addEventListener('resize', resizeBg);
+requestAnimationFrame(drawBg);
+
+// ══════════════════════════════════════════════
+// PORTAL CANVAS RENDERER
+// ══════════════════════════════════════════════
+function createPortalCanvas(portal) {
+  const canvas = document.createElement('canvas');
+  canvas.className = 'portal-canvas';
+  const dpr = window.devicePixelRatio || 1;
+  const W = 160, H = 230;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  let t = 0;
+  const cx = W / 2, cy = H / 2;
+  const rx = W * 0.44, ry = H * 0.48;
+
+  // Particle system
+  const particles = Array.from({ length: 60 }, () => ({
+    angle: Math.random() * Math.PI * 2,
+    r: 0.3 + Math.random() * 0.7,
+    speed: 0.004 + Math.random() * 0.008,
+    dist: 0.4 + Math.random() * 0.5,
+    size: 1 + Math.random() * 2,
+    opacity: 0.4 + Math.random() * 0.6,
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.016;
+
+    // Clip to portal shape
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+    ctx.clip();
+
+    // Deep space background
+    const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
+    bg.addColorStop(0, '#000010');
+    bg.addColorStop(1, '#000005');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Swirling vortex layers
+    for (let layer = 0; layer < 4; layer++) {
+      const layerT = t * (0.3 + layer * 0.15);
+      const grad = ctx.createConicalGradient
+        ? null
+        : null;
+
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2 + layerT + layer * 0.5;
+        const innerR = (rx * 0.1) + layer * rx * 0.08;
+        const outerR = rx * (0.25 + layer * 0.18);
+        const colorIdx = i % portal.colors.length;
+        const color = portal.colors[colorIdx];
+
+        ctx.beginPath();
+        ctx.moveTo(
+          cx + Math.cos(angle) * innerR,
+          cy + Math.sin(angle) * innerR * (ry/rx)
+        );
+
+        // Spiral arm
+        for (let s = 0; s <= 1; s += 0.05) {
+          const a = angle + s * Math.PI * 0.6;
+          const r = innerR + s * (outerR - innerR);
+          ctx.lineTo(
+            cx + Math.cos(a) * r,
+            cy + Math.sin(a) * r * (ry/rx)
+          );
+        }
+
+        ctx.strokeStyle = color + Math.round((0.08 + layer * 0.04) * 255).toString(16).padStart(2,'0');
+        ctx.lineWidth = 2 + layer;
+        ctx.stroke();
+      }
+    }
+
+    // Core glow
+    const coreSize = rx * (0.22 + Math.sin(t * 1.5) * 0.04);
+    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreSize);
+    core.addColorStop(0, '#ffffff');
+    core.addColorStop(0.2, portal.colors[0] + 'ee');
+    core.addColorStop(0.6, portal.colors[1] + '66');
+    core.addColorStop(1, 'transparent');
+    ctx.fillStyle = core;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, coreSize, coreSize * (ry/rx), 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Energy rings
+    for (let r = 1; r <= 3; r++) {
+      const ringR = rx * (0.3 + r * 0.2) + Math.sin(t * 2 + r) * 4;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, ringR, ringR * (ry/rx), 0, 0, Math.PI * 2);
+      ctx.strokeStyle = portal.colors[r % portal.colors.length] + '55';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Orbiting particles
+    particles.forEach(p => {
+      p.angle += p.speed;
+      const pr = rx * p.dist;
+      const px = cx + Math.cos(p.angle) * pr;
+      const py = cy + Math.sin(p.angle) * pr * (ry/rx);
+      const pulse = Math.sin(t * 3 + p.angle) * 0.3 + 0.7;
+      ctx.beginPath();
+      ctx.arc(px, py, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = portal.colors[0] + Math.round(p.opacity * pulse * 255).toString(16).padStart(2,'0');
+      ctx.fill();
+    });
+
+    // Edge energy shimmer
+    const edgeGrad = ctx.createRadialGradient(cx, cy, rx * 0.7, cx, cy, rx);
+    edgeGrad.addColorStop(0, 'transparent');
+    edgeGrad.addColorStop(0.7, portal.colors[0] + '22');
+    edgeGrad.addColorStop(1, portal.colors[0] + '88');
+    ctx.fillStyle = edgeGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.restore();
+
+    // Outer glow ring (outside clip)
+    ctx.save();
+    const ringGrad = ctx.createRadialGradient(cx, cy, rx * 0.9, cx, cy, rx * 1.15);
+    ringGrad.addColorStop(0, portal.glow + '99');
+    ringGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = ringGrad;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx * 1.15, ry * 1.15, 0, 0, Math.PI * 2);
+    ctx.ellipse(cx, cy, rx * 0.9, ry * 0.9, 0, Math.PI * 2, 0, true);
+    ctx.fill();
+    ctx.restore();
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+  return canvas;
+}
+
+// ══════════════════════════════════════════════
+// BUILD PORTALS
+// ══════════════════════════════════════════════
+const portalsEl = document.getElementById('portals');
+
+PORTALS.forEach(portal => {
+  const wrap = document.createElement('div');
+  wrap.className = 'portal-wrap';
+
+  const canvasWrap = document.createElement('div');
+  canvasWrap.className = 'portal-canvas-wrap';
+
+  const portalCanvas = createPortalCanvas(portal);
+  const shine = document.createElement('div');
+  shine.className = 'portal-shine';
+  const ring = document.createElement('div');
+  ring.className = 'portal-ring';
+  ring.style.boxShadow = `0 0 20px 4px ${portal.glow}66, inset 0 0 12px ${portal.glow}44`;
+
+  canvasWrap.appendChild(portalCanvas);
+  canvasWrap.appendChild(shine);
+  canvasWrap.appendChild(ring);
+
+  const label = document.createElement('div');
+  label.className = 'portal-label';
+  label.innerHTML = `
+    <span class="portal-rune" style="color:${portal.glow}">${portal.rune}</span>
+    <div class="portal-name" style="color:${portal.glow}">${portal.name}</div>
+    <div class="portal-sub">${portal.sub}</div>
+  `;
+
+  wrap.appendChild(canvasWrap);
+  wrap.appendChild(label);
+  wrap.addEventListener('click', () => navigate(portal));
+  portalsEl.appendChild(wrap);
+});
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function navigate(portal) {
+  const flash = document.getElementById('flash');
+  flash.style.background = portal.glow;
+  flash.classList.add('active');
+  setTimeout(() => { window.location.href = portal.url; }, 500);
+}
+
+// ══════════════════════════════════════════════
+// CURSOR GLOW
+// ══════════════════════════════════════════════
+const cursorGlow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', (e) => {
+  cursorGlow.style.left = e.clientX + 'px';
+  cursorGlow.style.top = e.clientY + 'px';
+});
+
+// ══════════════════════════════════════════════
+// CURSOR STAR TRAIL
+// ══════════════════════════════════════════════
+document.addEventListener('mousemove', (e) => {
+  if (Math.random() > 0.4) return;
+  const star = document.createElement('div');
+  star.style.cssText = `
+    position:fixed;
+    width:4px;height:4px;
+    border-radius:50%;
+    background:white;
+    pointer-events:none;
+    z-index:9999;
+    left:${e.clientX}px;
+    top:${e.clientY}px;
+    transform:translate(-50%,-50%);
+    animation:starFade 0.8s linear forwards;
+  `;
+  document.body.appendChild(star);
+  setTimeout(() => star.remove(), 800);
+});
+
+const style = document.createElement('style');
+style.textContent = `@keyframes starFade { 0%{opacity:.8;transform:translate(-50%,-50%) scale(1)} 100%{opacity:0;transform:translate(-50%,-50%) scale(0.2)} }`;
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>
