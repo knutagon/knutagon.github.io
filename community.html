@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community · KnutA Multiverse</title>
+
+    <!-- Markdown parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- ──────────────────────────────────────────────── -->
+    <!-- GLOBAL STYLES (same as your site-wide template) -->
+    <!-- ──────────────────────────────────────────────── -->
+    <style>
+        :root {
+            --global-bg: #fafafa;
+            --global-text: #111111;
+            --surface-color: #f0f0f0;
+            --border-color: #e5e5e5;
+            --accent-color: #f43f5e;
+            --text-secondary: #666666;
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="dark"] {
+            --global-bg: #121212;
+            --global-text: #f5f5f5;
+            --surface-color: #1a2233;
+            --border-color: #2a3447;
+            --text-secondary: #94a3b8;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        html { overflow-x: hidden; width: 100%; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--global-bg);
+            color: var(--global-text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            overflow-x: hidden;
+            width: 100%;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        body.menu-active { overflow: hidden; }
+
+        /* Mobile drawer overlay */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        body.menu-active .menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Search overlay */
+        .search-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--global-bg);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .search-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .search-wrapper {
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .search-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: clamp(20px, 4vw, 32px);
+            color: var(--global-text);
+            outline: none;
+        }
+
+        .search-hint {
+            position: absolute;
+            left: 0;
+            font-size: clamp(20px, 4vw, 32px);
+            color: var(--text-secondary);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .search-close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--global-text);
+            cursor: pointer;
+            padding: 0 10px;
+        }
+
+        .search-results {
+            max-width: 700px;
+            width: 100%;
+            margin: 30px auto 0;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-bottom: 40px;
+        }
+
+        .search-result-item {
+            display: block;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .search-result-title { font-size: 18px; font-weight: 700; }
+        .search-result-snippet { font-size: 14px; color: var(--text-secondary); }
+
+        /* Header + Footer containers */
+        #header, #footer { width: 100%; overflow-x: hidden; }
+
+        /* Page container */
+        #page-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 70px auto;
+            padding: 0 20px;
+        }
+
+        h1.page-title {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 800;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .content { font-size: 17px; }
+        .content p { margin-bottom: 24px; }
+        .content h2 { margin-top: 40px; margin-bottom: 16px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- ──────────────────────────────────────────────── -->
+    <!-- MOBILE DRAWER OVERLAY -->
+    <!-- ──────────────────────────────────────────────── -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- ──────────────────────────────────────────────── -->
+    <!-- SEARCH OVERLAY -->
+    <!-- ──────────────────────────────────────────────── -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-wrapper">
+            <div class="search-input-container">
+                <div class="search-hint" id="searchHint"></div>
+                <input type="text" class="search-input" id="searchInput" placeholder="Type to search pages..." autocomplete="off">
+                <button class="search-close-btn" id="searchClose">&times;</button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────── -->
+    <!-- HEADER (Dynamically Loaded) -->
+    <!-- ──────────────────────────────────────────────── -->
+    <div id="header"></div>
+
+    <!-- ──────────────────────────────────────────────── -->
+    <!-- PAGE CONTENT -->
+    <!-- ──────────────────────────────────────────────── -->
+    <main id="page-container">
+
+        <h1 class="page-title">Community</h1>
+
+        <div class="content">
+
+            <p>
+                Welcome to the Community Realm — the gathering place for creators, readers, explorers,
+                and wanderers across the KnutA Multiverse. This is where you connect, contribute, and
+                participate in the living universe.
+            </p>
+
+            <h2>Creator Kit</h2>
+            <p>
+                Tools, templates, and resources for creators who want to build inside the KnutA Multiverse.
+                Branding assets, writing guides, universe rules, and contribution guidelines.
+            </p>
+            <p><a href="/community/creator-kit/">Visit Creator Kit →</a></p>
+
+            <h2>Social Hub</h2>
+            <p>
+                All official social links, channels, and platforms. Follow the creator, join discussions,
+                and stay connected across realms.
+            </p>
+            <p><a href="/community/social/">Enter Social Hub →</a></p>
+
+            <h2>Stories</h2>
+            <p>
+                Community-driven tales, submissions, highlights, and shared experiences. A living archive
+                of voices inside the multiverse.
+            </p>
+            <p><a href="/community/stories/">Explore Stories →</a></p>
+
+        </div>
+
+    </main>
+
+    <!-- ──────────────────────────────────────────────── -->
+    <!-- FOOTER (Dynamically Loaded) -->
+    <!-- ──────────────────────────────────────────────── -->
+    <div id="footer"></div>
+
+    <!-- ──────────────────────────────────────────────── -->
+    <!-- FULL GLOBAL JS ENGINE (your Part 2 + Part 3 code) -->
+    <!-- ──────────────────────────────────────────────── -->
+    <script>
+        // THEME ENGINE
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            const inputs = document.querySelectorAll('#themeToggle, #themeToggleMobile');
+            inputs.forEach(input => input.checked = (theme === 'dark'));
+        }
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+
+        function closeMenu() {
+            document.body.classList.remove('menu-active');
+            const burgerBtn = document.getElementById('hamburger');
+            if (burgerBtn) burgerBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        // SEARCH INDEX
+        let searchDatabase = [];
+        const pagesToSearch = [
+            'about-us.html', 
+            'privacy-policy.html', 
+            'terms.html',
+            'welcome-post.html'
+        ];
+
+        async function buildSearchIndex() {
+            if (searchDatabase.length > 0) return;
+            
+            const promises = pagesToSearch.map(async (file) => {
+                try {
+                    const rawHtml = await fetch(`/sections/pages/${file}`).then(r => r.text());
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(rawHtml, 'text/html');
+                    const cleanText = (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
+                    const cleanTitle = file.replace('.html', '')
+                                           .split('-')
+                                           .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                                           .join(' ');
+
+                    return {
+                        filename: file,
+                        title: cleanTitle,
+                        text: cleanText,
+                        words: cleanText.toLowerCase().split(/\W+/).filter(Boolean)
+                    };
+                } catch (e) {
+                    console.error("Could not index sub-page for search:", file, e);
+                    return null;
+                }
+            });
+
+            searchDatabase = (await Promise.all(promises)).filter(Boolean);
+        }
+
+        // OPEN SEARCH
+        function openSearch() {
+            closeMenu();
+            const overlay = document.getElementById('searchOverlay');
+            if (overlay) {
+                overlay.classList.add('active');
+                const input = document.getElementById('searchInput');
+                if (input) {
+                    input.value = '';
+                    input.focus();
+                }
+                document.getElementById('searchHint').textContent = '';
+                document.getElementById('searchResults').innerHTML = '';
+                buildSearchIndex();
+            }
+        }
+
+        // CLOSE SEARCH
+        function closeSearch() {
+            const overlay = document.getElementById('searchOverlay');
+            if (overlay) overlay.classList.remove('active');
+        }
+
+        // GLOBAL CLICK HANDLERS
+        document.addEventListener('change', (e) => {
+            if (e.target && (e.target.id === 'themeToggle' || e.target.id === 'themeToggleMobile')) {
+                applyTheme(e.target.checked ? 'dark' : 'light');
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            const hamburger = e.target.closest('#hamburger');
+            if (hamburger) {
+                document.body.classList.toggle('menu-active');
+                const isOpen = document.body.classList.contains('menu-active');
+                hamburger.setAttribute('aria-expanded', isOpen);
+                return;
+            }
+
+            if (e.target.id === 'menuOverlay' || e.target.closest('#drawerClose')) {
+                closeMenu();
+                return;
+            }
+
+            if (e.target.closest('.mobile-drawer .nav-link')) {
+                closeMenu();
+                return;
+            }
+
+            if (e.target.closest('.search-trigger')) {
+                openSearch();
+                return;
+            }
+
+            if (e.target.id === 'searchOverlay' || e.target.closest('#searchClose')) {
+                closeSearch();
+                return;
+            }
+        });
+
+        // LIVE SEARCH INPUT
+        document.addEventListener('input', (e) => {
+            if (e.target && e.target.id === 'searchInput') {
+                const query = e.target.value.toLowerCase().trim();
+                const hintLayer = document.getElementById('searchHint');
+                const resultsLayer = document.getElementById('searchResults');
+
+                if (!query) {
+                    hintLayer.textContent = '';
+                    resultsLayer.innerHTML = '';
+                    return;
+                }
+
+                let bestHint = '';
+                let matchHtml = '';
+                let matchCount = 0;
+
+                searchDatabase.forEach(item => {
+                    const indexIdx = item.text.toLowerCase().indexOf(query);
+                    
+                    if (indexIdx !== -1) {
+                        matchCount++;
+                        
+                        if (!bestHint) {
+                            const matchingWord = item.words.find(w => w.startsWith(query));
+                            if (matchingWord && matchingWord !== query) {
+                                bestHint = e.target.value + matchingWord.slice(query.length);
+                            }
+                        }
+
+                        const start = Math.max(0, indexIdx - 30);
+                        const end = Math.min(item.text.length, indexIdx + 80);
+                        let snippet = item.text.slice(start, end);
+                        if (start > 0) snippet = '...' + snippet;
+                        if (end < item.text.length) snippet = snippet + '...';
+
+                        const safeSnippet = snippet.replace(new RegExp(query, 'gi'), match => `<strong>${match}</strong>`);
+
+                        matchHtml += `
+                            <a href="/sections/pages/${item.filename}" class="search-result-item" onclick="closeSearch()">
+                                <div class="search-result-title">${item.title}</div>
+                                <div class="search-result-snippet">${safeSnippet}</div>
+                            </a>
+                        `;
+                    }
+                });
+
+                hintLayer.textContent = bestHint;
+                
+                if (matchCount > 0) {
+                    resultsLayer.innerHTML = matchHtml;
+                } else {
+                    resultsLayer.innerHTML = `<div class="search-empty">No results found inside pages matching "${e.target.value}"</div>`;
+                }
+            }
+        });
+
+        // SEARCH KEYBOARD SHORTCUTS
+        document.addEventListener('keydown', (e) => {
+            const searchInput = document.getElementById('searchInput');
+            const searchOverlay = document.getElementById('searchOverlay');
+            if (!searchInput || !searchOverlay || !searchOverlay.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+            
+            if (e.key === 'Tab') {
+                const hintLayer = document.getElementById('searchHint');
+                if (hintLayer && hintLayer.textContent) {
+                    e.preventDefault();
+                    searchInput.value = hintLayer.textContent;
+                    hintLayer.textContent = '';
+                }
+            }
+        });
+
+        // DYNAMIC HEADER/FOOTER LOADER
+        async function loadSection(elementId, file) {
+            try {
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                pathParts.pop();
+                const basePath = pathParts.length > 0 ? '/' + pathParts.join('/') + '/' : '/';
+                const fetchUrl = `${basePath}sections/${file}`.replace(/\/+/g, '/');
+
+                const response = await fetch(fetchUrl);
+                if (response.ok) {
+                    const htmlText = await response.text();
+                    const target = document.getElementById(elementId);
+                    target.innerHTML = htmlText;
+
+                    if (elementId === 'header') {
+                        const activeTheme = document.documentElement.getAttribute('data-theme');
+                        const inputs = target.querySelectorAll('#themeToggle, #themeToggleMobile');
+                        inputs.forEach(input => input.checked = (activeTheme === 'dark'));
+                    }
+                }
+            } catch (e) {
+                console.log(`Could not load section: sections/${file}`);
+            }
+        }
+
+        // MARKDOWN PAGE LOADER
+        async function loadMarkdownPage() {
+            loadSection('header', 'header.html');
+            loadSection('footer', 'footer.html');
+
+            const params = new URLSearchParams(window.location.search);
+            const mdFile = params.get('file');
+            const container = document.getElementById('page-container');
+
+            if (!mdFile) return;
+
+            try {
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                pathParts.pop();
+                const basePath = pathParts.length > 0 ? '/' + pathParts.join('/') + '/' : '/';
+                
+                const fetchUrl = `${basePath}pages/${mdFile}`.replace(/\/+/g, '/');
+
+                const response = await fetch(fetchUrl);
+                if (!response.ok) throw new Error("Page not found");
+                const markdownText = await response.text();
+
+                const lines = markdownText.split('\n');
+                let metadata = { title: "Untitled Page" };
+                let bodyStartIndex = 0;
+
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    if (line.startsWith('title:')) {
+                        metadata.title = line.replace('title:', '').trim().replace(/['"]/g, '');
+                    }
+                    
+                    if (line === '---' && i > 0) {
+                        bodyStartIndex = i + 1;
+                        break;
+                    }
+                }
+
+                const rawBody = lines.slice(bodyStartIndex).join('\n');
+                const htmlContent = marked.parse(rawBody);
+
+                container.innerHTML = `
+                    <h1 class="page-title">${metadata.title}</h1>
+                    <div class="content">
+                        ${htmlContent}
+                    </div>
+                `;
+
+                document.title = metadata.title;
+
+            } catch (error) {
+                container.innerHTML = "<h2>Page not found</h2><p>Could not load the requested markdown file.</p>";
+            }
+        }
+
+        loadMarkdownPage();
+    </script>
+
+</body>
+</html>
