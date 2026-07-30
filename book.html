@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Book of KnutA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #050814;
+      --surface: #0b1020;
+      --border: rgba(255,255,255,0.08);
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --accent: #fbbf24;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      background: radial-gradient(circle at top, #111827 0%, #020617 55%, #000 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .book-frame {
+      max-width: 900px;
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: radial-gradient(circle at top, #111827 0%, #020617 60%);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+      padding: 24px 28px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .book-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .book-title {
+      font-size: 22px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .book-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .book-view {
+      position: relative;
+      perspective: 1600px;
+      height: 420px;
+      overflow: hidden;
+    }
+
+    .book-page {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      max-width: 780px;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.18) 0%, transparent 55%),
+        url('https://images.pexels.com/photos/235985/pexels-photo-235985.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;
+      border-radius: 14px;
+      padding: 32px 40px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.85),
+        inset 0 0 40px rgba(0,0,0,0.6);
+      transform-origin: left center;
+      transform: rotateY(0deg);
+      transition: transform 0.7s ease, opacity 0.7s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      opacity: 1;
+    }
+
+    .book-page.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .book-page.flip-out {
+      transform: rotateY(-180deg);
+      opacity: 0;
+    }
+
+    .book-page.flip-in {
+      transform: rotateY(0deg);
+      opacity: 1;
+    }
+
+    .page-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.6);
+    }
+
+    .page-heading {
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .page-body {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #111827;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+    }
+
+    .page-meta {
+      margin-top: auto;
+      font-size: 11px;
+      color: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .page-meta span {
+      opacity: 0.9;
+    }
+
+    .book-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      gap: 10px;
+    }
+
+    .book-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .book-btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.9);
+      color: var(--text-secondary);
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .book-btn:hover {
+      background: rgba(30,64,175,0.9);
+      border-color: rgba(248,250,252,0.25);
+      color: #e5e7eb;
+    }
+
+    .book-status {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 720px) {
+      .book-view { height: 360px; }
+      .book-page { padding: 24px 22px; }
+      .page-heading { font-size: 18px; }
+      .page-body { font-size: 13px; }
+    }
+
+    @media (max-width: 480px) {
+      .book-frame { padding: 18px 16px 22px; }
+      .book-view { height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="book-frame">
+    <div class="book-header">
+      <div>
+        <div class="book-title">THE BOOK OF KNUTA</div>
+        <div class="book-subtitle">A living scripture where each post becomes a new verse.</div>
+      </div>
+      <div class="book-subtitle">Bible 2.0 · Lore Engine™</div>
+    </div>
+
+    <div class="book-view" id="bookView">
+      <div class="book-page" data-page="1">
+        <div class="page-label">PROLOGUE</div>
+        <div class="page-heading">The Book Begins</div>
+        <div class="page-body">
+          This is the beginning of the Book of KnutA.<br><br>
+          As new posts are written, new verses will appear here automatically,
+          drawn from the words you’ve already published.
+        </div>
+        <div class="page-meta">
+          <span>Auto‑Lore Engine</span>
+          <span>Page 1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-controls">
+      <div class="book-buttons">
+        <button class="book-btn" id="prevBtn">← Previous</button>
+        <button class="book-btn" id="nextBtn">Next →</button>
+      </div>
+      <div class="book-status" id="bookStatus">Page 1 of 1</div>
+    </div>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────
+    // AUTO‑INDEXING: DISCOVER POSTS IN /posts/
+    // ─────────────────────────────────────────
+    async function autoDiscoverPosts() {
+      const indexUrl = "/posts/";
+      try {
+        const raw = await fetch(indexUrl).then(r => r.text());
+        const doc = new DOMParser().parseFromString(raw, "text/html");
+
+        const links = [...doc.querySelectorAll("a")]
+          .map(a => a.getAttribute("href"))
+          .filter(href => href && href.endsWith(".html"))
+          .map(href => {
+            // Normalize: ensure it’s under /posts/
+            if (href.startsWith("/posts/")) return href;
+            if (href.startsWith("posts/")) return "/" + href;
+            return "/posts/" + href.replace("/posts/", "").replace(/^\/+/, "");
+          });
+
+        return links;
+      } catch (e) {
+        console.error("Failed to auto‑discover posts:", e);
+        return [];
+      }
+    }
+
+    // ─────────────────────────────────────────
+    // FETCH A SINGLE POST AND EXTRACT TEXT
+    // ─────────────────────────────────────────
+    async function fetchPost(url) {
+      try {
+        const raw = await fetch(url).then(r => r.text());
+        const doc = new DOMParser().parseFromString(raw, "text/html");
+
+        const title = doc.querySelector("h1, h2, title")?.textContent.trim() || "Untitled";
+        const body = doc.body.textContent.replace(/\s+/g, " ").trim();
+
+        return { title, body };
+      } catch (e) {
+        console.error("Failed to fetch post:", url, e);
+        return null;
+      }
+    }
+
+    // ─────────────────────────────────────────
+    // TURN A POST INTO A MYTHIC BOOK PAGE
+    // ─────────────────────────────────────────
+    function mythologize({ title, body }) {
+      const concept = body.slice(0, 400);
+
+      return `
+        <div class="book-page hidden">
+          <div class="page-label">CHAPTER</div>
+          <div class="page-heading">${title}</div>
+          <div class="page-body">
+            ${concept}…<br><br>
+            <em>Thus this idea was written into the Book, becoming part of the living scripture.</em>
+          </div>
+          <div class="page-meta">
+            <span>Forged from: ${title}</span>
+            <span>Auto‑Lore</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // ─────────────────────────────────────────
+    // BUILD THE BOOK FROM DISCOVERED POSTS
+    // ─────────────────────────────────────────
+    async function buildBook() {
+      const bookView = document.getElementById("bookView");
+
+      const postUrls = await autoDiscoverPosts();
+
+      for (const url of postUrls) {
+        const post = await fetchPost(url);
+        if (!post) continue;
+
+        const pageHTML = mythologize(post);
+        bookView.insertAdjacentHTML("beforeend", pageHTML);
+      }
+
+      initializePageFlipping();
+    }
+
+    // ─────────────────────────────────────────
+    // PAGE FLIP LOGIC
+    // ─────────────────────────────────────────
+    function initializePageFlipping() {
+      const pages = Array.from(document.querySelectorAll('.book-page'));
+      const statusEl = document.getElementById('bookStatus');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      let currentPageIndex = 0;
+      let isFlipping = false;
+
+      function updateStatus() {
+        statusEl.textContent = `Page ${currentPageIndex + 1} of ${pages.length}`;
+      }
+
+      function showPage(index) {
+        if (isFlipping || index === currentPageIndex || index < 0 || index >= pages.length) return;
+        isFlipping = true;
+
+        const current = pages[currentPageIndex];
+        const next = pages[index];
+
+        current.classList.remove('flip-in');
+        current.classList.add('flip-out');
+
+        setTimeout(() => {
+          current.classList.add('hidden');
+          current.classList.remove('flip-out');
+
+          next.classList.remove('hidden');
+          next.classList.add('flip-in');
+
+          currentPageIndex = index;
+          updateStatus();
+          isFlipping = false;
+        }, 650);
+      }
+
+      prevBtn.onclick = () => showPage(currentPageIndex - 1);
+      nextBtn.onclick = () => showPage(currentPageIndex + 1);
+
+      pages[0].classList.add('flip-in');
+      updateStatus();
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') showPage(currentPageIndex + 1);
+        if (e.key === 'ArrowLeft') showPage(currentPageIndex - 1);
+      });
+    }
+
+    // ─────────────────────────────────────────
+    // START THE LORE ENGINE
+    // ─────────────────────────────────────────
+    buildBook();
+  </script>
+</body>
+</html>
