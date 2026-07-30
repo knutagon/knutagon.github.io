@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starmap · The Knutagon Papers</title>
+  <style>
+    :root {
+      --bg: #020510;
+      --surface: rgba(10,14,30,0.95);
+      --border: rgba(255,255,255,0.07);
+      --text-primary: #e8eaf0;
+      --text-secondary: #64748b;
+      --accent: #2dd4bf;
+      --accent-glow: rgba(45,212,191,0.18);
+      --purple: #7c3aed;
+      --purple-glow: rgba(124,58,237,0.25);
+      --orange: #f97316;
+      --orange-glow: rgba(249,115,22,0.25);
+      --pink: #ec4899;
+      --pink-glow: rgba(236,72,153,0.2);
+      --gold: #f59e0b;
+      --gold-glow: rgba(245,158,11,0.2);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 22px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      flex-shrink: 0;
+      z-index: 100;
+    }
+
+    .topbar a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .topbar a:hover { color: var(--accent); }
+    .topbar-sep { color: var(--border); }
+
+    .topbar-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar-badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .topbar-badge::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    /* ── CANVAS ── */
+    #starmapCanvas {
+      flex: 1;
+      width: 100%;
+      cursor: grab;
+    }
+
+    #starmapCanvas:active { cursor: grabbing; }
+
+    /* ── CURSOR TRAIL ── */
+    .cursor-star {
+      position: fixed;
+      width: 5px; height: 5px;
+      background: radial-gradient(circle, #fff 0%, var(--accent) 50%, transparent 100%);
+      pointer-events: none;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: starFade 0.7s linear forwards;
+      z-index: 9999;
+    }
+
+    @keyframes starFade {
+      0% { opacity: 0.8; transform: translate(-50%,-50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%,-50%) scale(0.3); }
+    }
+
+    /* ── POPUP ── */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .popup-overlay.active { display: flex; }
+
+    .popup {
+      background: #0b1020;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 60px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .popup-category {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .popup-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .popup-excerpt {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .popup-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .popup-read {
+      flex: 1;
+      padding: 10px 20px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #000;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      transition: opacity 0.2s;
+    }
+
+    .popup-read:hover { opacity: 0.85; }
+
+    .popup-close {
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-family: inherit;
+    }
+
+    .popup-close:hover { color: var(--text-primary); }
+
+    /* ── LOADING ── */
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 999;
+      transition: opacity 0.5s;
+    }
+
+    .loading.hidden { opacity: 0; pointer-events: none; }
+
+    .loading-icon {
+      font-size: 40px;
+      animation: spin 3s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 600px) {
+      .legend { display: none; }
+      .topbar { padding: 10px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <a href="/">← Home</a>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Starmap</span>
+    <div class="topbar-right">
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#2dd4bf"></div> Soul Dragon</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div> Acvarius AI</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div> Music</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div> Fiction</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> General</div>
+      </div>
+      <div class="topbar-badge">Live</div>
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <canvas id="starmapCanvas"></canvas>
+
+  <!-- POPUP -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <div class="popup-category" id="popupCategory"></div>
+      <div class="popup-title" id="popupTitle"></div>
+      <div class="popup-excerpt" id="popupExcerpt"></div>
+      <div class="popup-actions">
+        <a href="#" class="popup-read" id="popupRead">Read post →</a>
+        <button class="popup-close" onclick="closePopup()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="loading-icon">🐉</div>
+    <div class="loading-text">Mapping the universe…</div>
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════
+    // CONFIG — edit this to match your blog!
+    // ══════════════════════════════════════════
+    const CATEGORIES = [
+      {
+        name: 'Soul Dragon',
+        emoji: '🐉',
+        color: '#2dd4bf',
+        glow: 'rgba(45,212,191,0.35)',
+        pages: [
+          { title: 'Soul Dragon Universe', file: 'sections/pages/soul-dragon-universe.html' },
+          { title: 'Origin Story',         file: 'sections/pages/origin.html' },
+          { title: 'Dragon Energy',        file: 'sections/pages/dragon-energy.html' },
+        ]
+      },
+      {
+        name: 'Acvarius AI',
+        emoji: '🤖',
+        color: '#7c3aed',
+        glow: 'rgba(124,58,237,0.35)',
+        pages: [
+          { title: 'About Acvarius AI',   file: 'sections/pages/about-us.html' },
+          { title: 'Welcome Post',         file: 'sections/pages/welcome-post.html' },
+        ]
+      },
+      {
+        name: 'Music',
+        emoji: '🎵',
+        color: '#f97316',
+        glow: 'rgba(249,115,22,0.35)',
+        pages: [
+          { title: 'Soul Dragon Records', file: 'sections/pages/music.html' },
+          { title: 'MakeWaves',           file: 'sections/pages/makewaves.html' },
+        ]
+      },
+      {
+        name: 'Fiction',
+        emoji: '📖',
+        color: '#ec4899',
+        glow: 'rgba(236,72,153,0.35)',
+        pages: [
+          { title: 'The Dragon King',     file: 'sections/pages/dragon-king.html' },
+          { title: 'Norvitra',            file: 'sections/pages/norvitra.html' },
+        ]
+      },
+      {
+        name: 'General',
+        emoji: '✨',
+        color: '#f59e0b',
+        glow: 'rgba(245,158,11,0.35)',
+        pages: [
+          { title: 'Privacy Policy',      file: 'sections/pages/privacy-policy.html' },
+          { title: 'Terms',               file: 'sections/pages/terms.html' },
+        ]
+      },
+    ];
+
+    // ══════════════════════════════════════════
+    // CANVAS SETUP
+    // ══════════════════════════════════════════
+    const canvas = document.getElementById('starmapCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let W, H;
+    let nodes = [];       // all stars and planets
+    let bgStars = [];     // decorative background stars
+    let hoveredNode = null;
+    let pan = { x: 0, y: 0 };
+    let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
+    let panStart = { x: 0, y: 0 };
+    let animFrame = 0;
+
+    function resize() {
+      W = canvas.width = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+      buildNodes();
+      buildBgStars();
+    }
+
+    // ══════════════════════════════════════════
+    // BUILD NODE LAYOUT
+    // ══════════════════════════════════════════
+    function buildNodes() {
+      nodes = [];
+      const cx = W / 2;
+      const cy = H / 2;
+      const catCount = CATEGORIES.length;
+      const catRadius = Math.min(W, H) * 0.3;
+      const planetRadius = Math.min(W, H) * 0.12;
+
+      CATEGORIES.forEach((cat, ci) => {
+        const catAngle = (ci / catCount) * Math.PI * 2 - Math.PI / 2;
+        const sx = cx + Math.cos(catAngle) * catRadius;
+        const sy = cy + Math.sin(catAngle) * catRadius;
+
+        // Category star node
+        const starNode = {
+          type: 'star',
+          x: sx, y: sy,
+          baseX: sx, baseY: sy,
+          r: 22,
+          cat,
+          label: cat.name,
+          emoji: cat.emoji,
+          color: cat.color,
+          glow: cat.glow,
+          orbitPhase: Math.random() * Math.PI * 2,
+          orbitSpeed: 0.0003 + Math.random() * 0.0002,
+          orbitAmp: 3 + Math.random() * 3,
+        };
+        nodes.push(starNode);
+
+        // Planet nodes for each page
+        cat.pages.forEach((page, pi) => {
+          const pAngle = catAngle + ((pi + 1) / (cat.pages.length + 1) - 0.5) * 1.2;
+          const px = sx + Math.cos(pAngle) * planetRadius;
+          const py = sy + Math.sin(pAngle) * planetRadius;
+
+          nodes.push({
+            type: 'planet',
+            x: px, y: py,
+            baseX: px, baseY: py,
+            r: 8,
+            cat,
+            starNode,
+            label: page.title,
+            file: page.file,
+            color: cat.color,
+            glow: cat.glow,
+            orbitPhase: Math.random() * Math.PI * 2,
+            orbitSpeed: 0.0005 + Math.random() * 0.0004,
+            orbitAmp: 1.5 + Math.random() * 2,
+            excerpt: '',
+          });
+        });
+      });
+
+      // Fetch excerpts in background
+      nodes.filter(n => n.type === 'planet').forEach(async (node) => {
+        try {
+          const raw = await fetch(node.file).then(r => r.ok ? r.text() : '');
+          if (raw) {
+            const doc = new DOMParser().parseFromString(raw, 'text/html');
+            const text = (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
+            node.excerpt = text.slice(0, 160) + '…';
+          }
+        } catch (e) {}
+      });
+    }
+
+    function buildBgStars() {
+      bgStars = [];
+      for (let i = 0; i < 220; i++) {
+        bgStars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.2,
+          opacity: 0.2 + Math.random() * 0.5,
+          twinklePhase: Math.random() * Math.PI * 2,
+          twinkleSpeed: 0.001 + Math.random() * 0.002,
+        });
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // DRAW LOOP
+    // ══════════════════════════════════════════
+    function draw(ts) {
+      animFrame = requestAnimationFrame(draw);
+      ctx.clearRect(0, 0, W, H);
+
+      // Background gradient
+      const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H)*0.8);
+      grad.addColorStop(0, '#050a1a');
+      grad.addColorStop(1, '#020510');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Background stars
+      bgStars.forEach(s => {
+        const twinkle = Math.sin(ts * s.twinkleSpeed + s.twinklePhase) * 0.3 + 0.7;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.opacity * twinkle})`;
+        ctx.fill();
+      });
+
+      ctx.save();
+      ctx.translate(pan.x, pan.y);
+
+      // Animate node float
+      nodes.forEach(n => {
+        n.x = n.baseX + Math.sin(ts * n.orbitSpeed + n.orbitPhase) * n.orbitAmp;
+        n.y = n.baseY + Math.cos(ts * n.orbitSpeed * 0.7 + n.orbitPhase) * n.orbitAmp;
+      });
+
+      // Draw constellation lines (star → planets)
+      nodes.filter(n => n.type === 'planet').forEach(p => {
+        const s = p.starNode;
+        const isHovered = hoveredNode === p || hoveredNode === s;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = isHovered
+          ? p.color + 'aa'
+          : 'rgba(148,163,184,0.12)';
+        ctx.lineWidth = isHovered ? 1.5 : 0.8;
+        ctx.setLineDash(isHovered ? [] : [4, 6]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      // Draw category stars (big)
+      nodes.filter(n => n.type === 'star').forEach(n => {
+        const isHov = hoveredNode === n;
+        const glowSize = isHov ? 60 : 40;
+
+        // Glow
+        const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowSize);
+        grd.addColorStop(0, n.glow);
+        grd.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, glowSize, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Body
+        const bodyGrd = ctx.createRadialGradient(n.x - n.r*0.3, n.y - n.r*0.3, 2, n.x, n.y, n.r);
+        bodyGrd.addColorStop(0, '#ffffff');
+        bodyGrd.addColorStop(0.4, n.color);
+        bodyGrd.addColorStop(1, n.color + '88');
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, isHov ? n.r + 3 : n.r, 0, Math.PI * 2);
+        ctx.fillStyle = bodyGrd;
+        ctx.fill();
+
+        // Emoji
+        ctx.font = `${n.r * 0.9}px serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(n.emoji, n.x, n.y);
+
+        // Label
+        ctx.font = `600 12px Inter, sans-serif`;
+        ctx.fillStyle = isHov ? n.color : 'rgba(255,255,255,0.6)';
+        ctx.fillText(n.label, n.x, n.y + n.r + 16);
+      });
+
+      // Draw planets (small)
+      nodes.filter(n => n.type === 'planet').forEach(n => {
+        const isHov = hoveredNode === n;
+
+        // Glow
+        const glowSize = isHov ? 28 : 16;
+        const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowSize);
+        grd.addColorStop(0, n.glow);
+        grd.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, glowSize, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Body
+        const bodyGrd = ctx.createRadialGradient(n.x - n.r*0.3, n.y - n.r*0.3, 1, n.x, n.y, n.r);
+        bodyGrd.addColorStop(0, '#fff');
+        bodyGrd.addColorStop(0.5, n.color);
+        bodyGrd.addColorStop(1, n.color + '66');
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, isHov ? n.r + 3 : n.r, 0, Math.PI * 2);
+        ctx.fillStyle = bodyGrd;
+        ctx.fill();
+
+        // Label on hover
+        if (isHov) {
+          ctx.font = '500 11px Inter, sans-serif';
+          ctx.fillStyle = n.color;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(n.label, n.x, n.y + n.r + 14);
+        }
+      });
+
+      ctx.restore();
+    }
+
+    // ══════════════════════════════════════════
+    // INTERACTION
+    // ══════════════════════════════════════════
+    function getNodeAt(cx, cy) {
+      const mx = cx - pan.x;
+      const my = cy - pan.y;
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        const n = nodes[i];
+        const dist = Math.hypot(mx - n.x, my - n.y);
+        if (dist < n.r + 10) return n;
+      }
+      return null;
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        pan.x = panStart.x + (e.clientX - dragStart.x);
+        pan.y = panStart.y + (e.clientY - dragStart.y);
+        return;
+      }
+      hoveredNode = getNodeAt(e.clientX, e.clientY);
+      canvas.style.cursor = hoveredNode ? 'pointer' : 'grab';
+
+      // Cursor trail
+      const star = document.createElement('div');
+      star.className = 'cursor-star';
+      star.style.left = e.clientX + 'px';
+      star.style.top = e.clientY + 'px';
+      document.body.appendChild(star);
+      setTimeout(() => star.remove(), 700);
+    });
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      dragStart = { x: e.clientX, y: e.clientY };
+      panStart = { x: pan.x, y: pan.y };
+    });
+
+    canvas.addEventListener('mouseup', (e) => {
+      const moved = Math.hypot(e.clientX - dragStart.x, e.clientY - dragStart.y);
+      isDragging = false;
+      if (moved < 5) {
+        const node = getNodeAt(e.clientX, e.clientY);
+        if (node) openPopup(node);
+      }
+    });
+
+    // Touch support
+    canvas.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      isDragging = true;
+      dragStart = { x: t.clientX, y: t.clientY };
+      panStart = { x: pan.x, y: pan.y };
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      pan.x = panStart.x + (t.clientX - dragStart.x);
+      pan.y = panStart.y + (t.clientY - dragStart.y);
+    }, { passive: true });
+
+    canvas.addEventListener('touchend', (e) => {
+      const t = e.changedTouches[0];
+      const moved = Math.hypot(t.clientX - dragStart.x, t.clientY - dragStart.y);
+      isDragging = false;
+      if (moved < 8) {
+        const node = getNodeAt(t.clientX, t.clientY);
+        if (node) openPopup(node);
+      }
+    });
+
+    // ══════════════════════════════════════════
+    // POPUP
+    // ══════════════════════════════════════════
+    function openPopup(node) {
+      const overlay = document.getElementById('popupOverlay');
+      document.getElementById('popupCategory').textContent = node.cat.name;
+      document.getElementById('popupCategory').style.color = node.color;
+      document.getElementById('popupTitle').textContent = node.label;
+      document.getElementById('popupExcerpt').textContent =
+        node.type === 'star'
+          ? `${node.cat.pages.length} posts in this category. Click a planet to explore individual posts.`
+          : (node.excerpt || 'Loading preview…');
+      const readBtn = document.getElementById('popupRead');
+      if (node.type === 'planet') {
+        readBtn.href = node.file;
+        readBtn.style.display = '';
+      } else {
+        readBtn.style.display = 'none';
+      }
+      overlay.classList.add('active');
+    }
+
+    function closePopup() {
+      document.getElementById('popupOverlay').classList.remove('active');
+    }
+
+    document.getElementById('popupOverlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('popupOverlay')) closePopup();
+    });
+
+    // ══════════════════════════════════════════
+    // INIT
+    // ══════════════════════════════════════════
+    window.addEventListener('resize', resize);
+    resize();
+    requestAnimationFrame(draw);
+
+    setTimeout(() => {
+      document.getElementById('loading').classList.add('hidden');
+    }, 800);
+  </script>
+</body>
+</html>
