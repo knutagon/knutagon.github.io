@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat · The Knutagon Papers</title>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #131720;
+      --surface2: #1a1f2e;
+      --border: #232840;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --teal: #2dd4bf;
+      --teal-bg: rgba(45,212,191,0.10);
+      --teal-dim: rgba(45,212,191,0.06);
+      --purple: #7c3aed;
+      --purple-bg: rgba(124,58,237,0.12);
+      --shadow: 0 4px 32px rgba(0,0,0,0.4);
+      --radius: 14px;
+      --font: 'Inter', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font), sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── TOP BAR ── */
+    .chat-topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .chat-topbar a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .chat-topbar a:hover { color: var(--teal); }
+
+    .topbar-divider {
+      color: var(--border);
+      font-size: 16px;
+    }
+
+    .topbar-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .topbar-badge {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--teal);
+      background: var(--teal-bg);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .topbar-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── MESSAGES AREA ── */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    /* ── MESSAGE BUBBLES ── */
+    .msg {
+      display: flex;
+      gap: 12px;
+      max-width: 720px;
+      width: 100%;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .msg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .msg.bot .msg-avatar {
+      background: linear-gradient(135deg, var(--teal), var(--purple));
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .msg.user .msg-avatar {
+      background: var(--surface2);
+      color: var(--text-secondary);
+    }
+
+    .msg-body { display: flex; flex-direction: column; gap: 6px; }
+
+    .msg-bubble {
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .msg.bot .msg-bubble {
+      background: var(--surface2);
+      color: var(--text-primary);
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg.user .msg-bubble {
+      background: var(--purple);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+      text-align: right;
+    }
+
+    .msg-source {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--teal);
+      text-decoration: none;
+      padding: 3px 10px;
+      background: var(--teal-dim);
+      border-radius: 999px;
+      border: 1px solid rgba(45,212,191,0.15);
+      align-self: flex-start;
+      transition: background 0.2s;
+    }
+
+    .msg-source:hover { background: var(--teal-bg); }
+
+    /* ── WELCOME STATE ── */
+    .chat-welcome {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      text-align: center;
+      gap: 16px;
+      padding: 40px 24px;
+    }
+
+    .welcome-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--teal), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .welcome-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .welcome-sub {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 420px;
+      line-height: 1.6;
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .suggestion-btn {
+      padding: 8px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font);
+    }
+
+    .suggestion-btn:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: var(--teal-dim);
+    }
+
+    /* ── NO RESULTS ── */
+    .msg-no-results {
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    /* ── INPUT AREA ── */
+    .chat-input-area {
+      padding: 16px 24px 24px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .chat-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      max-width: 720px;
+      margin: 0 auto;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input-wrap:focus-within {
+      border-color: var(--teal);
+    }
+
+    #chatInput {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      color: var(--text-primary);
+      font-family: var(--font);
+    }
+
+    #chatInput::placeholder { color: var(--text-secondary); }
+
+    .chat-send-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: var(--teal);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .chat-send-btn:hover {
+      background: #14b8a6;
+      transform: scale(1.05);
+    }
+
+    .chat-send-btn svg {
+      width: 16px;
+      height: 16px;
+      color: #fff;
+    }
+
+    .chat-hint {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 10px;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 600px) {
+      .chat-messages { padding: 16px; }
+      .chat-input-area { padding: 12px 16px 20px; }
+      .chat-topbar { padding: 12px 16px; }
+      .welcome-title { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="chat-topbar">
+    <a href="/">← Home</a>
+    <span class="topbar-divider">/</span>
+    <span class="topbar-title">Chat with the Blog</span>
+    <div class="topbar-badge">Live</div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-welcome" id="chatWelcome">
+      <div class="welcome-icon">📖</div>
+      <h1 class="welcome-title">Ask The Knutagon Papers</h1>
+      <p class="welcome-sub">Ask me anything about the blog — topics, posts, projects, or ideas. I'll find the most relevant content for you.</p>
+      <div class="suggestions">
+        <button class="suggestion-btn" onclick="sendMessage('What is Soul Dragon?')">What is Soul Dragon?</button>
+        <button class="suggestion-btn" onclick="sendMessage('Tell me about Acvarius AI')">Tell me about Acvarius AI</button>
+        <button class="suggestion-btn" onclick="sendMessage('What topics does this blog cover?')">What topics does this blog cover?</button>
+        <button class="suggestion-btn" onclick="sendMessage('Show me the latest posts')">Show me the latest posts</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="chat-input-area">
+    <div class="chat-input-wrap">
+      <input type="text" id="chatInput" placeholder="Ask anything about the blog…" autocomplete="off" />
+      <button class="chat-send-btn" onclick="handleSend()" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+        </svg>
+      </button>
+    </div>
+    <p class="chat-hint">Powered by your blog content · No AI required</p>
+  </div>
+
+  <script>
+    // ── CONFIG: add your page files here ──
+    const pagesToIndex = [
+      'about-us.html',
+      'privacy-policy.html',
+      'terms.html',
+      'welcome-post.html'
+    ];
+
+    let searchDatabase = [];
+    let indexed = false;
+
+    // ── BUILD SEARCH INDEX ──
+    async function buildIndex() {
+      if (indexed) return;
+      const promises = pagesToIndex.map(async (file) => {
+        try {
+          const raw = await fetch(`/sections/pages/${file}`).then(r => r.text());
+          const doc = new DOMParser().parseFromString(raw, 'text/html');
+          const text = (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
+          const title = file.replace('.html', '')
+            .split('-')
+            .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(' ');
+          return {
+            file,
+            title,
+            text,
+            words: text.toLowerCase().split(/\W+/).filter(Boolean)
+          };
+        } catch (e) {
+          return null;
+        }
+      });
+      searchDatabase = (await Promise.all(promises)).filter(Boolean);
+      indexed = true;
+    }
+
+    // ── SEARCH LOGIC ──
+    function search(query) {
+      const keywords = query.toLowerCase().split(/\W+/).filter(w => w.length > 2);
+      if (!keywords.length) return null;
+
+      let bestMatch = null;
+      let bestScore = 0;
+
+      searchDatabase.forEach(item => {
+        let score = 0;
+        keywords.forEach(kw => {
+          const count = item.words.filter(w => w.includes(kw)).length;
+          score += count;
+        });
+        if (score > bestScore) {
+          bestScore = score;
+          bestMatch = item;
+        }
+      });
+
+      if (!bestMatch || bestScore === 0) return null;
+
+      // Find best snippet
+      const lowerText = bestMatch.text.toLowerCase();
+      const firstKw = keywords.find(kw => lowerText.includes(kw));
+      let snippet = '';
+      if (firstKw) {
+        const idx = lowerText.indexOf(firstKw);
+        const start = Math.max(0, idx - 60);
+        const end = Math.min(bestMatch.text.length, idx + 280);
+        snippet = (start > 0 ? '…' : '') + bestMatch.text.slice(start, end) + (end < bestMatch.text.length ? '…' : '');
+      } else {
+        snippet = bestMatch.text.slice(0, 280) + '…';
+      }
+
+      return { title: bestMatch.title, file: bestMatch.file, snippet };
+    }
+
+    // ── RENDER MESSAGE ──
+    function addMessage(role, text, source) {
+      const welcome = document.getElementById('chatWelcome');
+      if (welcome) welcome.remove();
+
+      const messages = document.getElementById('chatMessages');
+
+      const msg = document.createElement('div');
+      msg.className = `msg ${role}`;
+
+      const avatar = document.createElement('div');
+      avatar.className = 'msg-avatar';
+      avatar.textContent = role === 'bot' ? 'KP' : '👤';
+
+      const body = document.createElement('div');
+      body.className = 'msg-body';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'msg-bubble';
+      bubble.textContent = text;
+      body.appendChild(bubble);
+
+      if (source) {
+        const link = document.createElement('a');
+        link.className = 'msg-source';
+        link.href = `/sections/pages/${source.file}`;
+        link.textContent = `📄 ${source.title}`;
+        body.appendChild(link);
+      }
+
+      msg.appendChild(avatar);
+      msg.appendChild(body);
+      messages.appendChild(msg);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    // ── SEND MESSAGE ──
+    async function sendMessage(text) {
+      if (!text.trim()) return;
+
+      const input = document.getElementById('chatInput');
+      input.value = '';
+
+      addMessage('user', text);
+
+      await buildIndex();
+
+      const result = search(text);
+
+      if (result) {
+        addMessage('bot', result.snippet, result);
+      } else {
+        addMessage('bot', "I couldn't find anything about that in the blog yet. Try asking about Soul Dragon, Acvarius AI, or other topics covered here!", null);
+      }
+    }
+
+    function handleSend() {
+      const input = document.getElementById('chatInput');
+      sendMessage(input.value.trim());
+    }
+
+    document.getElementById('chatInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSend();
+    });
+  </script>
+</body>
+</html>
