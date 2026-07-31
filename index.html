@@ -183,11 +183,6 @@
         return;
       }
 
-      if (e.target.closest('.mobile-drawer .nav-link')) {
-        closeMenu();
-        return;
-      }
-
       if (e.target.closest('.search-trigger')) {
         openSearch();
         return;
@@ -330,6 +325,23 @@
           const activeTheme = document.documentElement.getAttribute('data-theme');
           const inputs = target.querySelectorAll('#themeToggle, #themeToggleMobile');
           inputs.forEach(input => input.checked = (activeTheme === 'dark'));
+
+          // Mobile accordion dropdowns
+          target.querySelectorAll('.mobile-accordion-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const body = btn.nextElementSibling;
+              const isOpen = body.classList.contains('open');
+              target.querySelectorAll('.mobile-accordion-body.open').forEach(b => {
+                b.classList.remove('open');
+                b.previousElementSibling.classList.remove('open');
+              });
+              if (!isOpen) {
+                body.classList.add('open');
+                btn.classList.add('open');
+              }
+            });
+          });
         }
         if (id === 'hero') initHeroSection();
         if (id === 'feature') initFeatureSection();
