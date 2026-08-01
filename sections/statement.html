@@ -7,9 +7,21 @@
     <!-- TEXT -->
     <div class="statement-content">
       <h2 class="statement-title">Statement</h2>
+
       <p class="statement-desc">
-       The Knutagon Papers™ is a Civilizational Critique of Systems and Frameworks in Society that has been intentionally and unitentionally used to distort, distract and obscure information, infrastructure and processes to benefit Institutional, corporate, academic and aristocratic entities in the global society. This is not Whistleblowing or leaks of non-disclosed documents, but rather a systematic observation documented across multiple datapoints and analyzed with focus on efficiency, compassion, economic and climatic impact on the World Population. Knutagon (The Author) does not have any formal education or academic expertise in the areas mentioned. He is simply sharing his own viewpoints and observations of discoveries that he believes humanity has forgotten, ignored or been blindsided to. He does not have any personal agenda towards any entity mentioned in the Articles, and does not wish to cause any harm to them.
+        The Knutagon Papers™ is a Civilizational Critique of Systems and Frameworks in Society that has been intentionally and unintentionally used to distort, distract and obscure information, infrastructure and processes to benefit Institutional, corporate, academic and aristocratic entities in the global society.
+        This is not Whistleblowing or leaks of non-disclosed documents, but rather a systematic observation documented across multiple datapoints and analyzed with focus on efficiency, compassion, economic and climatic impact on the World Population.
+        Knutagon (The Author) does not have any formal education or academic expertise in the areas mentioned.
+        He is simply sharing his own viewpoints and observations of discoveries that he believes humanity has forgotten, ignored or been blindsided to.
       </p>
+
+      <p class="statement-desc">
+        He does not have any personal agenda towards any entity mentioned in the Articles.
+        He does not wish to cause any harm to them.
+        His intent is solely to document patterns he has observed across society.
+        These observations are shared as reflections, not accusations.
+      </p>
+
     </div>
 
   </div>
@@ -26,9 +38,7 @@
 
   .statement-wrap {
     position: relative;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    align-items: center;
+    display: block; /* Full-width text layout */
     border-radius: 12px;
     overflow: hidden;
     background: #111827;
@@ -43,52 +53,25 @@
 
   .statement-content {
     padding: 64px 48px;
-    z-index: 2;
-    position: relative;
     background: linear-gradient(135deg, #1e1e2f, #2b3a6f);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     box-sizing: border-box;
   }
 
   .statement-title {
     font-size: clamp(24px, 3.5vw, 42px);
     font-weight: 800;
-    color: #ffffff;
-    margin: 0 0 16px 0;
+    color: #facc15; /* Yellow */
+    margin: 0 0 24px 0;
     letter-spacing: -0.02em;
     line-height: 1.2;
   }
 
   .statement-desc {
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.85);
-    line-height: 1.65;
-    margin: 0;
-    max-width: 480px;
-  }
-
-  .statement-art {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    min-height: 380px;
-  }
-
-  .statement-art img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .statement-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, #2b3a6f, rgba(43, 58, 111, 0.2));
-    z-index: 1;
+    font-size: 16px;
+    color: #ffffff; /* White text */
+    line-height: 1.75;
+    margin-bottom: 24px;
+    max-width: none; /* Allow full-width flow */
   }
 
   @media (max-width: 768px) {
@@ -96,37 +79,9 @@
       padding: 32px 20px;
     }
 
-    .statement-wrap {
-      grid-template-columns: 1fr;
-      display: block;
-    }
-
     .statement-content {
-      padding: 56px 24px;
-      text-align: center;
-      align-items: center;
-      background: transparent;
-      min-height: 320px;
-    }
-
-    .statement-desc {
-      margin: 0 auto;
-    }
-
-    .statement-art {
-      position: absolute;
-      inset: 0;
-      height: 100%;
-      min-height: 100%;
-      z-index: 1;
-    }
-
-    .statement-overlay {
-      background: linear-gradient(
-        to bottom,
-        rgba(30, 30, 47, 0.9),
-        rgba(43, 58, 111, 0.92)
-      );
+      padding: 48px 24px;
+      text-align: left;
     }
   }
 </style>
