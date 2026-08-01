@@ -343,6 +343,18 @@
             });
           });
         }
+
+        if (id === 'faq') {
+          target.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const currentItem = btn.parentElement;
+              const isAlreadyActive = currentItem.classList.contains('active');
+              target.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+              if (!isAlreadyActive) currentItem.classList.add('active');
+            });
+          });
+        }
+
         if (id === 'hero') initHeroSection();
         if (id === 'feature') initFeatureSection();
         if (id === 'tags') initTagSlider(target);
